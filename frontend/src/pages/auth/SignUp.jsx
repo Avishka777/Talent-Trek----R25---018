@@ -1,15 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/public/logo.png";
-import {
-  Button,
-  Label,
-  Spinner,
-  TextInput,
-  Select,
-  Alert,
-} from "flowbite-react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+import { Button, Label, Spinner } from "flowbite-react";
+import { TextInput, Select, Alert } from "flowbite-react";
+import logo from "../../assets/public/logo.png";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({

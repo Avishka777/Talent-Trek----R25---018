@@ -1,7 +1,7 @@
-import logo from "../../assets/public/logo.png";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { Button, Label, Spinner, TextInput } from "flowbite-react";
+import logo from "../../assets/public/logo.png";
 
 export default function Signin() {
   return (
