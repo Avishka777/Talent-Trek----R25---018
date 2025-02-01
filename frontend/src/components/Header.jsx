@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import logo from "../assets/public/logo.png";
+import { useNavigate } from "react-router-dom";
 
 export default function HeaderComponent() {
+  const navigate = useNavigate();
   const { theme } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
 
@@ -60,11 +62,11 @@ export default function HeaderComponent() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link href="#" active>
+        <Navbar.Link onClick={() => navigate(`/`)} active>
           Home
         </Navbar.Link>
-        <Navbar.Link href="sign-in">Signin</Navbar.Link>
-        <Navbar.Link href="sign-up">Signup</Navbar.Link>
+        <Navbar.Link onClick={() => navigate(`/sign-in`)}>Signin</Navbar.Link>
+        <Navbar.Link onClick={() => navigate(`/sign-up`)}>Signup</Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
   );
