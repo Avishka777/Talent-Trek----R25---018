@@ -1,12 +1,14 @@
+import { useNavigate } from "react-router-dom";
 import { Button, Card } from "flowbite-react";
 import { useSelector } from "react-redux";
 import { Briefcase, UserCheck, Search, Users, Star } from "lucide-react";
 import Lottie from "lottie-react";
-import light from "../assets/background/light.png";
-import dark from "../assets/background/dark.png";
-import heroAnimation from "../assets/animations/heroAnimation.json";
+import light from "../../assets/background/light.png";
+import dark from "../../assets/background/dark.png";
+import heroAnimation from "../../assets/animations/heroAnimation.json";
 
 export default function Home() {
+  const navigate = useNavigate();
   const { theme } = useSelector((state) => state.theme);
   const heroBg = theme === "dark" ? dark : light;
 
@@ -33,7 +35,11 @@ export default function Home() {
               Revolutionizing recruitment with AI-driven skill profiling,
               automated assessments, and smart job matching.
             </p>
-            <Button gradientMonochrome="info" size="lg">
+            <Button
+              gradientMonochrome="info"
+              size="lg"
+              onClick={() => navigate(`/resume-upload`)}
+            >
               Get Started
             </Button>
           </div>
