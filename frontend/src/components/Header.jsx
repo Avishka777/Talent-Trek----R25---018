@@ -62,11 +62,9 @@ export default function HeaderComponent() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link onClick={() => navigate(`/`)} active>
-          Home
-        </Navbar.Link>
-        <Navbar.Link onClick={() => navigate(`/sign-in`)}>Signin</Navbar.Link>
-        <Navbar.Link onClick={() => navigate(`/sign-up`)}>Signup</Navbar.Link>
+        <Navbar.Link onClick={() => navigate(`/`)}>Home</Navbar.Link>
+        <Navbar.Link onClick={() => navigate(`/jobs`)}>Jobs</Navbar.Link>
+        <Navbar.Link onClick={() => navigate(`/sign-in`)}>Login</Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
   );

@@ -6,6 +6,7 @@ import Signin from "./pages/auth/SignIn";
 import Signup from "./pages/auth/SignUp";
 import ResumeUpload from "./pages/resume/ResumeUpload";
 import JobDetails from "./pages/job/JobDetails";
+import JobList from "./pages/job/JobList";
 
 function Layout() {
   const location = useLocation();
@@ -19,6 +20,7 @@ function Layout() {
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/resume-upload" element={<ResumeUpload />} />
+        <Route path="/jobs" element={<JobList />} />
         <Route path="/job/:jobId" element={<JobDetails />} />
       </Routes>
       {!hideHeaderFooter && <Footers />}
