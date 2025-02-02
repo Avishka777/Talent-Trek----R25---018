@@ -42,7 +42,7 @@ export default function HeaderComponent() {
           label={
             <Avatar
               alt="User settings"
-              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+              img="https://avatars.githubusercontent.com/u/47731849?v=4"
               rounded
             />
           }
@@ -50,12 +50,18 @@ export default function HeaderComponent() {
           <Dropdown.Header>
             <span className="block text-sm">Bonnie Green</span>
             <span className="block truncate text-sm font-medium">
-              name@flowbite.com
+              dimesha@walaha.com
             </span>
           </Dropdown.Header>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
+          <Dropdown.Item onClick={() => navigate(`/profile/:userId`)}>
+            My Profile
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => navigate(`/dashboard/resume/analyse`)}>
+            Dashboard
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => navigate(`/sign-in`)}>
+            Sign In
+          </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item>Sign out</Dropdown.Item>
         </Dropdown>
@@ -63,8 +69,7 @@ export default function HeaderComponent() {
       </div>
       <Navbar.Collapse>
         <Navbar.Link onClick={() => navigate(`/`)}>Home</Navbar.Link>
-        <Navbar.Link onClick={() => navigate(`/jobs`)}>Jobs</Navbar.Link>
-        <Navbar.Link onClick={() => navigate(`/sign-in`)}>Login</Navbar.Link>
+        <Navbar.Link onClick={() => navigate(`/seeker/jobs`)}>Jobs</Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
   );
