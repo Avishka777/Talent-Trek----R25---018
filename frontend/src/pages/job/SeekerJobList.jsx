@@ -4,7 +4,7 @@ import { Select, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import JobCard from "../../components/job/JobCard";
 
-export default function JobList() {
+export default function SeekerJobList() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [jobFilter, setJobFilter] = useState("all");
