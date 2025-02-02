@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
-import { TextInput } from "flowbite-react";
+import { Select, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import JobCard from "../../components/job/JobCard";
 
@@ -88,14 +88,14 @@ export default function JobList() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full rounded-lg"
         />
-        <select
+        <Select
           value={jobFilter}
           onChange={(e) => setJobFilter(e.target.value)}
-          className="w-full max-w-xs p-2 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500"
+          className="flex w-72"
         >
           <option value="all">All Jobs</option>
           <option value="recommended">Recommended Jobs</option>
-        </select>
+        </Select>
       </div>
       <div className="flex justify-center">
         {filteredJobs.length > 0 ? (

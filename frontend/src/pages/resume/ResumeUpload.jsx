@@ -95,7 +95,8 @@ const ResumeUpload = () => {
         )}
         <Button
           onClick={handleUpload}
-          className="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold px-4 py-1 rounded-lg shadow-md w-full mt-4"
+          gradientMonochrome="info"
+          className="mt-4"
         >
           Upload Resume
         </Button>

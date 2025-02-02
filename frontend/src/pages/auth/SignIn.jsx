@@ -5,7 +5,7 @@ import logo from "../../assets/public/logo.png";
 
 export default function Signin() {
   return (
-    <div className="flex min-h-screen m-5">
+    <div className="flex min-h-screen ">
       <div className="flex flex-col md:flex-row m-auto border-2 p-10 mx-auto gap-5 max-w-6xl rounded-xl border-cyan-500">
         {/* Left */}
         <div className="flex flex-col md:w-1/2 items-center justify-center mx-8">
