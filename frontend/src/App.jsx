@@ -24,7 +24,7 @@ function Layout() {
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/resume-upload" element={<ResumeUpload />} />
         <Route path="/seeker/jobs" element={<SeekerJobList />} />
-        <Route path="/job/create" element={<JobCreationPage />} />
+        <Route path="/dashboard/job/create" element={<JobCreationPage />} />
         <Route path="/job/:jobId" element={<JobDetails />} />
         <Route path="/dashboard/resume/analyse" element={<ResumeAnalyse />} />
         <Route path="/dashboard/jobs/:userId" element={<RecruiterJobList />} />

@@ -1,6 +1,6 @@
 import { Badge, Sidebar } from "flowbite-react";
 import { HiArrowSmRight } from "react-icons/hi";
-import { MdAnalytics } from "react-icons/md";
+import { MdAnalytics,MdLibraryAdd } from "react-icons/md";
 import { IoFileTrayFull } from "react-icons/io5";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -9,12 +9,9 @@ export function DashboardSidebar() {
   const location = useLocation();
 
   const menuItems = [
+    { name: "Add Job", path: "/dashboard/job/create", icon: MdLibraryAdd },
     { name: "My Jobs", path: "/dashboard/jobs/:userId", icon: IoFileTrayFull },
-    {
-      name: "Resume Analyse",
-      path: "/dashboard/resume/analyse",
-      icon: MdAnalytics,
-    },
+    { name: "Resume Analyse", path: "/dashboard/resume/analyse", icon: MdAnalytics },
     { name: "Sign In", path: "/sign-in", icon: HiArrowSmRight },
   ];
 

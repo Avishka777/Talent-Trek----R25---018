@@ -1,15 +1,9 @@
 import { useState } from "react";
-import {
-  Button,
-  Datepicker,
-  FileInput,
-  Label,
-  Select,
-  TextInput,
-  Textarea,
-} from "flowbite-react";
+import { Button, Datepicker, Label } from "flowbite-react";
+import { Select, TextInput, Textarea } from "flowbite-react";
+import DashboardLayout from "../../components/dashboard/DashboardLayout";
 
-const JobCreationPage = () => {
+export default function JobCreationPage() {
   const currentDate = new Date().toISOString();
 
   const [jobData, setJobData] = useState({
@@ -44,15 +38,11 @@ const JobCreationPage = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row p-8 bg-gray-100 dark:bg-gray-900">
-      {/* Left Side - Job Creation Section */}
-      <div className="w-full p-6 flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+    <DashboardLayout>
+      <div>
         <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
           Create a Job Post
         </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-          Fill in the details to create a job listing.
-        </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Left Side Section */}
@@ -68,15 +58,6 @@ const JobCreationPage = () => {
                 />
               </div>
               <div>
-                <Label className="flex mb-1">Company Name</Label>
-                <TextInput
-                  name="companyName"
-                  placeholder="Company Name"
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
                 <Label className="flex mb-1">Work Experience</Label>
                 <TextInput
                   name="experience"
@@ -86,54 +67,38 @@ const JobCreationPage = () => {
                 />
               </div>
               <div>
-                <Label className="flex mb-1">Location</Label>
+                <Label className="flex mb-1">Skills</Label>
                 <TextInput
-                  name="location"
-                  placeholder="Location"
+                  name="skills"
+                  placeholder="Skills (comma-separated)"
                   onChange={handleChange}
                   required
                 />
               </div>
-              <div className="flex gap-4">
-                <div className="flex flex-col w-full gap-4">
-                  <div>
-                    <Label className="flex mb-1">Salary Range</Label>
-                    <TextInput
-                      name="salaryRange"
-                      placeholder="Salary Range"
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col w-full gap-4">
-                  <div>
-                    <Label className="flex mb-1">Employment Type</Label>
-                    <Select
-                      name="employmentType"
-                      value={jobData.employmentType}
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value="full-time">Full-time</option>
-                      <option value="part-time">Part-time</option>
-                    </Select>
-                  </div>
-                </div>
+              <div>
+                <Label className="flex mb-1">Salary Range</Label>
+                <TextInput
+                  name="salaryRange"
+                  placeholder="Salary Range"
+                  onChange={handleChange}
+                  required
+                />
               </div>
-              <div className="flex gap-4">
-                <div className="flex flex-col w-full gap-4">
-                  <div>
-                    <Label className="flex mb-1">Application Deadline</Label>
-                    <Datepicker />
-                  </div>
-                </div>
-                <div className="flex flex-col w-full gap-4">
-                  <div>
-                    <Label className="flex mb-1">Company Logo</Label>
-                    <FileInput id="file-upload" className="" />
-                  </div>
-                </div>
+              <div>
+                <Label className="flex mb-1">Employment Type</Label>
+                <Select
+                  name="employmentType"
+                  value={jobData.employmentType}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="full-time">Full-time</option>
+                  <option value="part-time">Part-time</option>
+                </Select>
+              </div>
+              <div>
+                <Label className="flex mb-1">Application Deadline</Label>
+                <Datepicker />
               </div>
             </div>
             {/* Right Side Section */}
@@ -143,17 +108,7 @@ const JobCreationPage = () => {
                 <Textarea
                   name="descriptionSnippet"
                   placeholder="Job Description"
-                  rows={2}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <Label className="flex mb-1">Skills</Label>
-                <Textarea
-                  name="skills"
-                  placeholder="Skills (comma-separated)"
-                  rows={2}
+                  rows={3}
                   onChange={handleChange}
                   required
                 />
@@ -163,7 +118,7 @@ const JobCreationPage = () => {
                 <Textarea
                   name="qualifications"
                   placeholder="Qualifications (comma-separated)"
-                  rows={3}
+                  rows={5}
                   onChange={handleChange}
                   required
                 />
@@ -173,24 +128,18 @@ const JobCreationPage = () => {
                 <Textarea
                   name="responsibilities"
                   placeholder="Job Responsibilities (comma-separated)"
-                  rows={3}
+                  rows={5}
                   onChange={handleChange}
                   required
                 />
               </div>
-              <Button
-                gradientMonochrome="info"
-                type="submit"
-                className="mt-0.5"
-              >
+              <Button gradientMonochrome="info" type="submit">
                 Create Job
               </Button>
             </div>
           </div>
         </form>
       </div>
-    </div>
+    </DashboardLayout>
   );
-};
-
-export default JobCreationPage;
+}
