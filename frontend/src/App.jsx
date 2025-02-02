@@ -8,8 +8,8 @@ import ResumeUpload from "./pages/resume/ResumeUpload";
 import JobDetails from "./pages/job/JobDetails";
 import SeekerJobList from "./pages/job/SeekerJobList";
 import JobCreationPage from "./pages/job/JobCreate";
-import RecruiterJobList from "./pages/job/RecruiterJobList";
 import ResumeAnalyse from "./pages/dashboard/ResumeAnalyse";
+import RecruiterJobList from "./pages/dashboard/RecruiterJobList";
 
 function Layout() {
   const location = useLocation();
@@ -24,10 +24,10 @@ function Layout() {
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/resume-upload" element={<ResumeUpload />} />
         <Route path="/seeker/jobs" element={<SeekerJobList />} />
-        <Route path="/recruiter/jobs" element={<RecruiterJobList />} />
         <Route path="/job/create" element={<JobCreationPage />} />
         <Route path="/job/:jobId" element={<JobDetails />} />
         <Route path="/dashboard/resume/analyse" element={<ResumeAnalyse />} />
+        <Route path="/dashboard/jobs/:userId" element={<RecruiterJobList />} />
       </Routes>
       {!hideHeaderFooter && <Footers />}
     </>

@@ -1,6 +1,7 @@
 import { Badge, Sidebar } from "flowbite-react";
-import { HiArrowSmRight, HiUser } from "react-icons/hi";
+import { HiArrowSmRight } from "react-icons/hi";
 import { MdAnalytics } from "react-icons/md";
+import { IoFileTrayFull } from "react-icons/io5";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export function DashboardSidebar() {
@@ -8,7 +9,7 @@ export function DashboardSidebar() {
   const location = useLocation();
 
   const menuItems = [
-    { name: "Users", path: "/profile/:userId", icon: HiUser },
+    { name: "My Jobs", path: "/dashboard/jobs/:userId", icon: IoFileTrayFull },
     {
       name: "Resume Analyse",
       path: "/dashboard/resume/analyse",
