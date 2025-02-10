@@ -24,8 +24,8 @@ const UserSchema = new mongoose.Schema(
     },
     profileType: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      enum: ["Job Seeker", "Recruiter"],
+      default: "Job Seeker",
     },
   },
   { timestamps: true }
