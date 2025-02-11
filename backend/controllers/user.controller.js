@@ -63,6 +63,7 @@ exports.login = async (req, res) => {
           fullName: user.fullName,
           email: user.email,
           profileType: user.profileType,
+          profilePicture: user.profilePicture,
         },
       },
     });
@@ -81,13 +82,11 @@ exports.getProfile = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Profile fetched successfully",
-        data: user,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Profile fetched successfully",
+      data: user,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -96,10 +95,10 @@ exports.getProfile = async (req, res) => {
 // Update User Data ------------------------------------------------------------------
 exports.updateProfile = async (req, res) => {
   try {
-    const { fullName, email, profileType } = req.body;
+    const { fullName, email, profileType, profilePicture } = req.body;
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
-      { fullName, email, profileType },
+      { fullName, email, profileType, profilePicture },
       { new: true, runValidators: true }
     ).select("-password");
 

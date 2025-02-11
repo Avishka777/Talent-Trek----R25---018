@@ -52,11 +52,7 @@ export default function HeaderComponent() {
             arrowIcon={false}
             inline
             label={
-              <Avatar
-                alt="User settings"
-                img="https://avatars.githubusercontent.com/u/47731849?v=4"
-                rounded
-              />
+              <Avatar alt="User settings" img={user.profilePicture} rounded />
             }
           >
             <Dropdown.Header>

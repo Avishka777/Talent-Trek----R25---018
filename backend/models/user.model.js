@@ -27,6 +27,10 @@ const UserSchema = new mongoose.Schema(
       enum: ["Job Seeker", "Recruiter"],
       default: "Job Seeker",
     },
+    profilePicture: {
+      type: String,
+      default: "https://img.freepik.com/premium-vector/portrait-avatar-male-laughter-joy-smile-calmness-diversity-personage_147933-10329.jpg?w=740",
+    },
   },
   { timestamps: true }
 );
