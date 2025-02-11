@@ -10,6 +10,7 @@ import SeekerJobList from "./pages/job/SeekerJobList";
 import JobCreationPage from "./pages/job/JobCreate";
 import ResumeAnalyse from "./pages/dashboard/ResumeAnalyse";
 import RecruiterJobList from "./pages/dashboard/RecruiterJobList";
+import MyProfile from "./pages/auth/MyProfile";
 
 function Layout() {
   const location = useLocation();
@@ -22,6 +23,7 @@ function Layout() {
         <Route path="/" element={<Home />} />
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/sign-up" element={<Signup />} />
+        <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/resume-upload" element={<ResumeUpload />} />
         <Route path="/seeker/jobs" element={<SeekerJobList />} />
         <Route path="/dashboard/job/create" element={<JobCreationPage />} />

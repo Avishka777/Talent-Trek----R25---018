@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { HiEye, HiEyeOff } from "react-icons/hi";
-import { Button, Label, Spinner } from "flowbite-react";
-import { TextInput, Select, Alert } from "flowbite-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Alert, Button, Label } from "flowbite-react";
+import { TextInput, Select, Spinner } from "flowbite-react";
+import Swal from "sweetalert2";
 import logo from "../../assets/public/logo.png";
+import userService from "../../services/userService";
 
-export default function SignUp() {
+const SignUp = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -18,12 +20,14 @@ export default function SignUp() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordMatchError, setPasswordMatchError] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+  // Handle input field changes and update state
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
-
-    // Only validate password match after form submission
+    // Validate password match in real time
     if (formSubmitted && (id === "confirmPassword" || id === "password")) {
       setPasswordMatchError(
         value !== formData.password ? "Passwords do not match!" : ""
@@ -31,16 +35,49 @@ export default function SignUp() {
     }
   };
 
-  const handleSubmit = (e) => {
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormSubmitted(true);
-
     if (formData.password !== formData.confirmPassword) {
       setPasswordMatchError("Passwords do not match!");
       return;
     }
-
-    console.log("Form Submitted", formData);
+    setLoading(true);
+    try {
+      const response = await userService.register({
+        fullName: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        profileType: formData.profileType,
+      });
+      if (!response.success) {
+        return Swal.fire({
+          title: "Registration Failed",
+          text: response.message || "Something went wrong. Please try again.",
+          confirmButtonText: "OK",
+          confirmButtonColor: "red",
+        });
+      }
+      setLoading(false);
+      Swal.fire({
+        title: "Account Created!",
+        text: "Your account has been successfully created.",
+        confirmButtonText: "OK",
+        confirmButtonColor: "green",
+      }).then(() => {
+        navigate("/sign-in");
+      });
+    } catch (error) {
+      Swal.fire({
+        title: "Registration Failed",
+        text: error.message || "Something went wrong. Please try again.",
+        confirmButtonText: "OK",
+        confirmButtonColor: "red",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,7 +87,7 @@ export default function SignUp() {
         <div className="flex flex-col md:w-1/2 items-center justify-center mx-8">
           <img src={logo} className="h-28 sm:h-48" alt="Company Logo" />
           <h1 className="text-3xl mt-5 text-center font-serif text-cyan-500">
-            JOB HORIZEN
+            TALENT TREK
           </h1>
           <p className="text-lg mt-5 text-center font-serif">
             - Revolutionizing IT recruitment through AI-driven precision,
@@ -101,7 +138,6 @@ export default function SignUp() {
               >
                 <option value="Job Seeker">Job Seeker</option>
                 <option value="Recruiter">Recruiter</option>
-                <option value="Agent">Agent</option>
               </Select>
             </div>
 
@@ -165,8 +201,10 @@ export default function SignUp() {
 
             {/* Password Match Error (only shown after clicking Sign Up) */}
             {formSubmitted && passwordMatchError && (
-              <Alert color="failure">
-                <p className="text-red-500 text-sm">{passwordMatchError}</p>
+              <Alert color="failure" className="mt-4 py-2">
+                <p className="text-red-700 font-semibold text-sm">
+                  {passwordMatchError}
+                </p>
               </Alert>
             )}
 
@@ -174,11 +212,10 @@ export default function SignUp() {
             <Button
               gradientMonochrome="info"
               type="submit"
-              className="mt-4"
-              disabled={!!passwordMatchError}
+              className="mt-2"
+              disabled={loading || !!passwordMatchError}
             >
-              <Spinner size="sm" />
-              <span className="pl-3">Sign Up</span>
+              {loading ? <Spinner size="sm" /> : "Sign Up"}
             </Button>
           </form>
 
@@ -193,4 +230,6 @@ export default function SignUp() {
       </div>
     </div>
   );
-}
+};
+
+export default SignUp;

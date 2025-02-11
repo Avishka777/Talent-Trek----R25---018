@@ -1,17 +1,28 @@
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import { useSelector, useDispatch } from "react-redux";
 import { FaSun, FaMoon } from "react-icons/fa";
-import { toggleTheme } from "../redux/theme/themeSlice";
-import logo from "../assets/public/logo.png";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../redux/auth/authSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "../redux/theme/themeSlice";
+import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
+import logo from "../assets/public/logo.png";
 
 export default function HeaderComponent() {
   const navigate = useNavigate();
-  const { theme } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
 
+  // Get user from Redux store
+  const { theme } = useSelector((state) => state.theme);
+  const { user } = useSelector((state) => state.auth);
+
+  // Change theme from Redux store
   const handleThemeToggle = () => {
     dispatch(toggleTheme());
+  };
+
+  // Handle Sign Out
+  const handleSignOut = () => {
+    dispatch(logout());
+    navigate("/sign-in");
   };
 
   return (
@@ -35,38 +46,48 @@ export default function HeaderComponent() {
           )}
         </button>
 
-        {/* Profile Dropdown */}
-        <Dropdown
-          arrowIcon={false}
-          inline
-          label={
-            <Avatar
-              alt="User settings"
-              img="https://avatars.githubusercontent.com/u/47731849?v=4"
-              rounded
-            />
-          }
-        >
-          <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
-            <span className="block truncate text-sm font-medium">
-              dimesha@walaha.com
-            </span>
-          </Dropdown.Header>
-          <Dropdown.Item onClick={() => navigate(`/profile/:userId`)}>
-            My Profile
-          </Dropdown.Item>
-          <Dropdown.Item onClick={() => navigate(`/dashboard/resume/analyse`)}>
-            Dashboard
-          </Dropdown.Item>
-          <Dropdown.Item onClick={() => navigate(`/sign-in`)}>
+        {/* Profile Dropdown (Only if Logged In) */}
+        {user ? (
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <Avatar alt="User settings" img={user.profilePicture} rounded />
+            }
+          >
+            <Dropdown.Header>
+              <span className="block text-sm font-medium">{user.fullName}</span>
+              <span className="block truncate text-sm">{user.email}</span>
+            </Dropdown.Header>
+            <Dropdown.Item onClick={() => navigate(`/my-profile`)}>
+              My Profile
+            </Dropdown.Item>
+            {user && (
+              <Dropdown.Item
+                onClick={() => navigate(`/dashboard/resume/analyse`)}
+              >
+                Dashboard
+              </Dropdown.Item>
+            )}
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={handleSignOut}>Sign Out</Dropdown.Item>
+          </Dropdown>
+        ) : (
+          // Show "Sign In" if User is NOT Logged In
+          <Button
+            type="button"
+            gradientMonochrome="info"
+            outline
+            onClick={() => navigate("/sign-in")}
+          >
             Sign In
-          </Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
-        </Dropdown>
+          </Button>
+        )}
+
         <Navbar.Toggle />
       </div>
+
+      {/* Navbar Links */}
       <Navbar.Collapse>
         <Navbar.Link onClick={() => navigate(`/`)}>Home</Navbar.Link>
         <Navbar.Link onClick={() => navigate(`/seeker/jobs`)}>Jobs</Navbar.Link>
