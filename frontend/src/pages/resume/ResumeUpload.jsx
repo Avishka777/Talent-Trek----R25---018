@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { Button, FileInput, Label } from "flowbite-react";
+import Swal from "sweetalert2";
 import Lottie from "lottie-react";
 import resumeService from "../../services/resumeService";
 import heroAnimation from "../../assets/animations/heroAnimation.json";
@@ -24,30 +25,36 @@ const ResumeUpload = () => {
           setResumeData(response.resume);
         }
       } catch (error) {
-        console.error("Error fetching resume:", error.message);
+        Swal.fire({
+          title: "Error",
+          text: error || "Failed to fetch resume data!",
+          confirmButtonText: "OK",
+          confirmButtonColor: "red",
+        });
       }
       setLoading(false);
     };
 
     fetchResume();
-  }, []);
+  }, [token]);
 
   const handleFileChange = (event) => {
     const uploadedFile = event.target.files[0];
     if (uploadedFile && uploadedFile.type === "application/pdf") {
       setFile(uploadedFile);
+      Swal.fire({
+        title: "File Selected",
+        text: `${uploadedFile.name} is ready to upload!`,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#28a0b5",
+      });
     } else {
-      alert("Please upload a valid PDF file.");
-    }
-  };
-
-  const handleUpload = () => {
-    if (file) {
-      setTimeout(() => {
-        setResumeData();
-      }, 1000);
-    } else {
-      alert("No file selected.");
+      Swal.fire({
+        title: "Invalid File",
+        text: "Please upload a valid PDF file.",
+        confirmButtonText: "OK",
+        confirmButtonColor: "red",
+      });
     }
   };
 
@@ -118,11 +125,7 @@ const ResumeUpload = () => {
             Selected File: {file.name}
           </p>
         )}
-        <Button
-          onClick={handleUpload}
-          gradientMonochrome="info"
-          className="mt-4"
-        >
+        <Button gradientMonochrome="info" className="mt-4">
           Upload Resume
         </Button>
       </div>
@@ -188,9 +191,18 @@ const ResumeUpload = () => {
             </ul>
           </div>
         ) : (
-          <p className="text-gray-600 dark:text-gray-300 text-center">
-            No resume data available. Upload a resume to see extracted details.
-          </p>
+          <div className="flex flex-col justify-center items-center mt-32">
+            <Lottie
+              animationData={heroAnimation}
+              loop={true}
+              className="w-44 h-
+              auto"
+            />
+            <p className="text-gray-600 dark:text-gray-300 text-center mt-20">
+              No resume data available. Upload a resume to see extracted
+              details.
+            </p>
+          </div>
         )}
       </div>
     </div>
