@@ -1,13 +1,14 @@
 import axios from "axios";
 
 const userService = {
+  
   register: async (userData) => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}auth/register`,
         userData
       );
-      return response.data; 
+      return response.data;
     } catch (error) {
       throw (
         error.response?.data || {
@@ -21,12 +22,17 @@ const userService = {
   login: async (credentials) => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/login`,
+        `${import.meta.env.VITE_API_BASE_URL}auth/login`,
         credentials
       );
       return response.data;
     } catch (error) {
-      throw error.response?.data || "Login failed";
+      throw (
+        error.response?.data || {
+          success: false,
+          message: "Login failed",
+        }
+      );
     }
   },
 };
