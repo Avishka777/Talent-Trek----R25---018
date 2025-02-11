@@ -1,11 +1,36 @@
-import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import { Button, FileInput, Label } from "flowbite-react";
 import Lottie from "lottie-react";
+import resumeService from "../../services/resumeService";
 import heroAnimation from "../../assets/animations/heroAnimation.json";
 
 const ResumeUpload = () => {
   const [file, setFile] = useState(null);
   const [resumeData, setResumeData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { token } = useSelector((state) => state.auth);
+
+  // Fetch Resume Data
+  useEffect(() => {
+    const fetchResume = async () => {
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+      try {
+        const response = await resumeService.getResume(token);
+        if (response.success) {
+          setResumeData(response.resume);
+        }
+      } catch (error) {
+        console.error("Error fetching resume:", error.message);
+      }
+      setLoading(false);
+    };
+
+    fetchResume();
+  }, []);
 
   const handleFileChange = (event) => {
     const uploadedFile = event.target.files[0];
@@ -19,7 +44,7 @@ const ResumeUpload = () => {
   const handleUpload = () => {
     if (file) {
       setTimeout(() => {
-        setResumeData(mockResumeData);
+        setResumeData();
       }, 1000);
     } else {
       alert("No file selected.");
@@ -29,7 +54,7 @@ const ResumeUpload = () => {
   return (
     <div className="flex flex-col md:flex-row min-h-screen p-8 bg-gray-100 dark:bg-gray-900">
       {/* Left Side - Upload Section */}
-      <div className="md:w-1/2 p-6 flex flex-col  bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+      <div className="md:w-2/5 p-6 flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
           Upload Your Resume
         </h2>
@@ -77,7 +102,7 @@ const ResumeUpload = () => {
                 and drop
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                SVG, PNG, JPG or GIF (MAX. 800x400px)
+                PDF Only
               </p>
             </div>
             <FileInput
@@ -103,36 +128,11 @@ const ResumeUpload = () => {
       </div>
 
       {/* Right Side - Display Resume Data */}
-      <div className="md:w-1/2 p-6 overflow-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg mt-6 md:mt-0 md:ml-6 max-h-screen">
+      <div className="md:w-3/5 p-6 overflow-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg mt-6 md:mt-0 md:ml-6 max-h-screen">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
           Extracted Resume Data
         </h2>
-        {resumeData ? (
-          <div className="text-sm text-gray-700 dark:text-gray-300 overflow-auto whitespace-pre-wrap max-h-[400px] p-2 border border-gray-300 dark:border-gray-600 rounded-lg">
-            <p>
-              <strong>Name:</strong> {resumeData.profile.basics.first_name}{" "}
-              {resumeData.profile.basics.last_name}
-            </p>
-            <p>
-              <strong>Email:</strong> {resumeData.profile.basics.emails[0]}
-            </p>
-            <p>
-              <strong>Phone:</strong>{" "}
-              {resumeData.profile.basics.phone_numbers[0]}
-            </p>
-            <p>
-              <strong>Profession:</strong>{" "}
-              {resumeData.profile.basics.profession}
-            </p>
-            <p>
-              <strong>Summary:</strong> {resumeData.profile.basics.summary}
-            </p>
-            <p>
-              <strong>Skills:</strong>{" "}
-              {resumeData.profile.basics.skills.join(", ")}
-            </p>
-          </div>
-        ) : (
+        {loading ? (
           <div className="flex justify-center items-center mt-48">
             <Lottie
               animationData={heroAnimation}
@@ -140,33 +140,61 @@ const ResumeUpload = () => {
               className="w-44 h-auto"
             />
           </div>
+        ) : resumeData ? (
+          <div className="text-sm text-gray-700 dark:text-gray-300 overflow-auto whitespace-pre-wrap h-auto p-2 border border-gray-300 dark:border-gray-600 rounded-lg">
+            <p className="my-2">
+              <strong>Profession:</strong> {resumeData.profession}
+            </p>
+            <p className="my-2">
+              <strong>Experience Years:</strong>{" "}
+              {resumeData.totalExperienceYears} Year
+            </p>
+            <p className="my-2">
+              <strong>Summary:</strong> {resumeData.summary} Year
+            </p>
+
+            <p className="my-2">
+              <strong>Skills:</strong> {resumeData.skills.join(", ")}
+            </p>
+            <p className="mt-2">
+              <strong>Experience:</strong>
+            </p>
+            <ul className="list-disc pl-4">
+              {resumeData.professionalExperiences.map((exp, index) => {
+                const details = [exp.title, exp.company, exp.description]
+                  .filter((detail) => detail)
+                  .join(" ");
+
+                return <li key={index}>{details}</li>;
+              })}
+            </ul>
+            <p className="mt-2">
+              <strong>Educations:</strong>
+            </p>
+            <ul className="list-disc pl-4">
+              {resumeData.educations.map((edu, index) => (
+                <li key={index}>{edu.description}</li>
+              ))}
+            </ul>
+            <p className="mt-2">
+              <strong>Certifications:</strong>
+            </p>
+            <ul className="list-disc pl-4">
+              {resumeData.trainingsAndCertifications.map((cet, index) => (
+                <li key={index}>
+                  {cet.description} - {cet.year}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p className="text-gray-600 dark:text-gray-300 text-center">
+            No resume data available. Upload a resume to see extracted details.
+          </p>
         )}
       </div>
     </div>
   );
-};
-
-const mockResumeData = {
-  profile: {
-    basics: {
-      first_name: "Avishka",
-      last_name: "Rathnakumara",
-      emails: ["avishkarathnakumara@gmail.com"],
-      phone_numbers: ["077999437"],
-      profession: "Software Engineer",
-      summary:
-        "Passionate about full-stack development and delivering effective solutions. Experienced in Agile methodology.",
-      skills: [
-        "React.js",
-        "Next.js",
-        "Node.js",
-        "MongoDB",
-        "Java",
-        "Docker",
-        "Git",
-      ],
-    },
-  },
 };
 
 export default ResumeUpload;

@@ -85,7 +85,7 @@ const MyProfile = () => {
         icon: "error",
         title: "Update Failed",
         text: "Something went wrong while updating your profile.",
-        confirmButtonColor: "#d33",
+        confirmButtonColor: "red",
       });
     } finally {
       setLoading(false);

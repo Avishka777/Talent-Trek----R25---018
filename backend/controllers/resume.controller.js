@@ -1,7 +1,7 @@
 const axios = require("axios");
 const Resume = require("../models/resume.model");
 
-// Parse Resume And Save in DataBase
+// Parse Resume and Save in DataBase -------------------------------------------------
 exports.parseResume = async (req, res) => {
   try {
     const { fileUrl } = req.body;
@@ -20,12 +20,10 @@ exports.parseResume = async (req, res) => {
     );
 
     if (!response.data || !response.data.data || !response.data.data.profile) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Invalid response structure from CV parser API",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid response structure from CV parser API",
+      });
     }
 
     const parsedData = response.data.data; // Extract the actual profile data
@@ -68,6 +66,27 @@ exports.parseResume = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in parseResume:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+// Get Resume Details ----------------------------------------------------------------
+exports.getResumeByUserId = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const resume = await Resume.findOne({ userId });
+    if (!resume) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Resume not found" });
+    }
+    res.status(200).json({ success: true, resume });
+  } catch (error) {
+    console.error("Error in getResumeByUserId:", error);
     res
       .status(500)
       .json({
