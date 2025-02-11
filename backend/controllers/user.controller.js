@@ -1,6 +1,19 @@
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const AWS = require("aws-sdk");
+const multer = require("multer");
+const fs = require("fs");
+
+// Configure AWS S3
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: "us-east-1",
+});
+
+// Setup Multer for file upload
+const upload = multer({ dest: "uploads/" });
 
 // Register User ---------------------------------------------------------------------
 exports.register = async (req, res) => {
@@ -93,30 +106,56 @@ exports.getProfile = async (req, res) => {
 };
 
 // Update User Data ------------------------------------------------------------------
-exports.updateProfile = async (req, res) => {
-  try {
-    const { fullName, email, profileType, profilePicture } = req.body;
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user.id,
-      { fullName, email, profileType, profilePicture },
-      { new: true, runValidators: true }
-    ).select("-password");
+exports.updateProfile = [
+  upload.single("profilePicture"),
+  async (req, res) => {
+    try {
+      const { fullName, email, profileType } = req.body;
+      let profilePicture = null;
 
-    if (!updatedUser) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+      if (req.file) {
+        // Read file from temporary storage
+        const fileStream = fs.createReadStream(req.file.path);
+
+        // S3 upload parameters
+        const params = {
+          Bucket: "rp-projects-public",
+          Key: `profiles/${req.user.id}/${Date.now()}-${req.file.originalname}`,
+          Body: fileStream,
+          ContentType: req.file.mimetype,
+        };
+
+        // Upload to S3
+        const s3Response = await s3.upload(params).promise();
+
+        // Store the URL of the uploaded profile picture
+        profilePicture = s3Response.Location;
+
+        // Delete the temporary file from local storage
+        fs.unlinkSync(req.file.path);
+      }
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user.id,
+        { fullName, email, profileType, profilePicture },
+        { new: true, runValidators: true }
+      ).select("-password");
+
+      if (!updatedUser) {
+        return res
+          .status(404)
+          .json({ success: false, message: "User not found" });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Profile updated successfully",
+        data: updatedUser,
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
     }
-
-    res.status(200).json({
-      success: true,
-      message: "Profile updated successfully",
-      data: updatedUser,
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
+  },
+];
 
 // Delete User Data ------------------------------------------------------------------
 exports.deleteProfile = async (req, res) => {

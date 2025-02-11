@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import logo from "../../assets/public/logo.png";
 import userService from "../../services/userService";
 
-export default function SignUp() {
+const SignUp = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -230,4 +230,6 @@ export default function SignUp() {
       </div>
     </div>
   );
-}
+};
+
+export default SignUp;

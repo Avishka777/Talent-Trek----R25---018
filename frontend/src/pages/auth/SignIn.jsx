@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import logo from "../../assets/public/logo.png";
 import userService from "../../services/userService";
 
-export default function Signin() {
+const Signin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -133,4 +133,6 @@ export default function Signin() {
       </div>
     </div>
   );
-}
+};
+
+export default Signin;

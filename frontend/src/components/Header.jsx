@@ -59,7 +59,7 @@ export default function HeaderComponent() {
               <span className="block text-sm font-medium">{user.fullName}</span>
               <span className="block truncate text-sm">{user.email}</span>
             </Dropdown.Header>
-            <Dropdown.Item onClick={() => navigate(`/profile/${user.id}`)}>
+            <Dropdown.Item onClick={() => navigate(`/my-profile`)}>
               My Profile
             </Dropdown.Item>
             {user && (
