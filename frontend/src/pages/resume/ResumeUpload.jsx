@@ -12,46 +12,68 @@ const ResumeUpload = () => {
   const [loading, setLoading] = useState(true);
   const { token } = useSelector((state) => state.auth);
 
-  // Fetch Resume Data
   useEffect(() => {
-    const fetchResume = async () => {
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-      try {
-        const response = await resumeService.getResume(token);
-        if (response.success) {
-          setResumeData(response.resume);
-        }
-      } catch (error) {
-        Swal.fire({
-          title: "Error",
-          text: error || "Failed to fetch resume data!",
-          confirmButtonText: "OK",
-          confirmButtonColor: "red",
-        });
-      }
+    if (!token) {
       setLoading(false);
-    };
-
+      return;
+    }
     fetchResume();
   }, [token]);
 
+  // Fetch Resume Data
+  const fetchResume = async () => {
+    try {
+      const response = await resumeService.getResume(token);
+      if (response.success) {
+        setResumeData(response.resume);
+      } else {
+        setResumeData(null);
+      }
+    } catch (error) {
+      setResumeData(null);
+    }
+    setLoading(false);
+  };
+
+  // Handle file selection
   const handleFileChange = (event) => {
     const uploadedFile = event.target.files[0];
-    if (uploadedFile && uploadedFile.type === "application/pdf") {
+    if (uploadedFile?.type === "application/pdf") {
       setFile(uploadedFile);
-      Swal.fire({
-        title: "File Selected",
-        text: `${uploadedFile.name} is ready to upload!`,
-        confirmButtonText: "OK",
-        confirmButtonColor: "#28a0b5",
-      });
     } else {
       Swal.fire({
         title: "Invalid File",
-        text: "Please upload a valid PDF file.",
+        text: "Please upload a valid PDF file!",
+        confirmButtonText: "OK",
+        confirmButtonColor: "red",
+      });
+    }
+  };
+
+  // Handle file upload
+  const handleUpload = async () => {
+    if (!file)
+      return Swal.fire({
+        title: "No File",
+        text: "Please select a file first!",
+        confirmButtonText: "OK",
+        confirmButtonColor: "red",
+      });
+    try {
+      const response = await resumeService.uploadResume(file, token);
+      if (response.success) {
+        setResumeData(response.resume);
+        Swal.fire({
+          title: "Success",
+          text: "Resume uploaded successfully!",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#28a0b5",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Upload Failed",
+        text: error.message || "Failed to upload resume!",
         confirmButtonText: "OK",
         confirmButtonColor: "red",
       });
@@ -82,10 +104,9 @@ const ResumeUpload = () => {
             <li>Optimized skills section</li>
           </ul>
         </div>
-
         <div className="flex w-full items-center justify-center mt-6">
           <Label
-            htmlFor="dropzone-file"
+            htmlFor="file-upload"
             className="flex h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
           >
             <div className="flex flex-col items-center justify-center pb-6 pt-5">
@@ -113,7 +134,7 @@ const ResumeUpload = () => {
               </p>
             </div>
             <FileInput
-              id="dropzone-file"
+              id="file-upload"
               className="hidden"
               onChange={handleFileChange}
               accept="application/pdf"
@@ -125,7 +146,11 @@ const ResumeUpload = () => {
             Selected File: {file.name}
           </p>
         )}
-        <Button gradientMonochrome="info" className="mt-4">
+        <Button
+          onClick={handleUpload}
+          gradientMonochrome="info"
+          className="mt-4 w-full"
+        >
           Upload Resume
         </Button>
       </div>
@@ -155,7 +180,6 @@ const ResumeUpload = () => {
             <p className="my-2">
               <strong>Summary:</strong> {resumeData.summary} Year
             </p>
-
             <p className="my-2">
               <strong>Skills:</strong> {resumeData.skills.join(", ")}
             </p>

@@ -65,7 +65,17 @@ const ResumeSchema = new mongoose.Schema(
     ],
 
     awards: [{ type: String }],
-    references: [{ type: String }],
+    references: [
+      {
+        full_name: { type: String },
+        phone_number: { type: String },
+        email: { type: String },
+        company: { type: String },
+        position: { type: String },
+        description: { type: String },
+      },
+    ],
+
     cvText: { type: String },
     cvLanguage: { type: String },
   },
