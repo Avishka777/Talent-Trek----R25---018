@@ -1,35 +1,89 @@
-import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import { Button, FileInput, Label } from "flowbite-react";
+import Swal from "sweetalert2";
 import Lottie from "lottie-react";
+import resumeService from "../../services/resumeService";
 import heroAnimation from "../../assets/animations/heroAnimation.json";
 
 const ResumeUpload = () => {
   const [file, setFile] = useState(null);
   const [resumeData, setResumeData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { token } = useSelector((state) => state.auth);
 
+  useEffect(() => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    fetchResume();
+  }, [token]);
+
+  // Fetch Resume Data
+  const fetchResume = async () => {
+    try {
+      const response = await resumeService.getResume(token);
+      if (response.success) {
+        setResumeData(response.resume);
+      } else {
+        setResumeData(null);
+      }
+    } catch (error) {
+      setResumeData(null);
+    }
+    setLoading(false);
+  };
+
+  // Handle file selection
   const handleFileChange = (event) => {
     const uploadedFile = event.target.files[0];
-    if (uploadedFile && uploadedFile.type === "application/pdf") {
+    if (uploadedFile?.type === "application/pdf") {
       setFile(uploadedFile);
     } else {
-      alert("Please upload a valid PDF file.");
+      Swal.fire({
+        title: "Invalid File",
+        text: "Please upload a valid PDF file!",
+        confirmButtonText: "OK",
+        confirmButtonColor: "red",
+      });
     }
   };
 
-  const handleUpload = () => {
-    if (file) {
-      setTimeout(() => {
-        setResumeData(mockResumeData);
-      }, 1000);
-    } else {
-      alert("No file selected.");
+  // Handle file upload
+  const handleUpload = async () => {
+    if (!file)
+      return Swal.fire({
+        title: "No File",
+        text: "Please select a file first!",
+        confirmButtonText: "OK",
+        confirmButtonColor: "red",
+      });
+    try {
+      const response = await resumeService.uploadResume(file, token);
+      if (response.success) {
+        setResumeData(response.resume);
+        Swal.fire({
+          title: "Success",
+          text: "Resume uploaded successfully!",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#28a0b5",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Upload Failed",
+        text: error.message || "Failed to upload resume!",
+        confirmButtonText: "OK",
+        confirmButtonColor: "red",
+      });
     }
   };
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen p-8 bg-gray-100 dark:bg-gray-900">
       {/* Left Side - Upload Section */}
-      <div className="md:w-1/2 p-6 flex flex-col  bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+      <div className="md:w-2/5 p-6 flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
           Upload Your Resume
         </h2>
@@ -50,10 +104,9 @@ const ResumeUpload = () => {
             <li>Optimized skills section</li>
           </ul>
         </div>
-
         <div className="flex w-full items-center justify-center mt-6">
           <Label
-            htmlFor="dropzone-file"
+            htmlFor="file-upload"
             className="flex h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
           >
             <div className="flex flex-col items-center justify-center pb-6 pt-5">
@@ -77,11 +130,11 @@ const ResumeUpload = () => {
                 and drop
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                SVG, PNG, JPG or GIF (MAX. 800x400px)
+                PDF Only
               </p>
             </div>
             <FileInput
-              id="dropzone-file"
+              id="file-upload"
               className="hidden"
               onChange={handleFileChange}
               accept="application/pdf"
@@ -96,43 +149,18 @@ const ResumeUpload = () => {
         <Button
           onClick={handleUpload}
           gradientMonochrome="info"
-          className="mt-4"
+          className="mt-4 w-full"
         >
           Upload Resume
         </Button>
       </div>
 
       {/* Right Side - Display Resume Data */}
-      <div className="md:w-1/2 p-6 overflow-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg mt-6 md:mt-0 md:ml-6 max-h-screen">
+      <div className="md:w-3/5 p-6 overflow-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg mt-6 md:mt-0 md:ml-6 max-h-screen">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
           Extracted Resume Data
         </h2>
-        {resumeData ? (
-          <div className="text-sm text-gray-700 dark:text-gray-300 overflow-auto whitespace-pre-wrap max-h-[400px] p-2 border border-gray-300 dark:border-gray-600 rounded-lg">
-            <p>
-              <strong>Name:</strong> {resumeData.profile.basics.first_name}{" "}
-              {resumeData.profile.basics.last_name}
-            </p>
-            <p>
-              <strong>Email:</strong> {resumeData.profile.basics.emails[0]}
-            </p>
-            <p>
-              <strong>Phone:</strong>{" "}
-              {resumeData.profile.basics.phone_numbers[0]}
-            </p>
-            <p>
-              <strong>Profession:</strong>{" "}
-              {resumeData.profile.basics.profession}
-            </p>
-            <p>
-              <strong>Summary:</strong> {resumeData.profile.basics.summary}
-            </p>
-            <p>
-              <strong>Skills:</strong>{" "}
-              {resumeData.profile.basics.skills.join(", ")}
-            </p>
-          </div>
-        ) : (
+        {loading ? (
           <div className="flex justify-center items-center mt-48">
             <Lottie
               animationData={heroAnimation}
@@ -140,33 +168,69 @@ const ResumeUpload = () => {
               className="w-44 h-auto"
             />
           </div>
+        ) : resumeData ? (
+          <div className="text-sm text-gray-700 dark:text-gray-300 overflow-auto whitespace-pre-wrap h-auto p-2 border border-gray-300 dark:border-gray-600 rounded-lg">
+            <p className="my-2">
+              <strong>Profession:</strong> {resumeData.profession}
+            </p>
+            <p className="my-2">
+              <strong>Experience Years:</strong>{" "}
+              {resumeData.totalExperienceYears} Year
+            </p>
+            <p className="my-2">
+              <strong>Summary:</strong> {resumeData.summary} Year
+            </p>
+            <p className="my-2">
+              <strong>Skills:</strong> {resumeData.skills.join(", ")}
+            </p>
+            <p className="mt-2">
+              <strong>Experience:</strong>
+            </p>
+            <ul className="list-disc pl-4">
+              {resumeData.professionalExperiences.map((exp, index) => {
+                const details = [exp.title, exp.company, exp.description]
+                  .filter((detail) => detail)
+                  .join(" ");
+
+                return <li key={index}>{details}</li>;
+              })}
+            </ul>
+            <p className="mt-2">
+              <strong>Educations:</strong>
+            </p>
+            <ul className="list-disc pl-4">
+              {resumeData.educations.map((edu, index) => (
+                <li key={index}>{edu.description}</li>
+              ))}
+            </ul>
+            <p className="mt-2">
+              <strong>Certifications:</strong>
+            </p>
+            <ul className="list-disc pl-4">
+              {resumeData.trainingsAndCertifications.map((cet, index) => (
+                <li key={index}>
+                  {cet.description} - {cet.year}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center items-center mt-32">
+            <Lottie
+              animationData={heroAnimation}
+              loop={true}
+              className="w-44 h-
+              auto"
+            />
+            <p className="text-gray-600 dark:text-gray-300 text-center mt-20">
+              No resume data available. Upload a resume to see extracted
+              details.
+            </p>
+          </div>
         )}
       </div>
     </div>
   );
-};
-
-const mockResumeData = {
-  profile: {
-    basics: {
-      first_name: "Avishka",
-      last_name: "Rathnakumara",
-      emails: ["avishkarathnakumara@gmail.com"],
-      phone_numbers: ["077999437"],
-      profession: "Software Engineer",
-      summary:
-        "Passionate about full-stack development and delivering effective solutions. Experienced in Agile methodology.",
-      skills: [
-        "React.js",
-        "Next.js",
-        "Node.js",
-        "MongoDB",
-        "Java",
-        "Docker",
-        "Git",
-      ],
-    },
-  },
 };
 
 export default ResumeUpload;

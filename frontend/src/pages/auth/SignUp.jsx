@@ -64,7 +64,7 @@ const SignUp = () => {
         title: "Account Created!",
         text: "Your account has been successfully created.",
         confirmButtonText: "OK",
-        confirmButtonColor: "green",
+        confirmButtonColor: "#28a0b5",
       }).then(() => {
         navigate("/sign-in");
       });
