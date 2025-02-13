@@ -96,26 +96,26 @@ const jobService = {
     }
   },
 
-  //   // Update a job post
-  //   updateJob: async (jobId, jobData, token) => {
-  //     try {
-  //       const response = await axios.put(
-  //         `${import.meta.env.VITE_API_BASE_URL}/jobs/${jobId}`,
-  //         jobData,
-  //         {
-  //           headers: { Authorization: `Bearer ${token}` },
-  //         }
-  //       );
-  //       return response.data;
-  //     } catch (error) {
-  //       throw (
-  //         error.response?.data || {
-  //           success: false,
-  //           message: "Failed to update job",
-  //         }
-  //       );
-  //     }
-  //   },
+  // Update a job post
+  updateJob: async (jobId, jobData, token) => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_API_BASE_URL}job/${jobId}`,
+        jobData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw (
+        error.response?.data || {
+          success: false,
+          message: "Failed to Update Job.",
+        }
+      );
+    }
+  },
 };
 
 export default jobService;

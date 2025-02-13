@@ -6,7 +6,7 @@ import JobCard from "../../components/job/JobCard";
 import jobService from "../../services/jobService";
 import Loading from "../../components/Loading";
 
-export default function SeekerJobList() {
+const SeekerJobList = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [jobFilter, setJobFilter] = useState("all");
@@ -88,4 +88,6 @@ export default function SeekerJobList() {
       </div>
     </div>
   );
-}
+};
+
+export default SeekerJobList;

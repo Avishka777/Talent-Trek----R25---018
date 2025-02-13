@@ -1,8 +1,8 @@
-import { Search } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Table, Button, TextInput } from "flowbite-react";
+import { Table, TextInput } from "flowbite-react";
+import { Pencil, Search, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import Loading from "../../components/Loading";
 import jobService from "../../services/jobService";
@@ -106,7 +106,7 @@ const RecruiterJobList = () => {
   return (
     <DashboardLayout>
       <div className="flex mb-4 justify-between">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
+        <h2 className="text-2xl font-semibold mb-4 text-cyan-600">
           My Job List
         </h2>
         <TextInput
@@ -155,25 +155,17 @@ const RecruiterJobList = () => {
               <Table.Cell className="py-3 px-4 text-center">
                 {new Date(job.applicationDeadline).toISOString().split("T")[0]}
               </Table.Cell>
-              <Table.Cell className="py-3 px-4 text-center flex space-x-2">
-                <Button
-                  size="xs"
-                  gradientMonochrome="info"
-                  className="w-full"
-                  outline
+              <Table.Cell className="flex justify-center gap-4">
+                <Pencil
+                  className="cursor-pointer text-green-500 hover:text-green-700"
+                  size={20}
                   onClick={() => handleUpdate(job._id)}
-                >
-                  Update
-                </Button>
-                <Button
-                  size="xs"
-                  gradientMonochrome="failure"
-                  className="w-full"
-                  outline
+                />
+                <Trash2
+                  className="cursor-pointer text-red-500 hover:text-red-700"
+                  size={20}
                   onClick={() => handleDelete(job._id)}
-                >
-                  Delete
-                </Button>
+                />
               </Table.Cell>
             </Table.Row>
           ))}

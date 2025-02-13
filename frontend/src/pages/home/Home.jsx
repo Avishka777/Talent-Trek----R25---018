@@ -7,7 +7,7 @@ import light from "../../assets/background/light.png";
 import dark from "../../assets/background/dark.png";
 import heroAnimation from "../../assets/animations/heroAnimation.json";
 
-export default function Home() {
+const Home = () => {
   const navigate = useNavigate();
   const { theme } = useSelector((state) => state.theme);
   const heroBg = theme === "dark" ? dark : light;
@@ -155,4 +155,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default Home;

@@ -5,7 +5,7 @@ import { Briefcase, DollarSign, Clock, CalendarDays } from "lucide-react";
 import jobService from "../../services/jobService";
 import Loading from "../../components/Loading";
 
-export default function JobDetails() {
+const JobDetails = () => {
   const { jobId } = useParams();
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -154,3 +154,5 @@ export default function JobDetails() {
     </Card>
   );
 }
+
+export default JobDetails;
