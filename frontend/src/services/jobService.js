@@ -1,6 +1,27 @@
 import axios from "axios";
 
 const jobService = {
+  // Create a New Job Post
+  createJob: async (jobData, token) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}job/create`,
+        jobData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw (
+        error.response?.data || {
+          success: false,
+          message: "Failed to Create Job.",
+        }
+      );
+    }
+  },
+
   // Fetch All Jobs
   getAllJobs: async () => {
     try {
@@ -55,7 +76,7 @@ const jobService = {
     }
   },
 
-  // Delete a job post
+  // Delete a Job Post
   deleteJob: async (jobId, token) => {
     try {
       const response = await axios.delete(
@@ -70,27 +91,6 @@ const jobService = {
         error.response?.data || {
           success: false,
           message: "Failed to Delete Job.",
-        }
-      );
-    }
-  },
-
-  // Create a new job post
-  createJob: async (jobData, token) => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}job/create`,
-        jobData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      throw (
-        error.response?.data || {
-          success: false,
-          message: "Failed to Create Job.",
         }
       );
     }

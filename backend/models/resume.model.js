@@ -9,75 +9,165 @@ const ResumeSchema = new mongoose.Schema(
     fileUrl: {
       type: String,
     },
-    firstName: { type: String },
-    lastName: { type: String },
-    gender: { type: String },
-    emails: [{ type: String }],
-    urls: [{ type: String }],
-    phoneNumbers: [{ type: String }],
-    dateOfBirth: {
-      year: { type: Number },
-      month: { type: Number },
-      day: { type: Number },
+    firstName: {
+      type: String,
     },
-    address: { type: String },
-    totalExperienceYears: { type: Number },
-    profession: { type: String },
-    summary: { type: String },
-    skills: [{ type: String }],
-    hasDrivingLicense: { type: Boolean, default: false },
-
+    lastName: {
+      type: String,
+    },
+    gender: {
+      type: String,
+    },
+    emails: [
+      {
+        type: String,
+      },
+    ],
+    urls: [
+      {
+        type: String,
+      },
+    ],
+    phoneNumbers: [
+      {
+        type: String,
+      },
+    ],
+    dateOfBirth: {
+      year: {
+        type: Number,
+      },
+      month: {
+        type: Number,
+      },
+      day: {
+        type: Number,
+      },
+    },
+    address: {
+      type: String,
+    },
+    totalExperienceYears: {
+      type: Number,
+    },
+    profession: {
+      type: String,
+    },
+    summary: {
+      type: String,
+    },
+    skills: [
+      {
+        type: String,
+      },
+    ],
+    hasDrivingLicense: {
+      type: Boolean,
+      default: false,
+    },
     educations: [
       {
-        startYear: { type: Number },
-        isCurrent: { type: Boolean },
-        endYear: { type: Number },
-        issuingOrganization: { type: String },
-        description: { type: String },
+        startYear: {
+          type: Number,
+        },
+        isCurrent: {
+          type: Boolean,
+        },
+        endYear: {
+          type: Number,
+        },
+        issuingOrganization: {
+          type: String,
+        },
+        description: {
+          type: String,
+        },
       },
     ],
-
     trainingsAndCertifications: [
       {
-        year: { type: Number },
-        issuingOrganization: { type: String },
-        description: { type: String },
+        year: {
+          type: Number,
+        },
+        issuingOrganization: {
+          type: String,
+        },
+        description: {
+          type: String,
+        },
       },
     ],
-
     professionalExperiences: [
       {
         startDate: {
-          year: { type: Number },
-          month: { type: Number },
+          year: {
+            type: Number,
+          },
+          month: {
+            type: Number,
+          },
         },
-        isCurrent: { type: Boolean },
+        isCurrent: {
+          type: Boolean,
+        },
         endDate: {
-          year: { type: Number },
-          month: { type: Number },
+          year: {
+            type: Number,
+          },
+          month: {
+            type: Number,
+          },
         },
-        durationInMonths: { type: Number },
-        company: { type: String },
-        location: { type: String },
-        title: { type: String },
-        description: { type: String },
+        durationInMonths: {
+          type: Number,
+        },
+        company: {
+          type: String,
+        },
+        location: {
+          type: String,
+        },
+        title: {
+          type: String,
+        },
+        description: {
+          type: String,
+        },
       },
     ],
-
-    awards: [{ type: String }],
+    awards: [
+      {
+        type: String,
+      },
+    ],
     references: [
       {
-        full_name: { type: String },
-        phone_number: { type: String },
-        email: { type: String },
-        company: { type: String },
-        position: { type: String },
-        description: { type: String },
+        full_name: {
+          type: String,
+        },
+        phone_number: {
+          type: String,
+        },
+        email: {
+          type: String,
+        },
+        company: {
+          type: String,
+        },
+        position: {
+          type: String,
+        },
+        description: {
+          type: String,
+        },
       },
     ],
-
-    cvText: { type: String },
-    cvLanguage: { type: String },
+    cvText: {
+      type: String,
+    },
+    cvLanguage: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

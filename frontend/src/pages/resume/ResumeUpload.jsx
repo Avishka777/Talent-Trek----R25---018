@@ -35,7 +35,7 @@ const ResumeUpload = () => {
     setLoading(false);
   };
 
-  // Handle file selection
+  // Handle File Selection
   const handleFileChange = (event) => {
     const uploadedFile = event.target.files[0];
     if (uploadedFile?.type === "application/pdf") {
@@ -43,19 +43,19 @@ const ResumeUpload = () => {
     } else {
       Swal.fire({
         title: "Invalid File",
-        text: "Please upload a valid PDF file!",
+        text: "Please upload valid PDF file.",
         confirmButtonText: "OK",
         confirmButtonColor: "red",
       });
     }
   };
 
-  // Handle file upload
+  // Handle File Upload
   const handleUpload = async () => {
     if (!file)
       return Swal.fire({
         title: "No File",
-        text: "Please select a file first!",
+        text: "Please Select File First.",
         confirmButtonText: "OK",
         confirmButtonColor: "red",
       });
@@ -65,7 +65,7 @@ const ResumeUpload = () => {
         setResumeData(response.resume);
         Swal.fire({
           title: "Success",
-          text: "Resume uploaded successfully!",
+          text: "Resume Uploaded Successfully.",
           confirmButtonText: "OK",
           confirmButtonColor: "#28a0b5",
         });
@@ -73,7 +73,7 @@ const ResumeUpload = () => {
     } catch (error) {
       Swal.fire({
         title: "Upload Failed",
-        text: error.message || "Failed to upload resume!",
+        text: error.message || "Failed to Upload Resume.",
         confirmButtonText: "OK",
         confirmButtonColor: "red",
       });

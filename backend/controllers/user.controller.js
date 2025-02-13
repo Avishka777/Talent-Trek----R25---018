@@ -25,14 +25,14 @@ exports.register = async (req, res) => {
     if (user)
       return res
         .status(400)
-        .json({ success: false, message: "Email already exists" });
+        .json({ success: false, message: "Email Already Exists." });
 
     user = new User({ fullName, email, password, profileType });
     await user.save();
 
     res
       .status(201)
-      .json({ success: true, message: "User registered successfully" });
+      .json({ success: true, message: "User Registered Successfully." });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -48,7 +48,7 @@ exports.login = async (req, res) => {
     if (!user) {
       return res
         .status(400)
-        .json({ success: false, message: "Invalid email or password" });
+        .json({ success: false, message: "Invalid Email or Password." });
     }
 
     // Validate password
@@ -56,19 +56,19 @@ exports.login = async (req, res) => {
     if (!isMatch) {
       return res
         .status(400)
-        .json({ success: false, message: "Invalid email or password" });
+        .json({ success: false, message: "Invalid Email or Password." });
     }
 
     // Generate JWT token
     const token = jwt.sign(
       { id: user._id, profileType: user.profileType },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1d" }
     );
 
     res.status(200).json({
       success: true,
-      message: "Login successful",
+      message: "Login Successful.",
       data: {
         token,
         user: {
@@ -92,12 +92,12 @@ exports.getProfile = async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .json({ success: false, message: "User not found" });
+        .json({ success: false, message: "User Not Found." });
     }
 
     res.status(200).json({
       success: true,
-      message: "Profile fetched successfully",
+      message: "Profile Fetched Successfully.",
       data: user,
     });
   } catch (error) {
@@ -143,12 +143,12 @@ exports.updateProfile = [
       if (!updatedUser) {
         return res
           .status(404)
-          .json({ success: false, message: "User not found" });
+          .json({ success: false, message: "User Not Found." });
       }
 
       res.status(200).json({
         success: true,
-        message: "Profile updated successfully",
+        message: "Profile Updated Successfully.",
         data: updatedUser,
       });
     } catch (error) {
@@ -164,12 +164,12 @@ exports.deleteProfile = async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .json({ success: false, message: "User not found" });
+        .json({ success: false, message: "User Not Found." });
     }
 
     res
       .status(200)
-      .json({ success: true, message: "Profile deleted successfully" });
+      .json({ success: true, message: "Profile Deleted Successfully." });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

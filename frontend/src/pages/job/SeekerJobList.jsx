@@ -13,6 +13,7 @@ export default function SeekerJobList() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetching Job Details
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -31,12 +32,12 @@ export default function SeekerJobList() {
     fetchJobs();
   }, []);
 
-  // Handle search
+  // Handle Search
   const filteredJobs = jobs.filter((job) =>
     job.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle card click to navigate to the job details page
+  // Handle Card Click to Navigate to the Job Details Page
   const handleJobClick = (jobId) => {
     navigate(`/job/${jobId}`);
   };

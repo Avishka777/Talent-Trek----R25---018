@@ -15,6 +15,7 @@ const RecruiterJobList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { token } = useSelector((state) => state.auth);
 
+  // Fetch User Created Job Details
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -26,7 +27,7 @@ const RecruiterJobList = () => {
         }
       } catch (error) {
         Swal.fire({
-          title: "Fetching Failed!",
+          title: "Fetching Failed",
           text: error.message || "Error Fetching Jobs.",
           confirmButtonColor: "red",
         });
@@ -60,13 +61,13 @@ const RecruiterJobList = () => {
           if (response.success) {
             setJobs(jobs.filter((job) => job._id !== jobId));
             Swal.fire({
-              title: "Deleted!",
+              title: "Deleted",
               text: response.message || "The Job Has Been Deleted.",
               confirmButtonColor: "#28a0b5",
             });
           } else {
             Swal.fire({
-              title: "Error!",
+              title: "Error",
               text: response.message || "Failed to Delete Job.",
               confirmButtonColor: "red",
             });
@@ -88,6 +89,7 @@ const RecruiterJobList = () => {
     job.jobTitle.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Set Loading
   if (loading) {
     return (
       <DashboardLayout>

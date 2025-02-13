@@ -10,6 +10,7 @@ export default function JobDetails() {
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Fetch Job Details
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
@@ -28,6 +29,7 @@ export default function JobDetails() {
     fetchJobDetails();
   }, [jobId]);
 
+  // Handle Loading
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
@@ -39,6 +41,7 @@ export default function JobDetails() {
     );
   }
 
+  // Handle Job Not Found State
   if (!job) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">

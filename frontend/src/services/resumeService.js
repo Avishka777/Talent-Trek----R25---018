@@ -23,7 +23,7 @@ const resumeService = {
       throw (
         error.response?.data || {
           success: false,
-          message: "Resume upload failed",
+          message: "Resume Upload Failed",
         }
       );
     }
@@ -45,7 +45,7 @@ const resumeService = {
       throw (
         error.response?.data || {
           success: false,
-          message: "Failed to fetch resume",
+          message: "Failed to Fetch Resume",
         }
       );
     }

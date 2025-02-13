@@ -8,7 +8,6 @@ import Swal from "sweetalert2";
 
 export default function JobCreationPage() {
   const { token } = useSelector((state) => state.auth);
-
   const [jobData, setJobData] = useState({
     jobTitle: "",
     workExperience: "",
@@ -21,11 +20,13 @@ export default function JobCreationPage() {
     jobResponsibilities: "",
   });
 
+  // Handle Input Change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setJobData({ ...jobData, [name]: value });
   };
 
+  // Handle Date Change
   const handleDateChange = (date) => {
     setJobData({
       ...jobData,
@@ -33,10 +34,10 @@ export default function JobCreationPage() {
     });
   };
 
+  // Handle Submit Form
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate input fields
+    // Validate Input Fields
     if (
       !jobData.jobTitle ||
       !jobData.workExperience ||
@@ -49,7 +50,7 @@ export default function JobCreationPage() {
       !jobData.jobResponsibilities
     ) {
       return Swal.fire({
-        title: "Error!",
+        title: "Error",
         text: "All Fields Are Required.",
         confirmButtonColor: "red",
       });
@@ -71,7 +72,7 @@ export default function JobCreationPage() {
       const response = await jobService.createJob(payload, token);
       if (response.success) {
         Swal.fire({
-          title: "Success!",
+          title: "Success",
           text: response.message || "Job Created Successfully.",
           confirmButtonColor: "#28a0b5",
         });
@@ -88,7 +89,7 @@ export default function JobCreationPage() {
         });
       } else {
         Swal.fire({
-          title: "Error!",
+          title: "Error",
           text: response.message || "Failed to Create Job.",
           confirmButtonColor: "red",
         });
@@ -96,7 +97,7 @@ export default function JobCreationPage() {
     } catch (error) {
       console.error("Error creating job:", error);
       Swal.fire({
-        title: "Error!",
+        title: "Error",
         text: error.message || "Something Went Wrong.",
         confirmButtonColor: "red",
       });

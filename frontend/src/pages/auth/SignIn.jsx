@@ -15,12 +15,12 @@ const Signin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Handle input field changes
+  // Handle Input Field Changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  // Handle form submission
+  // Handle Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -40,8 +40,7 @@ const Signin = () => {
       } else {
         Swal.fire({
           title: "Login Failed",
-          text: response.message || "Something went wrong",
-          icon: "error",
+          text: response.message || "Something Went Wrong.",
           confirmButtonText: "OK",
           confirmButtonColor: "red",
         });
@@ -49,8 +48,7 @@ const Signin = () => {
     } catch (error) {
       Swal.fire({
         title: "Login Failed",
-        text: error.message || "Something went wrong",
-        icon: "error",
+        text: error.message || "Something Went Wrong.",
         confirmButtonText: "OK",
         confirmButtonColor: "red",
       });

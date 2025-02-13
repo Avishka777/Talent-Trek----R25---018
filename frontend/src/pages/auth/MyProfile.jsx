@@ -18,7 +18,7 @@ const MyProfile = () => {
     profileType: "",
   });
 
-  // Fetch user profile
+  // Fetch User Profile
   useEffect(() => {
     if (!token) return;
     setLoading(true);
@@ -33,7 +33,7 @@ const MyProfile = () => {
         });
         dispatch(loginSuccess({ token, user: response.data }));
       } catch (error) {
-        console.error("Error fetching profile:", error);
+        console.error("Error Fetching Profile.", error);
       } finally {
         setLoading(false);
       }
@@ -42,17 +42,17 @@ const MyProfile = () => {
     fetchProfile();
   }, [token, dispatch]);
 
-  // Handle input change
+  // Handle Input Change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle file selection
+  // Handle File Selection
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-  // Handle profile update
+  // Handle Profile Update
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -65,26 +65,25 @@ const MyProfile = () => {
       dispatch(loginSuccess({ token, user: updatedUser.data }));
       if (updatedUser.success) {
         return Swal.fire({
-          title: "Profile Updated!",
+          title: "Profile Updated",
           text:
             updatedUser.message ||
-            "Your profile has been successfully updated.",
+            "Your Profile Has Been Successfully Updated.",
           confirmButtonText: "OK",
           confirmButtonColor: "#28a0b5",
         });
       } else {
         Swal.fire({
           title: "Login Failed",
-          text: updatedUser.message || "Something went wrong",
+          text: updatedUser.message || "Something Went Wrong",
           confirmButtonText: "OK",
           confirmButtonColor: "red",
         });
       }
     } catch (error) {
       Swal.fire({
-        icon: "error",
         title: "Update Failed",
-        text: "Something went wrong while updating your profile.",
+        text: "Something Went Wrong While Updating Your Profile.",
         confirmButtonColor: "red",
       });
     } finally {
@@ -92,16 +91,16 @@ const MyProfile = () => {
     }
   };
 
-  // Handle profile deletion
+  // Handle Profile Deletion
   const handleDeleteProfile = async () => {
     Swal.fire({
       title: "Are you sure?",
-      text: "This action will permanently delete your account!",
+      text: "This action will permanently delete your account.",
       showCancelButton: true,
       confirmButtonColor: "red",
       cancelButtonColor: "#28a0b5",
-      confirmButtonText: "Yes Delete It!",
-      cancelButtonText: "No Keep It!",
+      confirmButtonText: "Yes Delete It",
+      cancelButtonText: "No Keep It",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -109,18 +108,16 @@ const MyProfile = () => {
           dispatch(logout());
           navigate("/");
           Swal.fire({
-            icon: "success",
-            title: "Deleted!",
-            text: deleteUser.message || "Your profile has been deleted.",
+            title: "Deleted",
+            text: deleteUser.message || "Your Profile Has Been Deleted.",
             confirmButtonColor: "#28a0b5",
           });
         } catch (error) {
           Swal.fire({
-            icon: "error",
             title: "Deletion Failed",
             text:
               error.message ||
-              "Something went wrong while deleting your profile.",
+              "Something Went Wrong While Deleting Your Profile.",
             confirmButtonColor: "red",
           });
         }
