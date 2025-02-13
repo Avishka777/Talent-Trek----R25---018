@@ -13,7 +13,7 @@ const userService = {
       throw (
         error.response?.data || {
           success: false,
-          message: "Registration failed",
+          message: "Registration Failed",
         }
       );
     }
@@ -31,7 +31,7 @@ const userService = {
       throw (
         error.response?.data || {
           success: false,
-          message: "Login failed",
+          message: "Login Failed",
         }
       );
     }
@@ -53,7 +53,7 @@ const userService = {
       throw (
         error.response?.data || {
           success: false,
-          message: "Failed to fetch profile",
+          message: "Failed to Fetch Profile",
         }
       );
     }
@@ -86,7 +86,7 @@ const userService = {
       throw (
         error.response?.data || {
           success: false,
-          message: "Profile update failed",
+          message: "Profile Update Failed",
         }
       );
     }
@@ -108,7 +108,7 @@ const userService = {
       throw (
         error.response?.data || {
           success: false,
-          message: "Profile deletion failed",
+          message: "Profile Deletion Failed",
         }
       );
     }

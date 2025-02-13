@@ -32,6 +32,14 @@ const UserSchema = new mongoose.Schema(
       default:
         "https://img.freepik.com/premium-vector/portrait-avatar-male-laughter-joy-smile-calmness-diversity-personage_147933-10329.jpg?w=740",
     },
+    companyName: {
+      type: String,
+      default: "XXXXX XXXXX XXXXX PVT LTD",
+    },
+    companyLogo: {
+      type: String,
+      default: "https://img.freepik.com/free-vector/logo-wavy-triangular-shape_1017-1714.jpg?t=st=1739362387~exp=1739365987~hmac=31671efa4bb09b7ef1f4fd4213ebad6cafde0a1621f0cdccdac710d16599da9e&w=740",
+    },
   },
   { timestamps: true }
 );

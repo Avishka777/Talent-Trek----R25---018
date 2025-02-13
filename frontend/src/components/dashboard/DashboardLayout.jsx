@@ -14,7 +14,7 @@ const DashboardLayout = ({ children }) => {
       />
 
       {/* Main Content */}
-      <div className="flex-grow px-8 py-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg m-4">
+      <div className="flex-grow px-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg m-4">
         <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6 capitalize">
           {activeSection}
         </h2>

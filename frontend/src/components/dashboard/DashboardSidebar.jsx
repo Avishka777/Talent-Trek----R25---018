@@ -10,7 +10,7 @@ export function DashboardSidebar() {
 
   const menuItems = [
     { name: "Add Job", path: "/dashboard/job/create", icon: MdLibraryAdd },
-    { name: "My Jobs", path: "/dashboard/jobs/:userId", icon: IoFileTrayFull },
+    { name: "My Jobs", path: `/dashboard/jobs`, icon: IoFileTrayFull },
     { name: "Resume Analyse", path: "/dashboard/resume/analyse", icon: MdAnalytics },
     { name: "Sign In", path: "/sign-in", icon: HiArrowSmRight },
   ];

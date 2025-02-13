@@ -20,12 +20,12 @@ exports.parseResume = async (req, res) => {
     if (err) {
       return res
         .status(400)
-        .json({ success: false, message: "File upload failed" });
+        .json({ success: false, message: "File Upload Failed." });
     }
     if (!req.file) {
       return res
         .status(400)
-        .json({ success: false, message: "No file uploaded" });
+        .json({ success: false, message: "No File Uploaded." });
     }
 
     try {
@@ -70,7 +70,7 @@ exports.parseResume = async (req, res) => {
       ) {
         return res.status(400).json({
           success: false,
-          message: "Invalid response structure from CV parser API",
+          message: "Invalid Response Structure From CV Parser API.",
         });
       }
 
@@ -109,14 +109,14 @@ exports.parseResume = async (req, res) => {
       await newResume.save();
       res.status(201).json({
         success: true,
-        message: "Resume uploaded, parsed, and saved successfully!",
+        message: "Resume Uploaded, Parsed, and Saved Successfully.!",
         resume: newResume,
       });
     } catch (error) {
-      console.error("Error in parseResume:", error);
+      console.error("Error in Parse Resume.", error);
       res.status(500).json({
         success: false,
-        message: "Internal server error",
+        message: "Internal Server Error.",
         error: error.message,
       });
     }
@@ -131,14 +131,14 @@ exports.getResumeByUserId = async (req, res) => {
     if (!resume) {
       return res
         .status(404)
-        .json({ success: false, message: "Resume not found" });
+        .json({ success: false, message: "Resume Not Found." });
     }
     res.status(200).json({ success: true, resume });
   } catch (error) {
-    console.error("Error in getResumeByUserId:", error);
+    console.error("Error in Get Resume By User Id.", error);
     res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: "Internal Server Error.",
       error: error.message,
     });
   }

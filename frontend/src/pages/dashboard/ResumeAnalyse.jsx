@@ -28,7 +28,7 @@ const sampleData = [
 
 const statusOptions = ["Approved", "Pending", "Reviewing", "Rejected"];
 
-export default function ResumeAnalyse() {
+const ResumeAnalyse = () => {
   const [statuses, setStatuses] = useState(
     sampleData.map((candidate) => candidate.status)
   );
@@ -113,4 +113,6 @@ export default function ResumeAnalyse() {
       </Table>
     </DashboardLayout>
   );
-}
+};
+
+export default ResumeAnalyse;

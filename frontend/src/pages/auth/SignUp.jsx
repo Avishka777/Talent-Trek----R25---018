@@ -8,6 +8,12 @@ import logo from "../../assets/public/logo.png";
 import userService from "../../services/userService";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordMatchError, setPasswordMatchError] = useState("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -16,18 +22,11 @@ const SignUp = () => {
     profileType: "Job Seeker",
   });
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordMatchError, setPasswordMatchError] = useState("");
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  // Handle input field changes and update state
+  // Handle Input Field Changes and Update State
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
-    // Validate password match in real time
+    // Validate Password Match in Real Time
     if (formSubmitted && (id === "confirmPassword" || id === "password")) {
       setPasswordMatchError(
         value !== formData.password ? "Passwords do not match!" : ""
@@ -35,7 +34,7 @@ const SignUp = () => {
     }
   };
 
-  // Handle form submission
+  // Handle Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormSubmitted(true);
@@ -54,15 +53,15 @@ const SignUp = () => {
       if (!response.success) {
         return Swal.fire({
           title: "Registration Failed",
-          text: response.message || "Something went wrong. Please try again.",
+          text: response.message || "Something Went Wrong.",
           confirmButtonText: "OK",
           confirmButtonColor: "red",
         });
       }
       setLoading(false);
       Swal.fire({
-        title: "Account Created!",
-        text: "Your account has been successfully created.",
+        title: "Account Created",
+        text: "Your Account Has Been Successfully Created.",
         confirmButtonText: "OK",
         confirmButtonColor: "#28a0b5",
       }).then(() => {
@@ -71,7 +70,7 @@ const SignUp = () => {
     } catch (error) {
       Swal.fire({
         title: "Registration Failed",
-        text: error.message || "Something went wrong. Please try again.",
+        text: error.message || "Something Went Wrong.",
         confirmButtonText: "OK",
         confirmButtonColor: "red",
       });
@@ -199,7 +198,7 @@ const SignUp = () => {
               </div>
             </div>
 
-            {/* Password Match Error (only shown after clicking Sign Up) */}
+            {/* Password Match Error */}
             {formSubmitted && passwordMatchError && (
               <Alert color="failure" className="mt-4 py-2">
                 <p className="text-red-700 font-semibold text-sm">
