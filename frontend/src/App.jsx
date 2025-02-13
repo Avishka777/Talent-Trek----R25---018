@@ -29,7 +29,7 @@ function Layout() {
         <Route path="/dashboard/job/create" element={<JobCreationPage />} />
         <Route path="/job/:jobId" element={<JobDetails />} />
         <Route path="/dashboard/resume/analyse" element={<ResumeAnalyse />} />
-        <Route path="/dashboard/jobs/:userId" element={<RecruiterJobList />} />
+        <Route path="/dashboard/jobs" element={<RecruiterJobList />} />
       </Routes>
       {!hideHeaderFooter && <Footers />}
     </>

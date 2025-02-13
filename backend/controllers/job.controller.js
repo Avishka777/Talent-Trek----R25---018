@@ -19,7 +19,7 @@ exports.createJob = async (req, res) => {
 
     res
       .status(201)
-      .json({ success: true, message: "Job created", job: newJob });
+      .json({ success: true, message: "Job Created.", job: newJob });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -43,7 +43,7 @@ exports.getJobById = async (req, res) => {
     if (!job) {
       return res.status(404).json({
         success: false,
-        message: "Job not found",
+        message: "Job Not Found.",
       });
     }
 
@@ -52,10 +52,10 @@ exports.getJobById = async (req, res) => {
       job,
     });
   } catch (error) {
-    console.error("Error fetching job:", error);
+    console.error("Error Fetching Job.", error);
     res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: "Internal Server Error.",
       error: error.message,
     });
   }
@@ -72,10 +72,10 @@ exports.getJobsByUser = async (req, res) => {
       jobs,
     });
   } catch (error) {
-    console.error("Error fetching user jobs:", error);
+    console.error("Error Fetching User Jobs.", error);
     res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: "Internal Server Error.",
       error: error.message,
     });
   }
@@ -93,7 +93,7 @@ exports.updateJob = async (req, res) => {
     if (!job) {
       return res.status(404).json({
         success: false,
-        message: "Job not found or you are not authorized to update this job",
+        message: "Job Not Found or You Are Not Authorized to Update This Job.",
       });
     }
 
@@ -121,14 +121,14 @@ exports.updateJob = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Job updated successfully!",
+      message: "Job Updated Successfully.",
       job: updatedJob,
     });
   } catch (error) {
-    console.error("Error updating job:", error);
+    console.error("Error Updating Job.", error);
     res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: "Internal Server Error.",
       error: error.message,
     });
   }
@@ -145,7 +145,7 @@ exports.deleteJob = async (req, res) => {
     if (!job) {
       return res.status(404).json({
         success: false,
-        message: "Job not found or you are not authorized to delete this job",
+        message: "Job Not Found or You Are Not Authorized to Delete This Job.",
       });
     }
 
@@ -153,13 +153,13 @@ exports.deleteJob = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Job deleted successfully!",
+      message: "Job Deleted Successfully.",
     });
   } catch (error) {
-    console.error("Error deleting job:", error);
+    console.error("Error Deleting Job.", error);
     res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: "Internal Server Error.",
       error: error.message,
     });
   }

@@ -12,7 +12,7 @@ const jobService = {
       throw (
         error.response?.data || {
           success: false,
-          message: "Failed to fetch jobs",
+          message: "Failed to Fetch Jobs.",
         }
       );
     }
@@ -29,93 +29,93 @@ const jobService = {
       throw (
         error.response?.data || {
           success: false,
-          message: "Failed to fetch job details",
+          message: "Failed to Fetch Job Details",
         }
       );
     }
   },
 
-//   // Fetch jobs created by a specific user
-//   getJobsByUser: async (userId, token) => {
-//     try {
-//       const response = await axios.get(
-//         `${import.meta.env.VITE_API_BASE_URL}/jobs/user/${userId}`,
-//         {
-//           headers: { Authorization: `Bearer ${token}` },
-//         }
-//       );
-//       return response.data;
-//     } catch (error) {
-//       throw (
-//         error.response?.data || {
-//           success: false,
-//           message: "Failed to fetch user jobs",
-//         }
-//       );
-//     }
-//   },
+  // Fetch Jobs Created By Specific User
+  getJobsByUser: async (token) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}job/user/jobs`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw (
+        error.response?.data || {
+          success: false,
+          message: "Failed to Fetch User Jobs.",
+        }
+      );
+    }
+  },
 
-//   // Create a new job post
-//   createJob: async (jobData, token) => {
-//     try {
-//       const response = await axios.post(
-//         `${import.meta.env.VITE_API_BASE_URL}/jobs`,
-//         jobData,
-//         {
-//           headers: { Authorization: `Bearer ${token}` },
-//         }
-//       );
-//       return response.data;
-//     } catch (error) {
-//       throw (
-//         error.response?.data || {
-//           success: false,
-//           message: "Failed to create job",
-//         }
-//       );
-//     }
-//   },
+  // Delete a job post
+  deleteJob: async (jobId, token) => {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_API_BASE_URL}job/${jobId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw (
+        error.response?.data || {
+          success: false,
+          message: "Failed to Delete Job.",
+        }
+      );
+    }
+  },
 
-//   // Update a job post
-//   updateJob: async (jobId, jobData, token) => {
-//     try {
-//       const response = await axios.put(
-//         `${import.meta.env.VITE_API_BASE_URL}/jobs/${jobId}`,
-//         jobData,
-//         {
-//           headers: { Authorization: `Bearer ${token}` },
-//         }
-//       );
-//       return response.data;
-//     } catch (error) {
-//       throw (
-//         error.response?.data || {
-//           success: false,
-//           message: "Failed to update job",
-//         }
-//       );
-//     }
-//   },
+  // Create a new job post
+  createJob: async (jobData, token) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}job/create`,
+        jobData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw (
+        error.response?.data || {
+          success: false,
+          message: "Failed to Create Job.",
+        }
+      );
+    }
+  },
 
-//   // Delete a job post
-//   deleteJob: async (jobId, token) => {
-//     try {
-//       const response = await axios.delete(
-//         `${import.meta.env.VITE_API_BASE_URL}/jobs/${jobId}`,
-//         {
-//           headers: { Authorization: `Bearer ${token}` },
-//         }
-//       );
-//       return response.data;
-//     } catch (error) {
-//       throw (
-//         error.response?.data || {
-//           success: false,
-//           message: "Failed to delete job",
-//         }
-//       );
-//     }
-//   },
+  //   // Update a job post
+  //   updateJob: async (jobId, jobData, token) => {
+  //     try {
+  //       const response = await axios.put(
+  //         `${import.meta.env.VITE_API_BASE_URL}/jobs/${jobId}`,
+  //         jobData,
+  //         {
+  //           headers: { Authorization: `Bearer ${token}` },
+  //         }
+  //       );
+  //       return response.data;
+  //     } catch (error) {
+  //       throw (
+  //         error.response?.data || {
+  //           success: false,
+  //           message: "Failed to update job",
+  //         }
+  //       );
+  //     }
+  //   },
 };
 
 export default jobService;

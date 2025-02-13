@@ -1,40 +1,106 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Button, Datepicker, Label } from "flowbite-react";
 import { Select, TextInput, Textarea } from "flowbite-react";
 import DashboardLayout from "../../components/dashboard/DashboardLayout";
+import jobService from "../../services/jobService";
+import Swal from "sweetalert2";
 
 export default function JobCreationPage() {
-  const currentDate = new Date().toISOString();
+  const { token } = useSelector((state) => state.auth);
 
   const [jobData, setJobData] = useState({
     jobTitle: "",
-    companyName: "",
-    companyLogo: null,
-    location: "",
-    salaryRange: "",
-    employmentType: "",
-    postedDate: currentDate,
-    applicationDeadline: "",
-    descriptionSnippet: "",
+    workExperience: "",
     skills: "",
-    experience: "",
+    salaryRange: "",
+    employmentType: "Full Time",
+    applicationDeadline: "",
+    jobDescription: "",
     qualifications: "",
-    responsibilities: "",
+    jobResponsibilities: "",
   });
 
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-
-    if (type === "file") {
-      setJobData({ ...jobData, [name]: files[0] });
-    } else {
-      setJobData({ ...jobData, [name]: value });
-    }
+    const { name, value } = e.target;
+    setJobData({ ...jobData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleDateChange = (date) => {
+    setJobData({
+      ...jobData,
+      applicationDeadline: date.toISOString().split("T")[0],
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Job Created:", jobData);
+
+    // Validate input fields
+    if (
+      !jobData.jobTitle ||
+      !jobData.workExperience ||
+      !jobData.skills ||
+      !jobData.salaryRange ||
+      !jobData.employmentType ||
+      !jobData.applicationDeadline ||
+      !jobData.jobDescription ||
+      !jobData.qualifications ||
+      !jobData.jobResponsibilities
+    ) {
+      return Swal.fire({
+        title: "Error!",
+        text: "All Fields Are Required.",
+        confirmButtonColor: "red",
+      });
+    }
+
+    try {
+      const payload = {
+        jobTitle: jobData.jobTitle,
+        workExperience: jobData.workExperience,
+        skills: jobData.skills.split(",").map((skill) => skill.trim()),
+        salaryRange: jobData.salaryRange,
+        employmentType: jobData.employmentType,
+        applicationDeadline: jobData.applicationDeadline,
+        jobDescription: jobData.jobDescription,
+        qualifications: jobData.qualifications.split("\n"),
+        jobResponsibilities: jobData.jobResponsibilities.split("\n"),
+      };
+
+      const response = await jobService.createJob(payload, token);
+      if (response.success) {
+        Swal.fire({
+          title: "Success!",
+          text: response.message || "Job Created Successfully.",
+          confirmButtonColor: "#28a0b5",
+        });
+        setJobData({
+          jobTitle: "",
+          workExperience: "",
+          skills: "",
+          salaryRange: "",
+          employmentType: "",
+          applicationDeadline: "",
+          jobDescription: "",
+          qualifications: "",
+          jobResponsibilities: "",
+        });
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: response.message || "Failed to Create Job.",
+          confirmButtonColor: "red",
+        });
+      }
+    } catch (error) {
+      console.error("Error creating job:", error);
+      Swal.fire({
+        title: "Error!",
+        text: error.message || "Something Went Wrong.",
+        confirmButtonColor: "red",
+      });
+    }
   };
 
   return (
@@ -45,90 +111,104 @@ export default function JobCreationPage() {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Left Side Section */}
           <div className="flex gap-4">
+            {/* Left Side */}
             <div className="flex flex-col w-full gap-4">
               <div>
-                <Label className="flex mb-1">Job Title</Label>
+                <Label className="mb-1">Job Title</Label>
                 <TextInput
                   name="jobTitle"
                   placeholder="Job Title"
+                  value={jobData.jobTitle}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div>
-                <Label className="flex mb-1">Work Experience</Label>
+                <Label className="mb-1">Work Experience</Label>
                 <TextInput
-                  name="experience"
+                  name="workExperience"
                   placeholder="Work Experience"
+                  value={jobData.workExperience}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div>
-                <Label className="flex mb-1">Skills</Label>
+                <Label className="mb-1">Skills</Label>
                 <TextInput
                   name="skills"
                   placeholder="Skills (comma-separated)"
+                  value={jobData.skills}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div>
-                <Label className="flex mb-1">Salary Range</Label>
+                <Label className="mb-1">Salary Range</Label>
                 <TextInput
                   name="salaryRange"
                   placeholder="Salary Range"
+                  value={jobData.salaryRange}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div>
-                <Label className="flex mb-1">Employment Type</Label>
+                <Label className="mb-1">Employment Type</Label>
                 <Select
                   name="employmentType"
                   value={jobData.employmentType}
                   onChange={handleChange}
                   required
                 >
-                  <option value="full-time">Full-time</option>
-                  <option value="part-time">Part-time</option>
+                  <option value="Full Time">Full Time</option>
+                  <option value="Part Time">Part Time</option>
+                  <option value="Contract">Contract</option>
+                  <option value="Remote">Remote</option>
                 </Select>
               </div>
               <div>
-                <Label className="flex mb-1">Application Deadline</Label>
-                <Datepicker />
+                <Label className="mb-1">Application Deadline</Label>
+                <Datepicker
+                  onSelectedDateChanged={handleDateChange}
+                  minDate={new Date()}
+                  required
+                />
               </div>
             </div>
-            {/* Right Side Section */}
+
+            {/* Right Side */}
             <div className="flex flex-col w-full gap-4">
               <div>
-                <Label className="flex mb-1">Job Description</Label>
+                <Label className="mb-1">Job Description</Label>
                 <Textarea
-                  name="descriptionSnippet"
+                  name="jobDescription"
                   placeholder="Job Description"
                   rows={3}
+                  value={jobData.jobDescription}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div>
-                <Label className="flex mb-1">Qualifications</Label>
+                <Label className="mb-1">Qualifications</Label>
                 <Textarea
                   name="qualifications"
-                  placeholder="Qualifications (comma-separated)"
+                  placeholder="Qualifications (one per line)"
                   rows={5}
+                  value={jobData.qualifications}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div>
-                <Label className="flex mb-1">Job Responsibilities</Label>
+                <Label className="mb-1">Job Responsibilities</Label>
                 <Textarea
-                  name="responsibilities"
-                  placeholder="Job Responsibilities (comma-separated)"
+                  name="jobResponsibilities"
+                  placeholder="Job Responsibilities (one per line)"
                   rows={5}
+                  value={jobData.jobResponsibilities}
                   onChange={handleChange}
                   required
                 />
