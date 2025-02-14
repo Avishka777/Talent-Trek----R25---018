@@ -5,7 +5,7 @@ import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict
 
 app = FastAPI()
 
@@ -105,11 +105,11 @@ class MatchCandidatesRequest(BaseModel):
     job_required_experience_years: int
 
 @app.post("/match_candidates/")
-def match_candidates(request: MatchCandidatesRequest):
+def match_candidates(request: MatchCandidatesRequest) -> List[Dict]:
     job_text = request.job_description + " " + request.job_requirements
     job_vector = vectorizer.transform([job_text])
 
-    resumes = list(resume_collection.find({}, {"cvText": 1, "userId": 1}))
+    resumes = list(resume_collection.find({}, {"cvText": 1, "userId": 1, "fileUrl": 1, "totalExperienceYears": 1, "profession": 1}))
     if not resumes:
         raise HTTPException(status_code=404, detail="No resumes found in the database.")
 
@@ -127,23 +127,19 @@ def match_candidates(request: MatchCandidatesRequest):
 
     result = []
     for candidate in matched_candidates:
-        user = user_collection.find_one({"_id": candidate["userId"]}, {"fullName": 1})
+        user = user_collection.find_one({"_id": candidate["userId"]}, {"fullName": 1, "email": 1})
         if user:
             result.append({
                 "userId": str(candidate["userId"]),
                 "fullName": user.get("fullName", "Unknown"),
+                "email": user.get("email", "Unknown"),
                 "match_score": candidate["match_score"],
+                "fileUrl": candidate.get("fileUrl", ""),
+                "totalExperienceYears": candidate.get("totalExperienceYears", 0),
+                "profession": candidate.get("profession", "Unknown"),
             })
 
     return result
-
-# Example JSON request body for /match_candidates API:
-# {
-#     "job_title": "Software Engineer",
-#     "job_description": "Develop and maintain applications.",
-#     "job_requirements": "Experience with Python and FastAPI.",
-#     "job_required_experience_years": 3
-# }
 
 # Run API
 if __name__ == "__main__":
