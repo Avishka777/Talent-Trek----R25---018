@@ -1,5 +1,5 @@
 import { Footer } from "flowbite-react";
-import logo from "../assets/public/logo.png";
+import logo from "../../assets/public/logo.png";
 
 export default function FooterComponent() {
   return (

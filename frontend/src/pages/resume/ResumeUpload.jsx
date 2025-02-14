@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Button, FileInput, Label } from "flowbite-react";
 import Swal from "sweetalert2";
 import Lottie from "lottie-react";
-import Loading from "../../components/Loading";
+import Loading from "../../components/public/Loading";
 import resumeService from "../../services/resumeService";
 import heroAnimation from "../../assets/animations/heroAnimation.json";
 

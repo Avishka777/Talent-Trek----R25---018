@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { Table, Select } from "flowbite-react";
 import Swal from "sweetalert2";
-import Loading from "../../components/Loading";
+import Loading from "../../components/public/Loading";
 import jobService from "../../services/jobService";
 import resumeService from "../../services/resumeService";
 import DashboardLayout from "../../components/dashboard/DashboardLayout";

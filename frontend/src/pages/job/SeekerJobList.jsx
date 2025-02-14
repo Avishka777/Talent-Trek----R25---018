@@ -5,7 +5,7 @@ import { Select, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import JobCard from "../../components/job/JobCard";
 import jobService from "../../services/jobService";
-import Loading from "../../components/Loading";
+import Loading from "../../components/public/Loading";
 
 const SeekerJobList = () => {
   const navigate = useNavigate();

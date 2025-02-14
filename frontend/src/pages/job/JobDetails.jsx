@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Button, Card } from "flowbite-react";
 import { Briefcase, DollarSign, Clock } from "lucide-react";
 import { CalendarDays, SmilePlus, Smile } from "lucide-react";
-import Loading from "../../components/Loading";
+import Loading from "../../components/public/Loading";
 import jobService from "../../services/jobService";
 
 const JobDetails = () => {
