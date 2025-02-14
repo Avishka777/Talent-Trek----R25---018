@@ -21,38 +21,77 @@ user_collection = db["users"]  # Collection for users
 with open("vectorizer.pkl", "rb") as f:
     vectorizer = pickle.load(f)
 
-# Pydantic model for job matching request
+# Pydantic Model for Job Matching Request
 class MatchJobsRequest(BaseModel):
-    technical_skills: List[str]
-    years_of_experience: int
-    experience_projects: List[str]
-    education: List[str]
+    skills: List[str]
+    profession: str
+    totalExperienceYears: int
+    summary: str
+    educations: List[str]
     certifications: List[str]
+    professionalExperiences: List[str]
 
 @app.post("/match_jobs/")
 def match_jobs(request: MatchJobsRequest):
-    user_text = " ".join(request.technical_skills + request.experience_projects + request.education + request.certifications) + f" {request.years_of_experience} years experience"
+    user_text = " ".join(
+        request.skills +
+        [request.profession] +
+        [f"{request.totalExperienceYears} years experience"] +
+        [request.summary] +
+        request.educations +
+        request.certifications +
+        request.professionalExperiences
+    )
+
     user_vector = vectorizer.transform([user_text])
 
-    jobs = list(job_collection.find({}, {"jobTitle": 1, "jobDescription": 1, "jobRequirements": 1, "skills": 1, "qualifications": 1}))
+    # Fetch jobs from MongoDB
+    jobs = list(job_collection.find({}, {
+        "_id": 1,
+        "jobTitle": 1,
+        "companyName": 1,
+        "companyLogo": 1,
+        "workExperience": 1,
+        "skills": 1,
+        "salaryRange": 1,
+        "employmentType": 1,
+        "createdAt": 1,
+        "jobDescription": 1,
+        "jobRequirements": 1,
+        "qualifications": 1
+    }))
+
     if not jobs:
         raise HTTPException(status_code=404, detail="No jobs found in the database.")
 
+    # Prepare job descriptions for vectorization
     job_texts = [
-        f"{job.get('jobDescription', '')} {job.get('jobRequirements', '')} {' '.join(job.get('skills', []))} {' '.join(job.get('qualifications', []))}" for job in jobs
+        f"{job.get('jobDescription', '')} {job.get('jobRequirements', '')} {' '.join(job.get('skills', []))} {' '.join(job.get('qualifications', []))}"
+        for job in jobs
     ]
-    
+
     job_vectors = vectorizer.transform(job_texts)
     similarity_scores = cosine_similarity(user_vector, job_vectors).flatten()
 
+    # Add match percentage to jobs
     for i, job in enumerate(jobs):
         job["match_percentage"] = float(similarity_scores[i]) * 100
 
+    # Sort jobs by match percentage and return the top 10
     matched_jobs = sorted(jobs, key=lambda x: x["match_percentage"], reverse=True)[:10]
 
     return [
         {
+            "_id": str(job["_id"]),  # Convert ObjectId to string
+            "jobId": str(job["_id"]),  # Explicit job ID field
             "jobTitle": job["jobTitle"],
+            "companyName": job.get("companyName", ""),
+            "companyLogo": job.get("companyLogo", ""),
+            "workExperience": job.get("workExperience", ""),
+            "skills": job.get("skills", []),
+            "salaryRange": job.get("salaryRange", ""),
+            "employmentType": job.get("employmentType", ""),
+            "createdAt": job.get("createdAt", ""),
             "match_percentage": job["match_percentage"],
         }
         for job in matched_jobs

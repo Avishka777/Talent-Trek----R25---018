@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Card } from "flowbite-react";
-import { Briefcase, DollarSign, Clock, CalendarDays } from "lucide-react";
-import jobService from "../../services/jobService";
+import { Briefcase, DollarSign, Clock } from "lucide-react";
+import { CalendarDays, SmilePlus, Smile } from "lucide-react";
 import Loading from "../../components/Loading";
+import jobService from "../../services/jobService";
 
 const JobDetails = () => {
-  const { jobId } = useParams();
+  const { jobId, matchPercentage } = useParams();
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
+  const matchPercentageValue = parseFloat(matchPercentage) || 0;
 
   // Fetch Job Details
   useEffect(() => {
@@ -80,6 +82,20 @@ const JobDetails = () => {
 
       {/* Job Details */}
       <div className="space-y-2 text-gray-700 dark:text-gray-300">
+        {/* Show Match Percentage only if it's greater than 0 */}
+        {matchPercentageValue > 0 && (
+          <div className="flex items-center">
+            {matchPercentageValue > 50 ? (
+              <SmilePlus className="w-5 h-5 mr-2 text-green-500" />
+            ) : (
+              <Smile className="w-5 h-5 mr-2 text-yellow-500" />
+            )}
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Job Matching Percentage: {matchPercentageValue}%
+            </h3>
+          </div>
+        )}
+
         <p className="flex items-center">
           <DollarSign className="w-5 h-5 mr-2 text-green-500" />{" "}
           {job.salaryRange}
@@ -153,6 +169,6 @@ const JobDetails = () => {
       </div>
     </Card>
   );
-}
+};
 
 export default JobDetails;

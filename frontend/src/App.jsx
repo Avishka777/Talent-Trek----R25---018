@@ -29,7 +29,7 @@ function Layout() {
         <Route path="/seeker/jobs" element={<SeekerJobList />} />
         <Route path="/dashboard/job/create" element={<JobCreate />} />
         <Route path="/dashboard/job/update/:jobId" element={<JobUpdate />} />
-        <Route path="/job/:jobId" element={<JobDetails />} />
+        <Route path="/job/:jobId/:matchPercentage?" element={<JobDetails />} />
         <Route path="/dashboard/resume/analyse" element={<ResumeAnalyse />} />
         <Route path="/dashboard/jobs" element={<RecruiterJobList />} />
       </Routes>

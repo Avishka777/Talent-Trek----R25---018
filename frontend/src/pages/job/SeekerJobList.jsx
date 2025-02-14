@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
+import { useSelector } from "react-redux";
 import { Select, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import JobCard from "../../components/job/JobCard";
@@ -12,25 +13,35 @@ const SeekerJobList = () => {
   const [jobFilter, setJobFilter] = useState("all");
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { token } = useSelector((state) => state.auth);
 
-  // Fetching Job Details
+  // Fetch jobs based on filter selection
   useEffect(() => {
     const fetchJobs = async () => {
+      setLoading(true);
       try {
-        const response = await jobService.getAllJobs();
+        let response;
+
+        if (jobFilter === "recommended") {
+          response = await jobService.getMatchingJobs(token);
+        } else {
+          response = await jobService.getAllJobs();
+        }
+
         if (response.success) {
-          setJobs(response.jobs);
+          setJobs(response.message || response.jobs);
         } else {
           setJobs([]);
         }
       } catch (error) {
+        console.error("Error Fetching jobs.", error);
         setJobs([]);
       }
       setLoading(false);
     };
 
     fetchJobs();
-  }, []);
+  }, [jobFilter, token]);
 
   // Handle Search
   const filteredJobs = jobs.filter((job) =>
@@ -38,8 +49,13 @@ const SeekerJobList = () => {
   );
 
   // Handle Card Click to Navigate to the Job Details Page
-  const handleJobClick = (jobId) => {
-    navigate(`/job/${jobId}`);
+  const handleJobClick = (job) => {
+    // Ensure match_percentage is properly formatted
+    const matchPercentage = job.match_percentage
+      ? job.match_percentage.toFixed(2)
+      : "0.00";
+    // Navigate with jobId and match percentage in the URL
+    navigate(`/job/${job._id}/${matchPercentage}`);
   };
 
   return (
@@ -74,8 +90,8 @@ const SeekerJobList = () => {
           </div>
         ) : filteredJobs.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 min-w-full">
-            {filteredJobs.map((job) => (
-              <div key={job._id} onClick={() => handleJobClick(job._id)}>
+            {filteredJobs.map((job, index) => (
+              <div key={index} onClick={() => handleJobClick(job)}>
                 <JobCard job={job} />
               </div>
             ))}

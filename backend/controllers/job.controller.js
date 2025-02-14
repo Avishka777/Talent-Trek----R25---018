@@ -1,3 +1,5 @@
+const axios = require("axios");
+const Resume = require("../models/resume.model");
 const Job = require("../models/job.model");
 const User = require("../models/user.model");
 
@@ -157,6 +159,54 @@ exports.deleteJob = async (req, res) => {
     });
   } catch (error) {
     console.error("Error Deleting Job.", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error.",
+      error: error.message,
+    });
+  }
+};
+
+// Send Resume Data and Fetch Job Matches Perentage ----------------------------------
+exports.matchJobs = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const resume = await Resume.findOne({ userId });
+
+    if (!resume) {
+      return res.status(404).json({ error: "Resume Not Found." });
+    }
+
+    // Extract resume details
+    const requestData = {
+      skills: resume.skills ? resume.skills.map((skill) => skill) : [],
+      profession: resume.profession || "",
+      totalExperienceYears: resume.totalExperienceYears || 0,
+      summary: resume.summary || "",
+      educations: resume.educations
+        ? resume.educations.map((edu) => edu.description || "")
+        : [],
+      certifications: resume.trainingsAndCertifications
+        ? resume.trainingsAndCertifications.map(
+            (cert) => cert.description || ""
+          )
+        : [],
+      professionalExperiences: resume.professionalExperiences
+        ? resume.professionalExperiences.map((exp) => exp.description || "")
+        : [],
+    };
+
+    // Call FastAPI job matching service
+    const response = await axios.post(
+      `${process.env.FAST_API_BACKEND}match_jobs/`,
+      requestData
+    );
+
+    res.status(200).json({
+      success: true,
+      message: response.data,
+    });
+  } catch (error) {
     res.status(500).json({
       success: false,
       message: "Internal Server Error.",
