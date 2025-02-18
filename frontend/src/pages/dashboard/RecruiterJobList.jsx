@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Table, TextInput } from "flowbite-react";
 import { Pencil, Search, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
-import Loading from "../../components/Loading";
+import Loading from "../../components/public/Loading";
 import jobService from "../../services/jobService";
 import DashboardLayout from "../../components/dashboard/DashboardLayout";
 

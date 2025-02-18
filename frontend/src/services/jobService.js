@@ -22,6 +22,28 @@ const jobService = {
     }
   },
 
+  // Get Matching Jobs for User
+  getMatchingJobs: async (token) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}job/match_jobs`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error in Get Matching Jobs:", error.response?.data);
+      throw (
+        error.response?.data || {
+          success: false,
+          message: "Failed to Fetch Jobs.",
+        }
+      );
+    }
+  },
+
   // Fetch All Jobs
   getAllJobs: async () => {
     try {

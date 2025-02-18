@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Button, FileInput, Label } from "flowbite-react";
 import Swal from "sweetalert2";
 import Lottie from "lottie-react";
+import Loading from "../../components/public/Loading";
 import resumeService from "../../services/resumeService";
 import heroAnimation from "../../assets/animations/heroAnimation.json";
 
@@ -22,6 +23,7 @@ const ResumeUpload = () => {
 
   // Fetch Resume Data
   const fetchResume = async () => {
+    setLoading(true);
     try {
       const response = await resumeService.getResume(token);
       if (response.success) {
@@ -31,8 +33,9 @@ const ResumeUpload = () => {
       }
     } catch (error) {
       setResumeData(null);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   // Handle File Selection
@@ -43,7 +46,7 @@ const ResumeUpload = () => {
     } else {
       Swal.fire({
         title: "Invalid File",
-        text: "Please upload valid PDF file.",
+        text: "Please Upload Valid PDF File.",
         confirmButtonText: "OK",
         confirmButtonColor: "red",
       });
@@ -52,13 +55,16 @@ const ResumeUpload = () => {
 
   // Handle File Upload
   const handleUpload = async () => {
-    if (!file)
+    if (!file) {
       return Swal.fire({
         title: "No File",
-        text: "Please Select File First.",
+        text: "Please Select a File First.",
         confirmButtonText: "OK",
         confirmButtonColor: "red",
       });
+    }
+
+    setLoading(true);
     try {
       const response = await resumeService.uploadResume(file, token);
       if (response.success) {
@@ -77,8 +83,22 @@ const ResumeUpload = () => {
         confirmButtonText: "OK",
         confirmButtonColor: "red",
       });
+    } finally {
+      setLoading(false);
     }
   };
+
+  // Set Loading
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <Loading />
+        <p className="text-gray-600 text-center mt-10 font-semibold text-xl">
+          Uploading & Analyzing Resume...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen p-8 bg-gray-100 dark:bg-gray-900">

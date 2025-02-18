@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Card } from "flowbite-react";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, Smile, SmilePlus } from "lucide-react";
 import { CircleDollarSign } from "lucide-react";
 import { BriefcaseBusiness } from "lucide-react";
 
@@ -32,6 +32,20 @@ export default function JobCard({ job }) {
                 {skill}
               </span>
             ))}
+          </div>
+          <div className="flex items-center text-sm text-gray-500 dark:text-gray-300 mt-1">
+            {job.match_percentage !== undefined && (
+              <>
+                {job.match_percentage > 50 ? (
+                  <SmilePlus className="w-4 h-4 mr-1 text-green-500" />
+                ) : (
+                  <Smile className="w-4 h-4 mr-1 text-yellow-500" />
+                )}
+                <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+                  Matching Percentage {job.match_percentage.toFixed(2)}%
+                </h3>
+              </>
+            )}
           </div>
           <div className="flex items-center text-sm text-gray-500 dark:text-gray-300 mt-1">
             <BriefcaseBusiness className="w-4 h-4 mr-1 text-blue-500" />{" "}

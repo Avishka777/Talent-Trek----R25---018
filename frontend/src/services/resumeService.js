@@ -50,6 +50,28 @@ const resumeService = {
       );
     }
   },
+
+  // Get Matching Jobs for User
+  getMatchingResumes: async (jodId, token) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}resume/match_candidates/${jodId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error in Get Matching Resumes:", error.response?.data);
+      throw (
+        error.response?.data || {
+          success: false,
+          message: "Failed to Fetch Resumes.",
+        }
+      );
+    }
+  },
 };
 
 export default resumeService;

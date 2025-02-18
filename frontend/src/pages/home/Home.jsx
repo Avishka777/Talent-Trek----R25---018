@@ -10,7 +10,18 @@ import heroAnimation from "../../assets/animations/heroAnimation.json";
 const Home = () => {
   const navigate = useNavigate();
   const { theme } = useSelector((state) => state.theme);
+  const user = useSelector((state) => state.auth.user);
+  const profileType = user?.profileType || "";
   const heroBg = theme === "dark" ? dark : light;
+
+  // CHanged Navigation Based on User Type
+  const handleNavigation = () => {
+    if (profileType === "Recruiter") {
+      navigate("/dashboard/jobs");
+    } else {
+      navigate("/resume-upload");
+    }
+  };
 
   return (
     <div className={theme}>
@@ -38,7 +49,7 @@ const Home = () => {
             <Button
               gradientMonochrome="info"
               size="lg"
-              onClick={() => navigate(`/resume-upload`)}
+              onClick={handleNavigation}
             >
               Get Started
             </Button>

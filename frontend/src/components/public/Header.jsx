@@ -1,10 +1,10 @@
 import { FaSun, FaMoon } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../redux/auth/authSlice";
+import { logout } from "../../redux/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleTheme } from "../redux/theme/themeSlice";
+import { toggleTheme } from "../../redux/theme/themeSlice";
 import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
-import logo from "../assets/public/logo.png";
+import logo from "../../assets/public/logo.png";
 
 export default function HeaderComponent() {
   const navigate = useNavigate();
@@ -56,8 +56,12 @@ export default function HeaderComponent() {
             }
           >
             <Dropdown.Header>
-              <span className="block text-sm font-medium">{user.fullName}</span>
-              <span className="block truncate text-sm">{user.email}</span>
+              <span className="block text-xs font-medium">
+                Welcome {user.profileType}
+              </span>
+              <hr className="my-1" />
+              <span className="block text-sm ">{user.fullName}</span>
+              <span className="block text-sm">{user.email}</span>
             </Dropdown.Header>
             <Dropdown.Item onClick={() => navigate(`/my-profile`)}>
               My Profile
@@ -90,7 +94,18 @@ export default function HeaderComponent() {
       {/* Navbar Links */}
       <Navbar.Collapse>
         <Navbar.Link onClick={() => navigate(`/`)}>Home</Navbar.Link>
-        <Navbar.Link onClick={() => navigate(`/seeker/jobs`)}>Jobs</Navbar.Link>
+
+        {user?.profileType === "Job Seeker" && (
+          <Navbar.Link onClick={() => navigate(`/seeker/jobs`)}>
+            Jobs
+          </Navbar.Link>
+        )}
+
+        {user?.profileType === "Recruiter" && (
+          <Navbar.Link onClick={() => navigate(`/dashboard/jobs`)}>
+            Dashboard
+          </Navbar.Link>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );
