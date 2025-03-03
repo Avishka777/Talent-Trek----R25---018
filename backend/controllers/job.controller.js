@@ -146,7 +146,6 @@ exports.deleteJob = async (req, res) => {
 
     if (!job) {
       return res.status(404).json({
-        success: false,
         message: "Job Not Found or You Are Not Authorized to Delete This Job.",
       });
     }
@@ -154,13 +153,11 @@ exports.deleteJob = async (req, res) => {
     await Job.findByIdAndDelete(jobId);
 
     res.status(200).json({
-      success: true,
       message: "Job Deleted Successfully.",
     });
   } catch (error) {
     console.error("Error Deleting Job.", error);
     res.status(500).json({
-      success: false,
       message: "Internal Server Error.",
       error: error.message,
     });
