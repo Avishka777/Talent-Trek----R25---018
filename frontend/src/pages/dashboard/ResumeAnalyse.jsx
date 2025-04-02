@@ -1,7 +1,7 @@
 import { FileCheck } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { Table, Select } from "flowbite-react";
+import { Table, Select, Tooltip } from "flowbite-react";
 import Swal from "sweetalert2";
 import Loading from "../../components/public/Loading";
 import jobService from "../../services/jobService";
@@ -55,7 +55,8 @@ const ResumeAnalyse = () => {
     setLoading(true);
     try {
       const response = await resumeService.getMatchingResumes(jobId, token);
-      setResumes(response || []);
+      // Expecting the response object to have a "matches" field
+      setResumes(response.matches || []);
     } catch (error) {
       Swal.fire({
         title: "Error",
@@ -68,7 +69,6 @@ const ResumeAnalyse = () => {
     }
   };
 
-  // Set Loading
   if (loading) {
     return (
       <DashboardLayout>
@@ -88,7 +88,6 @@ const ResumeAnalyse = () => {
         <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
           Resume Analyse
         </h2>
-
         {/* Job Selection Dropdown */}
         <Select
           name="job"
@@ -139,14 +138,45 @@ const ResumeAnalyse = () => {
             resumes.map((candidate, index) => (
               <Table.Row key={index}>
                 <Table.Cell className="py-3 px-4">
-                  {candidate.fullName}
+                  {candidate.resume_name}
                 </Table.Cell>
-                <Table.Cell className="py-3 px-4">{candidate.email}</Table.Cell>
-                <Table.Cell className="py-3 px-4 text-center">
-                  {candidate.totalExperienceYears}
+                <Table.Cell className="py-3 px-4">
+                  {candidate.email || "N/A"}
                 </Table.Cell>
                 <Table.Cell className="py-3 px-4 text-center">
-                  {candidate.match_score.toFixed(2)}%
+                  {candidate.totalExperienceYears || "N/A"}
+                </Table.Cell>
+                <Table.Cell className="py-3 px-4 text-center">
+                  <Tooltip
+                    content={
+                      <div className="text-sm flex flex-col text-left gap-5">
+                        <div>
+                          <strong>Experience:</strong>{" "}
+                          {candidate.experience_score}% * 0.25 Weight
+                        </div>
+                        <div>
+                          <strong>Skills:</strong> {candidate.skills_score}% *
+                          0.25 Weight
+                        </div>
+                        <div>
+                          <strong>Profession:</strong>{" "}
+                          {candidate.profession_score}% * 0.15 Weight
+                        </div>
+                        <div>
+                          <strong>Summary:</strong> {candidate.summary_score}% *
+                          0.20 Weight
+                        </div>
+                        <div>
+                          <strong>Qualifications:</strong>{" "}
+                          {candidate.qualifications_score}% * 0.15 Weight
+                        </div>
+                      </div>
+                    }
+                  >
+                    <span>
+                      {candidate.overall_match_percentage.toFixed(2)}%
+                    </span>
+                  </Tooltip>
                 </Table.Cell>
                 <Table.Cell className="py-3 px-4 text-center">
                   {candidate.profession || "N/A"}
@@ -171,7 +201,7 @@ const ResumeAnalyse = () => {
           ) : (
             <Table.Row>
               <Table.Cell
-                colSpan="5"
+                colSpan="7"
                 className="py-4 text-center text-gray-500"
               >
                 No Matching Resumes Found.

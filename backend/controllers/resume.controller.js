@@ -149,28 +149,17 @@ exports.getResumeByUserId = async (req, res) => {
 exports.matchCandidates = async (req, res) => {
   try {
     const { jobId } = req.params;
-
-    // Fetch job details
-    const job = await Job.findById(jobId);
-    if (!job) {
-      return res.status(404).json({ error: "Job Not Found" });
-    }
-
-    // Prepare request payload for FastAPI
-    const jobPayload = {
-      job_title: job.jobTitle,
-      job_description: job.jobDescription,
-      job_requirements: job.skills.join(", "),
-      job_required_experience_years: parseInt(job.workExperience) || 0,
-    };
-
-    // Call FastAPI service
-    const fastApiUrl = `${process.env.FAST_API_BACKEND}match_candidates/`;
-    const fastApiResponse = await axios.post(fastApiUrl, jobPayload);
-
+    
+    // Build the FastAPI URL for matching resumes
+    const fastApiUrl = `${process.env.FAST_API_BACKEND}match-resumes/${jobId}`;
+    
+    // Call FastAPI service using a GET request
+    const fastApiResponse = await axios.get(fastApiUrl);
+    
     return res.json(fastApiResponse.data);
   } catch (error) {
     console.error("Error Fetching Matching Candidates.", error.message);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
