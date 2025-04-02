@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 # Include endpoints from the controller
-app.include_router(matching_router , prefix="/talent-trek")
+app.include_router(matching_router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

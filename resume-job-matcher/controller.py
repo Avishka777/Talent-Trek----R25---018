@@ -17,9 +17,9 @@ from pymongo import MongoClient
 # ----------------------
 MONGO_URI = "mongodb+srv://avishkwork:avishkwork@talent-trek.bodnu.mongodb.net/?retryWrites=true&w=majority&appName=TALENT-TREK"
 client = MongoClient(MONGO_URI)
-db = client["test"] 
-resume_collection = db["resumes"]
-job_collection = db["jobs"]       
+db = client["test"]  # Use your actual database name here
+resume_collection = db["resumes"]  # Resumes collection (user details)
+job_collection = db["jobs"]        # Jobs collection
 
 # ----------------------
 # Initialize BERT Model for Text Similarity
@@ -225,20 +225,61 @@ async def get_matching_jobs(resume_id: str):
 async def get_matching_resumes(job_id: str):
     """
     Given a job ID, fetch the job document and compute matching percentages
-    for all available resumes. Returns a list of resumes sorted by overall match percentage (descending).
+    for all available resumes. Returns an object that includes, for each matching resume,
+    the resume's ID, the candidate's full name (from the users collection), user email,
+    resume.totalExperienceYears, resume.profession, resume.fileUrl, and matching scores.
     """
     job = job_collection.find_one({"_id": ObjectId(job_id)})
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
+    
     resumes_cursor = resume_collection.find()
     resumes = list(resumes_cursor)
     if not resumes:
         raise HTTPException(status_code=404, detail="No resumes found")
-    results = [match_resume_to_job(resume, job) for resume in resumes]
-    results_sorted = sorted(results, key=lambda x: x["overall_match_percentage"], reverse=True)
-    return {"matches": results_sorted}
+    
+    # Reference to the users collection
+    users_collection = db["users"]
+    
+    # Compute matching scores and add resume-specific fields
+    matches = []
+    for resume in resumes:
+        # Calculate matching scores
+        match_data = match_resume_to_job(resume, job)
+        # Remove redundant job details from match_data if desired
+        match_data.pop("job_id", None)
+        match_data.pop("jobTitle", None)
+        match_data.pop("companyName", None)
+        
+        # Fetch user document to get additional details
+        user_id = resume.get("userId")
+        if user_id:
+            user = users_collection.find_one({"_id": user_id})
+            full_name = user.get("fullName") if user else ""
+            user_email = user.get("email") if user else ""
+        else:
+            full_name = ""
+            user_email = ""
+        
+        # Add resume and user-specific fields to match_data
+        match_data["resume_id"] = str(resume.get("_id"))
+        match_data["resume_name"] = full_name  # Candidate's full name from the users collection
+        match_data["email"] = user_email        # User's email
+        match_data["totalExperienceYears"] = resume.get("totalExperienceYears", 0)
+        match_data["profession"] = resume.get("profession", "")
+        match_data["fileUrl"] = resume.get("fileUrl", "")
+        
+        matches.append(match_data)
+    
+    # Sort the results by overall match percentage in descending order
+    matches_sorted = sorted(matches, key=lambda x: x["overall_match_percentage"], reverse=True)
+    
+    return {
+        "matches": matches_sorted
+    }
 
-@router.get("/plot-matching-comparison/{resume_id}")
+
+@router.get("/plot-matching-comparison-real/{resume_id}")
 async def plot_matching_comparison_real(resume_id: str):
     """
     Retrieves a resume and all jobs from MongoDB, computes overall matching percentages using:
