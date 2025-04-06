@@ -121,7 +121,7 @@ const ResumeAnalyse = () => {
             Experience (Years)
           </Table.HeadCell>
           <Table.HeadCell className="py-3 px-4 text-center">
-            Matching
+            Overall Matching
           </Table.HeadCell>
           <Table.HeadCell className="py-3 px-4 text-center">
             Profession
@@ -144,7 +144,7 @@ const ResumeAnalyse = () => {
                   {candidate.email || "N/A"}
                 </Table.Cell>
                 <Table.Cell className="py-3 px-4 text-center">
-                  {candidate.totalExperienceYears || "N/A"}
+                  {candidate.totalExperienceYears || "0"}
                 </Table.Cell>
                 <Table.Cell className="py-3 px-4 text-center">
                   <Tooltip

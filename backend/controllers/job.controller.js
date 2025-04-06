@@ -164,7 +164,7 @@ exports.deleteJob = async (req, res) => {
   }
 };
 
-// Send Resume Data and Fetch Job Matches Perentage ----------------------------------
+// Send Resume Data and Fetch Job Matches Percentage ----------------------------------
 exports.matchJobs = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -174,37 +174,28 @@ exports.matchJobs = async (req, res) => {
       return res.status(404).json({ error: "Resume Not Found." });
     }
 
-    // Extract resume details
-    const requestData = {
-      skills: resume.skills ? resume.skills.map((skill) => skill) : [],
-      profession: resume.profession || "",
-      totalExperienceYears: resume.totalExperienceYears || 0,
-      summary: resume.summary || "",
-      educations: resume.educations
-        ? resume.educations.map((edu) => edu.description || "")
-        : [],
-      certifications: resume.trainingsAndCertifications
-        ? resume.trainingsAndCertifications.map(
-            (cert) => cert.description || ""
-          )
-        : [],
-      professionalExperiences: resume.professionalExperiences
-        ? resume.professionalExperiences.map((exp) => exp.description || "")
-        : [],
-    };
+    const fastApiUrl = `${process.env.FAST_API_BACKEND}match-jobs/${resume._id}`;
+    const fastApiResponse = await axios.get(fastApiUrl);
+    const rawMatches = fastApiResponse.data.matches;
 
-    // Call FastAPI job matching service
-    const response = await axios.post(
-      `${process.env.FAST_API_BACKEND}match_jobs/`,
-      requestData
+    // Enrich each match with the full job info from MongoDB
+    const enrichedMatches = await Promise.all(
+      rawMatches.map(async (match) => {
+        const job = await Job.findById(match.job_id).lean();
+        return {
+          ...match,
+          job: job,
+        };
+      })
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: response.data,
+      message: { matches: enrichedMatches },
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("Error fetching matching jobs:", error.message);
+    return res.status(500).json({
       success: false,
       message: "Internal Server Error.",
       error: error.message,

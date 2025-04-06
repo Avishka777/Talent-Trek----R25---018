@@ -21,17 +21,25 @@ const SeekerJobList = () => {
       setLoading(true);
       try {
         let response;
-
         if (jobFilter === "recommended") {
           response = await jobService.getMatchingJobs(token);
+          // Check if the response has the matches array
+          if (
+            response.success &&
+            response.message?.matches &&
+            Array.isArray(response.message.matches)
+          ) {
+            setJobs(response.message.matches);
+          } else {
+            setJobs([]);
+          }
         } else {
           response = await jobService.getAllJobs();
-        }
-
-        if (response.success) {
-          setJobs(response.message || response.jobs);
-        } else {
-          setJobs([]);
+          if (response.success) {
+            setJobs(response.message || response.jobs);
+          } else {
+            setJobs([]);
+          }
         }
       } catch (error) {
         console.error("Error Fetching jobs.", error);
@@ -43,18 +51,16 @@ const SeekerJobList = () => {
     fetchJobs();
   }, [jobFilter, token]);
 
-  // Handle Search
+  // Filter jobs based on search term
   const filteredJobs = jobs.filter((job) =>
     job.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle Card Click to Navigate to the Job Details Page
+  // Handle navigation when a job card is clicked
   const handleJobClick = (job) => {
-    // Ensure match_percentage is properly formatted
     const matchPercentage = job.match_percentage
       ? job.match_percentage.toFixed(2)
       : "0.00";
-    // Navigate with jobId and match percentage in the URL
     navigate(`/job/${job._id}/${matchPercentage}`);
   };
 

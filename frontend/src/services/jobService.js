@@ -26,7 +26,7 @@ const jobService = {
   getMatchingJobs: async (token) => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}job/match_jobs`,
+        `${import.meta.env.VITE_API_BASE_URL}job/match/jobs`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
