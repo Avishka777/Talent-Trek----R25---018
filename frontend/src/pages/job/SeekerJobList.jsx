@@ -23,26 +23,23 @@ const SeekerJobList = () => {
         let response;
         if (jobFilter === "recommended") {
           response = await jobService.getMatchingJobs(token);
-          // Check if the response has the matches array
-          if (
-            response.success &&
-            response.message?.matches &&
-            Array.isArray(response.message.matches)
-          ) {
-            setJobs(response.message.matches);
+          // For matching jobs, our endpoint returns { success: true, jobs: [...] }
+          if (response.success && response.jobs && Array.isArray(response.jobs)) {
+            setJobs(response.jobs);
           } else {
             setJobs([]);
           }
         } else {
           response = await jobService.getAllJobs();
-          if (response.success) {
-            setJobs(response.message || response.jobs);
+          // For all jobs, our endpoint returns { success: true, jobs: [...] }
+          if (response.success && response.jobs && Array.isArray(response.jobs)) {
+            setJobs(response.jobs);
           } else {
             setJobs([]);
           }
         }
       } catch (error) {
-        console.error("Error Fetching jobs.", error);
+        console.error("Error fetching jobs.", error);
         setJobs([]);
       }
       setLoading(false);
@@ -51,17 +48,21 @@ const SeekerJobList = () => {
     fetchJobs();
   }, [jobFilter, token]);
 
-  // Filter jobs based on search term
-  const filteredJobs = jobs.filter((job) =>
-    job.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter jobs based on search term.
+  // Use top-level jobTitle if available; otherwise, fallback to the nested job.jobTitle.
+  const filteredJobs = jobs.filter((job) => {
+    const title = job.jobTitle || (job.job && job.job.jobTitle) || "";
+    return title.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
-  // Handle navigation when a job card is clicked
+  // Handle navigation when a job card is clicked.
+  // Use the nested job._id if available.
   const handleJobClick = (job) => {
-    const matchPercentage = job.match_percentage
-      ? job.match_percentage.toFixed(2)
+    const jobId = job.job ? job.job._id : job._id;
+    const matchPercentage = job.overall_match_percentage
+      ? job.overall_match_percentage.toFixed(2)
       : "0.00";
-    navigate(`/job/${job._id}/${matchPercentage}`);
+    navigate(`/job/${jobId}/${matchPercentage}`);
   };
 
   return (
@@ -104,7 +105,7 @@ const SeekerJobList = () => {
           </div>
         ) : (
           <p className="text-red-600 text-center mt-10 font-semibold text-xl">
-            - Sorry Currently No Jobs Found -
+            - Sorry, Currently No Jobs Found -
           </p>
         )}
       </div>
