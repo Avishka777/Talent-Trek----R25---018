@@ -279,8 +279,8 @@ async def get_matching_resumes(job_id: str):
     }
 
 
-@router.get("/plot-matching-comparison-real/{resume_id}")
-async def plot_matching_comparison_real(resume_id: str):
+@router.get("/plot-matching-comparison-graph/{resume_id}")
+async def plot_matching_comparison_graph(resume_id: str):
     """
     Retrieves a resume and all jobs from MongoDB, computes overall matching percentages using:
       - BERT-based matching
@@ -295,29 +295,91 @@ async def plot_matching_comparison_real(resume_id: str):
     if not jobs:
         raise HTTPException(status_code=404, detail="No jobs found")
     
+    job_ids = []
     bert_scores = []
     normal_scores = []
-    job_ids = []
     
     for job in jobs:
         bert_result = match_resume_to_job(resume, job)
         normal_result = match_resume_to_job_normal(resume, job)
         bert_scores.append(bert_result["overall_match_percentage"])
         normal_scores.append(normal_result["overall_match_percentage"])
-        job_ids.append(str(job.get("_id"))[:10])  # Use first 10 characters for labeling
+        job_ids.append(str(job.get("_id")))  
     
-    plt.figure()
-    plt.plot(job_ids, bert_scores, marker='o', label="BERT Matching")
-    plt.plot(job_ids, normal_scores, marker='o', label="Normal Text Matching")
-    plt.title("Overall Matching Comparison (BERT vs. Normal)")
-    plt.xlabel("Job (partial ID)")
-    plt.ylabel("Overall Match Percentage")
-    plt.legend()
-    plt.xticks(rotation=45)
+    # Plotting the line chart
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(job_ids, bert_scores, marker='o', label="BERT Matching")
+    ax.plot(job_ids, normal_scores, marker='o', label="Normal Text Matching")
+    ax.set_title("Overall Matching Comparison (BERT vs. Normal)")
+    ax.set_xlabel("Job (partial ID)")
+    ax.set_ylabel("Overall Match Percentage")
+    ax.legend()
+    ax.set_xticks(range(len(job_ids)))
+    ax.set_xticklabels(job_ids, rotation=45)
     
     buf = BytesIO()
     plt.tight_layout()
     plt.savefig(buf, format="png")
-    plt.close()
+    plt.close(fig)
     buf.seek(0)
     return StreamingResponse(buf, media_type="image/png")
+
+
+@router.get("/plot-matching-comparison-table/{resume_id}")
+async def plot_matching_comparison_table(resume_id: str):
+    """
+    Retrieves a resume and all jobs from MongoDB, computes overall matching percentages using:
+      - BERT-based matching
+      - Simple (normal) text matching
+    Generates a table showing:
+      - Job ID (partial)
+      - BERT Matching Score
+      - Normal Matching Score
+      - Difference between the scores.
+    """
+    resume = resume_collection.find_one({"_id": ObjectId(resume_id)})
+    if not resume:
+        raise HTTPException(status_code=404, detail="Resume not found")
+    jobs_cursor = job_collection.find()
+    jobs = list(jobs_cursor)
+    if not jobs:
+        raise HTTPException(status_code=404, detail="No jobs found")
+    
+    job_ids = []
+    bert_scores = []
+    normal_scores = []
+    
+    for job in jobs:
+        bert_result = match_resume_to_job(resume, job)
+        normal_result = match_resume_to_job_normal(resume, job)
+        bert_scores.append(bert_result["overall_match_percentage"])
+        normal_scores.append(normal_result["overall_match_percentage"])
+        job_ids.append(str(job.get("_id")))
+    
+    # Calculate the difference between BERT and Normal matching scores
+    diff_scores = [round(bert - normal, 2) for bert, normal in zip(bert_scores, normal_scores)]
+    
+    # Prepare table data: list of [Job ID, BERT Score, Normal Score, Difference]
+    table_data = []
+    for i in range(len(job_ids)):
+        table_data.append([job_ids[i], bert_scores[i], normal_scores[i], diff_scores[i]])
+    
+    # Create a figure for the table only
+    fig, ax = plt.subplots(figsize=(10, len(job_ids)*0.5 + 2))
+    ax.axis('tight')
+    ax.axis('off')
+    
+    table = ax.table(cellText=table_data,
+                     colLabels=["Job ID", "BERT Score", "Normal Score", "Difference"],
+                     loc='center',
+                     cellLoc='center')
+    table.auto_set_font_size(False)
+    table.set_fontsize(10)
+    
+    buf = BytesIO()
+    plt.tight_layout()
+    plt.savefig(buf, format="png")
+    plt.close(fig)
+    buf.seek(0)
+    return StreamingResponse(buf, media_type="image/png")
+

@@ -10,7 +10,7 @@ import Loading from "../../components/public/Loading";
 const SeekerJobList = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [jobFilter, setJobFilter] = useState("all");
+  const [jobFilter, setJobFilter] = useState("recommended");
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const { token } = useSelector((state) => state.auth);
