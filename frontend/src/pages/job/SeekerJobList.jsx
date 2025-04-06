@@ -10,7 +10,7 @@ import Loading from "../../components/public/Loading";
 const SeekerJobList = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [jobFilter, setJobFilter] = useState("all");
+  const [jobFilter, setJobFilter] = useState("recommended");
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const { token } = useSelector((state) => state.auth);
@@ -21,20 +21,25 @@ const SeekerJobList = () => {
       setLoading(true);
       try {
         let response;
-
         if (jobFilter === "recommended") {
           response = await jobService.getMatchingJobs(token);
+          // For matching jobs, our endpoint returns { success: true, jobs: [...] }
+          if (response.success && response.jobs && Array.isArray(response.jobs)) {
+            setJobs(response.jobs);
+          } else {
+            setJobs([]);
+          }
         } else {
           response = await jobService.getAllJobs();
-        }
-
-        if (response.success) {
-          setJobs(response.message || response.jobs);
-        } else {
-          setJobs([]);
+          // For all jobs, our endpoint returns { success: true, jobs: [...] }
+          if (response.success && response.jobs && Array.isArray(response.jobs)) {
+            setJobs(response.jobs);
+          } else {
+            setJobs([]);
+          }
         }
       } catch (error) {
-        console.error("Error Fetching jobs.", error);
+        console.error("Error fetching jobs.", error);
         setJobs([]);
       }
       setLoading(false);
@@ -43,19 +48,21 @@ const SeekerJobList = () => {
     fetchJobs();
   }, [jobFilter, token]);
 
-  // Handle Search
-  const filteredJobs = jobs.filter((job) =>
-    job.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter jobs based on search term.
+  // Use top-level jobTitle if available; otherwise, fallback to the nested job.jobTitle.
+  const filteredJobs = jobs.filter((job) => {
+    const title = job.jobTitle || (job.job && job.job.jobTitle) || "";
+    return title.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
-  // Handle Card Click to Navigate to the Job Details Page
+  // Handle navigation when a job card is clicked.
+  // Use the nested job._id if available.
   const handleJobClick = (job) => {
-    // Ensure match_percentage is properly formatted
-    const matchPercentage = job.match_percentage
-      ? job.match_percentage.toFixed(2)
+    const jobId = job.job ? job.job._id : job._id;
+    const matchPercentage = job.overall_match_percentage
+      ? job.overall_match_percentage.toFixed(2)
       : "0.00";
-    // Navigate with jobId and match percentage in the URL
-    navigate(`/job/${job._id}/${matchPercentage}`);
+    navigate(`/job/${jobId}/${matchPercentage}`);
   };
 
   return (
@@ -98,7 +105,7 @@ const SeekerJobList = () => {
           </div>
         ) : (
           <p className="text-red-600 text-center mt-10 font-semibold text-xl">
-            - Sorry Currently No Jobs Found -
+            - Sorry, Currently No Jobs Found -
           </p>
         )}
       </div>

@@ -7,11 +7,10 @@ const JobSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    companyName: {
-      type: String,
-    },
-    companyLogo: {
-      type: String,
+    company: { 
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
+      required: true,
     },
     jobTitle: {
       type: String,

@@ -60,16 +60,19 @@ const JobDetails = () => {
       <div className="flex justify-between space-x-4 mb-4">
         <div className="flex items-center gap-5 ">
           <img
-            src={job.companyLogo}
+            src={job.company.logo}
             alt={job.companyName}
             className="w-24 h-24 rounded-lg shadow-2xl"
           />
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
               {job.jobTitle}
             </h3>
             <p className="text-gray-600 dark:text-gray-400">
-              {job.companyName}
+              {job.company.companyName} | {job.company.location}
+            </p>
+            <p className="text-gray-600 dark:text-gray-400">
+              {job.company.phone}
             </p>
           </div>
         </div>

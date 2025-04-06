@@ -19,9 +19,7 @@ const JobUpdate = () => {
     applicationDeadline: "",
     jobDescription: "",
     qualifications: "",
-    jobResponsibilities: "",
-    companyName: "",
-    companyLogo: "",
+    jobResponsibilities: ""
   });
 
   // Fetch Existing Job Details
@@ -115,15 +113,6 @@ const JobUpdate = () => {
           <div className="flex gap-4">
             <div className="flex flex-col w-full gap-4">
               <div>
-                <Label className="mb-1">Company Name</Label>
-                <TextInput
-                  name="companyName"
-                  value={jobData.companyName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
                 <Label className="mb-1">Job Title</Label>
                 <TextInput
                   name="jobTitle"
@@ -184,15 +173,6 @@ const JobUpdate = () => {
               </div>
             </div>
             <div className="flex flex-col w-full gap-4">
-              <div>
-                <Label className="mb-1">Company Logo URL</Label>
-                <TextInput
-                  name="companyLogo"
-                  value={jobData.companyLogo}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
               <div>
                 <Label className="mb-1">Job Description</Label>
                 <Textarea

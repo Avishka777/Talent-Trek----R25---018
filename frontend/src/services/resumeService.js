@@ -55,7 +55,7 @@ const resumeService = {
   getMatchingResumes: async (jodId, token) => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}resume/match_candidates/${jodId}`,
+        `${import.meta.env.VITE_API_BASE_URL}resume/match/candidates/${jodId}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
