@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TextInput, Label, Spinner } from "flowbite-react";
+import { TextInput, Label, Spinner, Button } from "flowbite-react";
 import Swal from "sweetalert2";
 import DashboardLayout from "../../components/dashboard/DashboardLayout";
 import companyService from "../../services/companyService";
@@ -10,7 +10,7 @@ export default function CompanyDetails() {
     companyName: "",
     location: "",
     phone: "",
-    logo: null, 
+    logo: null,
   });
   const [loading, setLoading] = useState(false);
   const [isCompanyCreated, setIsCompanyCreated] = useState(false);
@@ -68,11 +68,10 @@ export default function CompanyDetails() {
 
     try {
       setLoading(true);
-      let response;
       if (isCompanyCreated) {
-        response = await companyService.updateCompany(formData, token);
+        await companyService.updateCompany(formData, token);
       } else {
-        response = await companyService.createCompany(formData, token);
+        await companyService.createCompany(formData, token);
       }
 
       Swal.fire({
@@ -97,17 +96,16 @@ export default function CompanyDetails() {
 
   return (
     <DashboardLayout>
-      <h2 className="text-2xl mb-3 text-center font-serif text-orange-500">
+      <h2 className="text-2xl font-semibold mb-4 text-cyan-600">
         {isCompanyCreated ? "Update Company Details" : "Create Company"}
       </h2>
-      <hr className="shadow-lg mb-4 w-full bg-gray-300" />
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Left column for form */}
         <div className="w-full md:w-1/2">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="mb-4 w-full flex flex-col">
-              <Label value="Company Name" />
+              <Label value="Company Name" className="mb-1" />
               <TextInput
                 name="companyName"
                 value={companyDetails.companyName}
@@ -131,7 +129,7 @@ export default function CompanyDetails() {
             </div>
 
             <div className="mb-4">
-              <Label value="Phone Number" />
+              <Label value="Phone Number" className="mb-1" />
               <TextInput
                 name="phone"
                 value={companyDetails.phone}
@@ -143,19 +141,20 @@ export default function CompanyDetails() {
             </div>
 
             <div className="mb-4">
-              <Label value="Logo" />
+              <Label value="Logo" className="mb-1" />
               <input
                 type="file"
                 name="logo"
                 onChange={handleFileChange}
-                className="w-full mt-1 border rounded-md bg-slate-100"
+                className="w-full mt-1 border rounded-md dark:bg-slate-500"
               />
             </div>
-            <div>
-              <button
+            <div className="flex ">
+              <Button
+                gradientMonochrome="info"
                 type="submit"
+                className="w-full flex mt-4"
                 disabled={loading}
-                className="w-full bg-orange-500 hover:bg-orange-600 p-2 rounded-lg text-white font-semibold shadow-md transition-all duration-300 mt-4"
               >
                 {loading ? (
                   <Spinner size="sm" />
@@ -164,7 +163,7 @@ export default function CompanyDetails() {
                 ) : (
                   "Create Company"
                 )}
-              </button>
+              </Button>
             </div>
           </form>
         </div>
