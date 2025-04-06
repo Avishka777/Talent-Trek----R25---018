@@ -13,6 +13,7 @@ import RecruiterJobList from "./pages/dashboard/RecruiterJobList";
 import MyProfile from "./pages/auth/MyProfile";
 import JobUpdate from "./pages/job/JobUpdate";
 import ProtectedRoute from "./components/public/ProtectedRoute";
+import CompanyDetails from "./pages/company/CompanyDetails";
 
 function Layout() {
   const location = useLocation();
@@ -37,6 +38,7 @@ function Layout() {
 
         {/* Protected Recruiter Routes */}
         <Route element={<ProtectedRoute allowedRoles={["Recruiter"]} />}>
+          <Route path="/dashboard/company/details" element={<CompanyDetails />} />
           <Route path="/dashboard/job/create" element={<JobCreate />} />
           <Route path="/dashboard/job/update/:jobId" element={<JobUpdate />} />
           <Route path="/dashboard/resume/analyse" element={<ResumeAnalyse />} />

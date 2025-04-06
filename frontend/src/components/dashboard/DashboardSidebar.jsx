@@ -9,6 +9,7 @@ export function DashboardSidebar() {
   const location = useLocation();
 
   const menuItems = [
+    { name: "Company Details", path: "/dashboard/company/details", icon: MdLibraryAdd },
     { name: "Add Job", path: "/dashboard/job/create", icon: MdLibraryAdd },
     { name: "My Jobs", path: `/dashboard/jobs`, icon: IoFileTrayFull },
     { name: "Resume Analyse", path: "/dashboard/resume/analyse", icon: MdAnalytics },
