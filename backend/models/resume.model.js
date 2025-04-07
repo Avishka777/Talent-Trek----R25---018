@@ -137,7 +137,9 @@ const ResumeSchema = new mongoose.Schema(
     ],
     awards: [
       {
-        type: String,
+        year: { type: Number },
+        title: { type: String },
+        description: { type: String },
       },
     ],
     references: [

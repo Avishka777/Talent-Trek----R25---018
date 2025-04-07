@@ -164,11 +164,7 @@ const ResumeAnalyse = () => {
                         </div>
                         <div>
                           <strong>Summary:</strong> {candidate.summary_score}% *
-                          0.20 Weight
-                        </div>
-                        <div>
-                          <strong>Qualifications:</strong>{" "}
-                          {candidate.qualifications_score}% * 0.15 Weight
+                          0.35 Weight
                         </div>
                       </div>
                     }

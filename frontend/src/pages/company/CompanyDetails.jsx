@@ -75,11 +75,11 @@ export default function CompanyDetails() {
       }
 
       Swal.fire({
-        icon: "success",
         title: `Company ${isCompanyCreated ? "Updated" : "Created"}!`,
         text: `Your company details have been ${
           isCompanyCreated ? "updated" : "created"
         } successfully.`,
+        confirmButtonColor: "#28a0b5",
       });
       // Refetch the company details after create/update
       fetchCompanyDetails();

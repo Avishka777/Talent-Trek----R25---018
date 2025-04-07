@@ -11,6 +11,8 @@ from io import BytesIO
 from difflib import SequenceMatcher
 import pymongo
 from pymongo import MongoClient
+from pydantic import BaseModel
+from typing import Optional
 
 # ----------------------
 # MongoDB Connection
@@ -29,6 +31,23 @@ model = BertModel.from_pretrained('bert-base-uncased')
 
 # Create API Router instance
 router = APIRouter()
+
+# ----------------------
+# Request Models
+# ----------------------
+class CustomWeights(BaseModel):
+    experience_score: Optional[float] = 0.25
+    skills_score: Optional[float] = 0.25
+    profession_score: Optional[float] = 0.15
+    summary_score: Optional[float] = 0.35
+
+class MatchJobsRequest(BaseModel):
+    resume_id: str
+    weights: Optional[CustomWeights] = None
+
+class MatchResumesRequest(BaseModel):
+    job_id: str
+    weights: Optional[CustomWeights] = None
 
 # ----------------------
 # Helper Functions
@@ -97,20 +116,42 @@ def get_job_qualification_text(job: dict) -> str:
         return " ".join(job['qualifications'])
     return ""
 
-def match_resume_to_job(user: dict, job: dict) -> dict:
+def match_resume_to_job(user: dict, job: dict, weights: dict = None) -> dict:
     """
     Computes matching scores between a user's resume and a job document based on:
       1. Experience
       2. Skills
       3. Profession
-      4. Summary vs. Job Description
-      5. Qualifications vs. User's educations, certifications, and experiences
+      4. Summary (user's summary combined with qualifications)
+    
+    Default weights (if not customized) are:
+      - Experience: 0.25
+      - Skills: 0.25
+      - Profession: 0.15
+      - Summary: 0.35
     """
+    default_weights = {
+        "experience": 0.25,
+        "skills": 0.25,
+        "profession": 0.15,
+        "summary": 0.35
+    }
+    # If custom weights are provided, update defaults using mapping from custom keys.
+    if weights:
+        default_weights.update({
+            "experience": weights.experience_score if weights.experience_score is not None else default_weights["experience"],
+            "skills": weights.skills_score if weights.skills_score is not None else default_weights["skills"],
+            "profession": weights.profession_score if weights.profession_score is not None else default_weights["profession"],
+            "summary": weights.summary_score if weights.summary_score is not None else default_weights["summary"],
+        })
+
+    # Experience Score
     required_experience = parse_experience(job.get('workExperience', '0'))
     user_experience = user.get('totalExperienceYears', 0)
     experience_score = 100 if user_experience >= required_experience and required_experience > 0 else (
         user_experience / required_experience * 100 if required_experience > 0 else 100)
 
+    # Skills Score
     job_skills = [skill.lower() for skill in job.get('skills', [])]
     user_skills = [skill.lower() for skill in user.get('skills', [])]
     if job_skills:
@@ -119,28 +160,21 @@ def match_resume_to_job(user: dict, job: dict) -> dict:
     else:
         skills_score = 100
 
+    # Profession Score using BERT-based similarity
     profession_similarity = calculate_bert_similarity(user.get('profession', ""), job.get('jobTitle', ""))
     profession_score = profession_similarity * 100
 
-    summary_similarity = calculate_bert_similarity(user.get('summary', ""), job.get('jobDescription', ""))
+    # Summary Score: combine user's summary with qualifications text
+    combined_user_text = (user.get('summary', "") + " " + get_qualification_text(user)).strip()
+    summary_similarity = calculate_bert_similarity(combined_user_text, job.get('jobDescription', ""))
     summary_score = summary_similarity * 100
 
-    user_qual_text = get_qualification_text(user)
-    job_qual_text = get_job_qualification_text(job)
-    qual_similarity = calculate_bert_similarity(user_qual_text, job_qual_text)
-    qual_score = qual_similarity * 100
-
-    weight_experience = 0.25
-    weight_skills = 0.25
-    weight_profession = 0.15
-    weight_summary = 0.20
-    weight_qualifications = 0.15
-
-    overall_score = (experience_score * weight_experience +
-                     skills_score * weight_skills +
-                     profession_score * weight_profession +
-                     summary_score * weight_summary +
-                     qual_score * weight_qualifications)
+    overall_score = (
+        experience_score * default_weights["experience"] +
+        skills_score * default_weights["skills"] +
+        profession_score * default_weights["profession"] +
+        summary_score * default_weights["summary"]
+    )
 
     return {
         "job_id": str(job.get("_id")),
@@ -150,20 +184,40 @@ def match_resume_to_job(user: dict, job: dict) -> dict:
         "skills_score": round(skills_score, 2),
         "profession_score": round(profession_score, 2),
         "summary_score": round(summary_score, 2),
-        "qualifications_score": round(qual_score, 2),
         "overall_match_percentage": round(overall_score, 2)
     }
 
-def match_resume_to_job_normal(user: dict, job: dict) -> dict:
+def match_resume_to_job_normal(user: dict, job: dict, weights: dict = None) -> dict:
     """
-    Computes matching scores between a resume and a job using a simple text matching approach
-    (without BERT) for text fields. Experience and skills matching remain the same.
+    Computes matching scores between a resume and a job using a simple text matching approach.
+    Uses combined user text (summary + qualifications) against job description for summary matching.
+    Default weights are:
+      - Experience: 0.25
+      - Skills: 0.25
+      - Profession: 0.15
+      - Summary: 0.35
     """
+    default_weights = {
+        "experience": 0.25,
+        "skills": 0.25,
+        "profession": 0.15,
+        "summary": 0.35
+    }
+    if weights:
+        default_weights.update({
+            "experience": weights.experience_score if weights.experience_score is not None else default_weights["experience"],
+            "skills": weights.skills_score if weights.skills_score is not None else default_weights["skills"],
+            "profession": weights.profession_score if weights.profession_score is not None else default_weights["profession"],
+            "summary": weights.summary_score if weights.summary_score is not None else default_weights["summary"],
+        })
+
+    # Experience Score
     required_experience = parse_experience(job.get('workExperience', '0'))
     user_experience = user.get('totalExperienceYears', 0)
     experience_score = 100 if user_experience >= required_experience and required_experience > 0 else (
         user_experience / required_experience * 100 if required_experience > 0 else 100)
 
+    # Skills Score
     job_skills = [skill.lower() for skill in job.get('skills', [])]
     user_skills = [skill.lower() for skill in user.get('skills', [])]
     if job_skills:
@@ -172,28 +226,21 @@ def match_resume_to_job_normal(user: dict, job: dict) -> dict:
     else:
         skills_score = 100
 
+    # Profession Score using simple text matching
     profession_similarity = simple_similarity(user.get('profession', ""), job.get('jobTitle', ""))
     profession_score = profession_similarity * 100
 
-    summary_similarity = simple_similarity(user.get('summary', ""), job.get('jobDescription', ""))
+    # Summary Score using simple text matching
+    combined_user_text = (user.get('summary', "") + " " + get_qualification_text(user)).strip()
+    summary_similarity = simple_similarity(combined_user_text, job.get('jobDescription', ""))
     summary_score = summary_similarity * 100
 
-    user_qual_text = get_qualification_text(user)
-    job_qual_text = get_job_qualification_text(job)
-    qual_similarity = simple_similarity(user_qual_text, job_qual_text)
-    qual_score = qual_similarity * 100
-
-    weight_experience = 0.25
-    weight_skills = 0.25
-    weight_profession = 0.15
-    weight_summary = 0.20
-    weight_qualifications = 0.15
-
-    overall_score = (experience_score * weight_experience +
-                     skills_score * weight_skills +
-                     profession_score * weight_profession +
-                     summary_score * weight_summary +
-                     qual_score * weight_qualifications)
+    overall_score = (
+        experience_score * default_weights["experience"] +
+        skills_score * default_weights["skills"] +
+        profession_score * default_weights["profession"] +
+        summary_score * default_weights["summary"]
+    )
 
     return {
         "job_id": str(job.get("_id")),
@@ -203,33 +250,42 @@ def match_resume_to_job_normal(user: dict, job: dict) -> dict:
     }
 
 # ----------------------
-# Endpoints
+# Endpoints using POST
 # ----------------------
-@router.get("/match-jobs/{resume_id}")
-async def get_matching_jobs(resume_id: str):
+@router.post("/match-jobs")
+async def match_jobs_endpoint(request: MatchJobsRequest):
     """
-    Given a resume ID, compute and return matching percentages for all jobs using BERT.
+    Given a resume ID and optional custom weights, compute and return matching percentages for all jobs using the BERT-based approach.
     """
-    resume = resume_collection.find_one({"_id": ObjectId(resume_id)})
+    resume = resume_collection.find_one({"_id": ObjectId(request.resume_id)})
     if not resume:
         raise HTTPException(status_code=404, detail="Resume not found")
     jobs_cursor = job_collection.find()
     jobs = list(jobs_cursor)
     if not jobs:
         raise HTTPException(status_code=404, detail="No jobs found")
-    results = [match_resume_to_job(resume, job) for job in jobs]
+    
+    # If custom weights are provided, convert them to our matching function keys.
+    custom_weights = None
+    if request.weights:
+        custom_weights = {
+            "experience_score": request.weights.experience_score,
+            "skills_score": request.weights.skills_score,
+            "profession_score": request.weights.profession_score,
+            "summary_score": request.weights.summary_score
+        }
+    
+    results = [match_resume_to_job(resume, job, weights=request.weights) for job in jobs]
     results_sorted = sorted(results, key=lambda x: x["overall_match_percentage"], reverse=True)
     return {"matches": results_sorted}
 
-@router.get("/match-resumes/{job_id}")
-async def get_matching_resumes(job_id: str):
+@router.post("/match-resumes")
+async def match_resumes_endpoint(request: MatchResumesRequest):
     """
-    Given a job ID, fetch the job document and compute matching percentages
-    for all available resumes. Returns an object that includes, for each matching resume,
-    the resume's ID, the candidate's full name (from the users collection), user email,
-    resume.totalExperienceYears, resume.profession, resume.fileUrl, and matching scores.
+    Given a job ID and optional custom weights, fetch the job document and compute matching percentages for all available resumes.
+    Returns detailed matching information including candidate details.
     """
-    job = job_collection.find_one({"_id": ObjectId(job_id)})
+    job = job_collection.find_one({"_id": ObjectId(request.job_id)})
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
     
@@ -238,20 +294,14 @@ async def get_matching_resumes(job_id: str):
     if not resumes:
         raise HTTPException(status_code=404, detail="No resumes found")
     
-    # Reference to the users collection
     users_collection = db["users"]
-    
-    # Compute matching scores and add resume-specific fields
     matches = []
     for resume in resumes:
-        # Calculate matching scores
-        match_data = match_resume_to_job(resume, job)
-        # Remove redundant job details from match_data if desired
+        match_data = match_resume_to_job(resume, job, weights=request.weights)
         match_data.pop("job_id", None)
         match_data.pop("jobTitle", None)
         match_data.pop("companyName", None)
         
-        # Fetch user document to get additional details
         user_id = resume.get("userId")
         if user_id:
             user = users_collection.find_one({"_id": user_id})
@@ -261,23 +311,17 @@ async def get_matching_resumes(job_id: str):
             full_name = ""
             user_email = ""
         
-        # Add resume and user-specific fields to match_data
         match_data["resume_id"] = str(resume.get("_id"))
-        match_data["resume_name"] = full_name  # Candidate's full name from the users collection
-        match_data["email"] = user_email        # User's email
+        match_data["resume_name"] = full_name
+        match_data["email"] = user_email
         match_data["totalExperienceYears"] = resume.get("totalExperienceYears", 0)
         match_data["profession"] = resume.get("profession", "")
         match_data["fileUrl"] = resume.get("fileUrl", "")
         
         matches.append(match_data)
     
-    # Sort the results by overall match percentage in descending order
     matches_sorted = sorted(matches, key=lambda x: x["overall_match_percentage"], reverse=True)
-    
-    return {
-        "matches": matches_sorted
-    }
-
+    return {"matches": matches_sorted}
 
 @router.get("/plot-matching-comparison-graph/{resume_id}")
 async def plot_matching_comparison_graph(resume_id: str):
@@ -304,9 +348,8 @@ async def plot_matching_comparison_graph(resume_id: str):
         normal_result = match_resume_to_job_normal(resume, job)
         bert_scores.append(bert_result["overall_match_percentage"])
         normal_scores.append(normal_result["overall_match_percentage"])
-        job_ids.append(str(job.get("_id")))  
+        job_ids.append(str(job.get("_id"))[:15])
     
-    # Plotting the line chart
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.plot(job_ids, bert_scores, marker='o', label="BERT Matching")
     ax.plot(job_ids, normal_scores, marker='o', label="Normal Text Matching")
@@ -324,7 +367,6 @@ async def plot_matching_comparison_graph(resume_id: str):
     buf.seek(0)
     return StreamingResponse(buf, media_type="image/png")
 
-
 @router.get("/plot-matching-comparison-table/{resume_id}")
 async def plot_matching_comparison_table(resume_id: str):
     """
@@ -332,7 +374,8 @@ async def plot_matching_comparison_table(resume_id: str):
       - BERT-based matching
       - Simple (normal) text matching
     Generates a table showing:
-      - Job ID (partial)
+      - Job ID
+      - Job Title
       - BERT Matching Score
       - Normal Matching Score
       - Difference between the scores.
@@ -346,6 +389,7 @@ async def plot_matching_comparison_table(resume_id: str):
         raise HTTPException(status_code=404, detail="No jobs found")
     
     job_ids = []
+    job_titles = []
     bert_scores = []
     normal_scores = []
     
@@ -354,23 +398,21 @@ async def plot_matching_comparison_table(resume_id: str):
         normal_result = match_resume_to_job_normal(resume, job)
         bert_scores.append(bert_result["overall_match_percentage"])
         normal_scores.append(normal_result["overall_match_percentage"])
-        job_ids.append(str(job.get("_id")))
+        job_ids.append(str(job.get("_id"))[:15])
+        job_titles.append(job.get("jobTitle", ""))
     
-    # Calculate the difference between BERT and Normal matching scores
     diff_scores = [round(bert - normal, 2) for bert, normal in zip(bert_scores, normal_scores)]
     
-    # Prepare table data: list of [Job ID, BERT Score, Normal Score, Difference]
     table_data = []
     for i in range(len(job_ids)):
-        table_data.append([job_ids[i], bert_scores[i], normal_scores[i], diff_scores[i]])
+        table_data.append([job_ids[i], job_titles[i], bert_scores[i], normal_scores[i], diff_scores[i]])
     
-    # Create a figure for the table only
     fig, ax = plt.subplots(figsize=(10, len(job_ids)*0.5 + 2))
     ax.axis('tight')
     ax.axis('off')
     
     table = ax.table(cellText=table_data,
-                     colLabels=["Job ID", "BERT Score", "Normal Score", "Difference"],
+                     colLabels=["Job ID", "Job Title", "BERT Score", "Normal Score", "Difference"],
                      loc='center',
                      cellLoc='center')
     table.auto_set_font_size(False)
@@ -382,4 +424,3 @@ async def plot_matching_comparison_table(resume_id: str):
     plt.close(fig)
     buf.seek(0)
     return StreamingResponse(buf, media_type="image/png")
-
