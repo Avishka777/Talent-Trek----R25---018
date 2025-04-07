@@ -148,13 +148,31 @@ exports.getResumeByUserId = async (req, res) => {
 // Get Mathing Candidates Details ----------------------------------------------------
 exports.matchCandidates = async (req, res) => {
   try {
+    // Extract the jobId from request parameters
     const { jobId } = req.params;
     
-    // Build the FastAPI URL for matching resumes
-    const fastApiUrl = `${process.env.FAST_API_BACKEND}match-resumes/${jobId}`;
-    
-    // Call FastAPI service using a GET request
-    const fastApiResponse = await axios.get(fastApiUrl);
+    // Define default weights
+    const defaultWeights = {
+      experience_score: 0.45,
+      skills_score: 0.05,
+      profession_score: 0.15,
+      summary_score: 0.35
+    };
+
+    // Use provided weights from req.body if available, otherwise defaultWeights
+    const weights = req.body && req.body.weights ? req.body.weights : defaultWeights;
+
+    // Build the payload with job_id and weights
+    const payload = {
+      job_id: jobId,
+      weights: weights
+    };
+
+    // Build the FastAPI URL for matching resumes (POST endpoint)
+    const fastApiUrl = `${process.env.FAST_API_BACKEND}match-resumes`;
+
+    // Call the FastAPI service using a POST request with the payload
+    const fastApiResponse = await axios.post(fastApiUrl, payload);
     
     return res.json(fastApiResponse.data);
   } catch (error) {

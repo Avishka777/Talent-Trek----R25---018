@@ -12,13 +12,16 @@ exports.createJob = async (req, res) => {
     if (!recruiter || recruiter.profileType !== "Recruiter") {
       return res.status(403).json({ success: false, message: "Unauthorized" });
     }
-    
+
     // Find the company associated with this recruiter
     const company = await Company.findOne({ userId: recruiter._id });
     if (!company) {
       return res
         .status(400)
-        .json({ success: false, message: "Company not found for the recruiter" });
+        .json({
+          success: false,
+          message: "Company not found for the recruiter",
+        });
     }
 
     // Create a new job linked to the company (by storing company._id)
@@ -27,10 +30,12 @@ exports.createJob = async (req, res) => {
       company: company._id,
       ...req.body,
     });
-    
+
     await newJob.save();
 
-    res.status(201).json({ success: true, message: "Job Created.", job: newJob });
+    res
+      .status(201)
+      .json({ success: true, message: "Job Created.", job: newJob });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -46,7 +51,6 @@ exports.getJobs = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 
 // Get Job By ID ---------------------------------------------------------------------
 exports.getJobById = async (req, res) => {
@@ -191,11 +195,23 @@ exports.matchJobs = async (req, res) => {
         .json({ success: false, message: "Resume Not Found." });
     }
 
-    const fastApiUrl = `${process.env.FAST_API_BACKEND}match-jobs/${resume._id}`;
-    const fastApiResponse = await axios.get(fastApiUrl);
+    // Build the payload to send to the FastAPI endpoint
+    const payload = {
+      resume_id: resume._id,
+      weights: {
+        experience_score: 0.25,
+        skills_score: 0.25,
+        profession_score: 0.25,
+        summary_score: 0.25,
+      },
+    };
+
+    // Use the POST endpoint (without embedding the resume_id in the URL)
+    const fastApiUrl = `${process.env.FAST_API_BACKEND}match-jobs`;
+    const fastApiResponse = await axios.post(fastApiUrl, payload);
     const rawMatches = fastApiResponse.data.matches;
 
-    // Enrich each match with full job info including populated company details
+    // Enrich each match with full job details (populated company info)
     const enrichedMatches = await Promise.all(
       rawMatches.map(async (match) => {
         const jobData = await Job.findById(match.job_id)
@@ -203,16 +219,14 @@ exports.matchJobs = async (req, res) => {
           .lean();
 
         return {
-          // Nest the full job details as in getAllJobs
           job: jobData,
-          // Set top-level properties so that the JobCard can display them consistently
           jobTitle: jobData.jobTitle,
           companyName: jobData.company ? jobData.company.companyName : "",
-          // Include matching scores if available from the matching API
           experience_score: match.experience_score,
           skills_score: match.skills_score,
           profession_score: match.profession_score,
           summary_score: match.summary_score,
+          // If qualifications_score is still returned, include it; otherwise, omit it.
           qualifications_score: match.qualifications_score,
           overall_match_percentage: match.overall_match_percentage,
         };

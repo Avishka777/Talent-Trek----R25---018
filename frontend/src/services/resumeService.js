@@ -52,11 +52,20 @@ const resumeService = {
   },
 
   // Get Matching Jobs for User
-  getMatchingResumes: async (jodId, token) => {
+  getMatchingResumes: async (jobId, token, weights) => {
     try {
+      const payload = {
+        job_id: jobId,
+        weights: weights || {
+          experience_score: 0.25,
+          skills_score: 0.25,
+          profession_score: 0.25,
+          summary_score: 0.25,
+        },
+      };
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}resume/match/candidates/${jodId}`,
-        {},
+        `${import.meta.env.VITE_API_BASE_URL}resume/match/candidates/${jobId}`,
+        payload,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

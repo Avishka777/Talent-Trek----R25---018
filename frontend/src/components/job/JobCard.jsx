@@ -60,7 +60,6 @@ export default function JobCard({ job }) {
                   <span>Skills: {job.skills_score}%</span>
                   <span>Profession: {job.profession_score}%</span>
                   <span>Summary: {job.summary_score}%</span>
-                  <span>Qualifications: {job.qualifications_score}%</span>
                 </div>
               }
             >
