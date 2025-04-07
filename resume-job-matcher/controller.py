@@ -304,7 +304,7 @@ async def plot_matching_comparison_graph(resume_id: str):
         normal_result = match_resume_to_job_normal(resume, job)
         bert_scores.append(bert_result["overall_match_percentage"])
         normal_scores.append(normal_result["overall_match_percentage"])
-        job_ids.append(str(job.get("_id")))  
+        job_ids.append(str(job.get("_id"))[:15])  
     
     # Plotting the line chart
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -332,7 +332,8 @@ async def plot_matching_comparison_table(resume_id: str):
       - BERT-based matching
       - Simple (normal) text matching
     Generates a table showing:
-      - Job ID (partial)
+      - Job ID
+      - Job Title
       - BERT Matching Score
       - Normal Matching Score
       - Difference between the scores.
@@ -346,6 +347,7 @@ async def plot_matching_comparison_table(resume_id: str):
         raise HTTPException(status_code=404, detail="No jobs found")
     
     job_ids = []
+    job_titles = []
     bert_scores = []
     normal_scores = []
     
@@ -354,15 +356,16 @@ async def plot_matching_comparison_table(resume_id: str):
         normal_result = match_resume_to_job_normal(resume, job)
         bert_scores.append(bert_result["overall_match_percentage"])
         normal_scores.append(normal_result["overall_match_percentage"])
-        job_ids.append(str(job.get("_id")))
+        job_ids.append(str(job.get("_id"))[:15])
+        job_titles.append(job.get("jobTitle", ""))
     
     # Calculate the difference between BERT and Normal matching scores
     diff_scores = [round(bert - normal, 2) for bert, normal in zip(bert_scores, normal_scores)]
     
-    # Prepare table data: list of [Job ID, BERT Score, Normal Score, Difference]
+    # Prepare table data: list of [Job ID, Job Title, BERT Score, Normal Score, Difference]
     table_data = []
     for i in range(len(job_ids)):
-        table_data.append([job_ids[i], bert_scores[i], normal_scores[i], diff_scores[i]])
+        table_data.append([job_ids[i], job_titles[i], bert_scores[i], normal_scores[i], diff_scores[i]])
     
     # Create a figure for the table only
     fig, ax = plt.subplots(figsize=(10, len(job_ids)*0.5 + 2))
@@ -370,7 +373,7 @@ async def plot_matching_comparison_table(resume_id: str):
     ax.axis('off')
     
     table = ax.table(cellText=table_data,
-                     colLabels=["Job ID", "BERT Score", "Normal Score", "Difference"],
+                     colLabels=["Job ID", "Job Title", "BERT Score", "Normal Score", "Difference"],
                      loc='center',
                      cellLoc='center')
     table.auto_set_font_size(False)
