@@ -3,16 +3,14 @@ import { HiArrowSmRight } from "react-icons/hi";
 import { MdAnalytics,MdLibraryAdd } from "react-icons/md";
 import { IoFileTrayFull } from "react-icons/io5";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaBuilding } from "react-icons/fa6";
 
 export function DashboardSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
   const menuItems = [
-    { name: "Company Details", path: "/dashboard/company/details", icon: FaBuilding },
     { name: "Add Job", path: "/dashboard/job/create", icon: MdLibraryAdd },
-    { name: "My Jobs", path: `/dashboard/jobs`, icon: IoFileTrayFull },
+    { name: "My Jobs", path: "/dashboard/jobs/:userId", icon: IoFileTrayFull },
     { name: "Resume Analyse", path: "/dashboard/resume/analyse", icon: MdAnalytics },
     { name: "Sign In", path: "/sign-in", icon: HiArrowSmRight },
   ];

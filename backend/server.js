@@ -1,26 +1,34 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const connectDB = require("./config/db");
-const authRoutes = require("./routes/user.route");
-const resumeRoutes = require("./routes/resume.route");
-const jobRoutes = require("./routes/job.route");
-const companyRoutes = require("./routes/company.router");
+const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const cron = require('node-cron');
+const jobsRouter = require('./routers/jobs.router');  // Ensure the path matches the actual file location
+
+// Import the function to run the scraper
+const { scrapeAndSave } = require('./controllers/jobs.controller');
+
+dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(express.json());
 app.use(cors());
 
-// Connect Database
-connectDB();
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => {
+        console.log('Connected to MongoDB ✅');
+        // Schedule the scraper to run daily at midnight
+        cron.schedule('0 0 * * *', () => {
+            console.log('Running daily job scrape at 00:00');
+            scrapeAndSave();
+        });
+    })
+    .catch(err => console.error('Could not connect to MongoDB ❌', err));
 
-// Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/resume", resumeRoutes);
-app.use("/api/job", jobRoutes);
-app.use("/api/company", companyRoutes);
+app.use('/api/jobs', jobsRouter);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT} 📊 🚀`));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

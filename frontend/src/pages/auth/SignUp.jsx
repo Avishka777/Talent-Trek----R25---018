@@ -1,19 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { HiEye, HiEyeOff } from "react-icons/hi";
-import { Link, useNavigate } from "react-router-dom";
-import { Alert, Button, Label } from "flowbite-react";
-import { TextInput, Select, Spinner } from "flowbite-react";
-import Swal from "sweetalert2";
+import { Button, Label, Spinner } from "flowbite-react";
+import { TextInput, Select, Alert } from "flowbite-react";
 import logo from "../../assets/public/logo.png";
-import userService from "../../services/userService";
 
-const SignUp = () => {
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordMatchError, setPasswordMatchError] = useState("");
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+export default function SignUp() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -22,11 +14,16 @@ const SignUp = () => {
     profileType: "Job Seeker",
   });
 
-  // Handle Input Field Changes and Update State
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordMatchError, setPasswordMatchError] = useState("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
-    // Validate Password Match in Real Time
+
+    // Only validate password match after form submission
     if (formSubmitted && (id === "confirmPassword" || id === "password")) {
       setPasswordMatchError(
         value !== formData.password ? "Passwords do not match!" : ""
@@ -34,49 +31,16 @@ const SignUp = () => {
     }
   };
 
-  // Handle Form Submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setFormSubmitted(true);
+
     if (formData.password !== formData.confirmPassword) {
       setPasswordMatchError("Passwords do not match!");
       return;
     }
-    setLoading(true);
-    try {
-      const response = await userService.register({
-        fullName: formData.fullName,
-        email: formData.email,
-        password: formData.password,
-        profileType: formData.profileType,
-      });
-      if (!response.success) {
-        return Swal.fire({
-          title: "Registration Failed",
-          text: response.message || "Something Went Wrong.",
-          confirmButtonText: "OK",
-          confirmButtonColor: "red",
-        });
-      }
-      setLoading(false);
-      Swal.fire({
-        title: "Account Created",
-        text: "Your Account Has Been Successfully Created.",
-        confirmButtonText: "OK",
-        confirmButtonColor: "#28a0b5",
-      }).then(() => {
-        navigate("/sign-in");
-      });
-    } catch (error) {
-      Swal.fire({
-        title: "Registration Failed",
-        text: error.message || "Something Went Wrong.",
-        confirmButtonText: "OK",
-        confirmButtonColor: "red",
-      });
-    } finally {
-      setLoading(false);
-    }
+
+    console.log("Form Submitted", formData);
   };
 
   return (
@@ -86,7 +50,7 @@ const SignUp = () => {
         <div className="flex flex-col md:w-1/2 items-center justify-center mx-8">
           <img src={logo} className="h-28 sm:h-48" alt="Company Logo" />
           <h1 className="text-3xl mt-5 text-center font-serif text-cyan-500">
-            TALENT TREK
+            JOB HORIZEN
           </h1>
           <p className="text-lg mt-5 text-center font-serif">
             - Revolutionizing IT recruitment through AI-driven precision,
@@ -137,6 +101,7 @@ const SignUp = () => {
               >
                 <option value="Job Seeker">Job Seeker</option>
                 <option value="Recruiter">Recruiter</option>
+                <option value="Agent">Agent</option>
               </Select>
             </div>
 
@@ -198,12 +163,10 @@ const SignUp = () => {
               </div>
             </div>
 
-            {/* Password Match Error */}
+            {/* Password Match Error (only shown after clicking Sign Up) */}
             {formSubmitted && passwordMatchError && (
-              <Alert color="failure" className="mt-4 py-2">
-                <p className="text-red-700 font-semibold text-sm">
-                  {passwordMatchError}
-                </p>
+              <Alert color="failure">
+                <p className="text-red-500 text-sm">{passwordMatchError}</p>
               </Alert>
             )}
 
@@ -211,10 +174,11 @@ const SignUp = () => {
             <Button
               gradientMonochrome="info"
               type="submit"
-              className="mt-2"
-              disabled={loading || !!passwordMatchError}
+              className="mt-4"
+              disabled={!!passwordMatchError}
             >
-              {loading ? <Spinner size="sm" /> : "Sign Up"}
+              <Spinner size="sm" />
+              <span className="pl-3">Sign Up</span>
             </Button>
           </form>
 
@@ -229,6 +193,4 @@ const SignUp = () => {
       </div>
     </div>
   );
-};
-
-export default SignUp;
+}

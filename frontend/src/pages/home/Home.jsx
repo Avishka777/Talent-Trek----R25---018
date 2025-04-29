@@ -7,21 +7,10 @@ import light from "../../assets/background/light.png";
 import dark from "../../assets/background/dark.png";
 import heroAnimation from "../../assets/animations/heroAnimation.json";
 
-const Home = () => {
+export default function Home() {
   const navigate = useNavigate();
   const { theme } = useSelector((state) => state.theme);
-  const user = useSelector((state) => state.auth.user);
-  const profileType = user?.profileType || "";
   const heroBg = theme === "dark" ? dark : light;
-
-  // CHanged Navigation Based on User Type
-  const handleNavigation = () => {
-    if (profileType === "Recruiter") {
-      navigate("/dashboard/jobs");
-    } else {
-      navigate("/resume-upload");
-    }
-  };
 
   return (
     <div className={theme}>
@@ -49,7 +38,7 @@ const Home = () => {
             <Button
               gradientMonochrome="info"
               size="lg"
-              onClick={handleNavigation}
+              onClick={() => navigate(`/resume-upload`)}
             >
               Get Started
             </Button>
@@ -166,6 +155,4 @@ const Home = () => {
       </div>
     </div>
   );
-};
-
-export default Home;
+}

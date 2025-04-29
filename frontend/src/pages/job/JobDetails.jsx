@@ -1,78 +1,51 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { Button, Card } from "flowbite-react";
-import { Briefcase, DollarSign, Clock } from "lucide-react";
-import { CalendarDays, SmilePlus, Smile } from "lucide-react";
-import Loading from "../../components/public/Loading";
-import jobService from "../../services/jobService";
+import { Briefcase, MapPin } from "lucide-react";
+import { DollarSign, Clock, CalendarDays } from "lucide-react";
 
-const JobDetails = () => {
-  const { jobId, matchPercentage } = useParams();
-  const [job, setJob] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const matchPercentageValue = parseFloat(matchPercentage) || 0;
-
-  // Fetch Job Details
-  useEffect(() => {
-    const fetchJobDetails = async () => {
-      try {
-        const response = await jobService.getJobById(jobId);
-        if (response.success) {
-          setJob(response.job);
-        } else {
-          setJob(null);
-        }
-      } catch (error) {
-        setJob(null);
-      }
-      setLoading(false);
-    };
-
-    fetchJobDetails();
-  }, [jobId]);
-
-  // Handle Loading
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <Loading />
-        <p className="text-gray-600 text-center mt-10 font-semibold text-xl">
-          Loading job details...
-        </p>
-      </div>
-    );
-  }
-
-  // Handle Job Not Found State
-  if (!job) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <p className="text-red-600 text-center font-semibold text-xl">
-          - Job Not Found -
-        </p>
-      </div>
-    );
-  }
+export default function JobDetails() {
+  const sampleJob = {
+    jobTitle: "Senior Software Engineer",
+    companyName: "Google Inc.",
+    companyLogo:
+      "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+    location: "San Francisco, CA / Remote",
+    salaryRange: "$120,000 - $150,000 / year",
+    employmentType: "Full-Time",
+    postedDate: "3 days ago",
+    applicationDeadline: "March 30, 2024",
+    descriptionSnippet:
+      "We are looking for a Senior Software Engineer to join our growing team. You'll be working with the latest technologies to build scalable applications.",
+    skills: ["React.js", "Node.js", "TypeScript", "GraphQL", "AWS"],
+    experience:
+      "5+ years in software development, preferably in a senior role.",
+    qualifications: [
+      "Bachelor’s degree in Computer Science or related field",
+      "Proficiency in JavaScript and backend development",
+      "Experience with cloud platforms (AWS, GCP)",
+    ],
+    responsibilities: [
+      "Design and implement scalable web applications",
+      "Collaborate with cross-functional teams",
+      "Write high-quality, maintainable code",
+    ],
+  };
 
   return (
     <Card className="w-full max-w-3xl shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 rounded-lg my-10 mx-auto">
       {/* Header */}
       <div className="flex justify-between space-x-4 mb-4">
-        <div className="flex items-center gap-5 ">
+        <div className="flex items-center gap-5">
           <img
-            src={job.company.logo}
-            alt={job.companyName}
-            className="w-24 h-24 rounded-lg shadow-2xl"
+            src={sampleJob.companyLogo}
+            alt={sampleJob.companyName}
+            className="w-24 h-24 rounded-full"
           />
           <div>
-            <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
-              {job.jobTitle}
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              {sampleJob.jobTitle}
             </h3>
             <p className="text-gray-600 dark:text-gray-400">
-              {job.company.companyName} | {job.company.location}
-            </p>
-            <p className="text-gray-600 dark:text-gray-400">
-              {job.company.phone}
+              {sampleJob.companyName}
             </p>
           </div>
         </div>
@@ -85,41 +58,30 @@ const JobDetails = () => {
 
       {/* Job Details */}
       <div className="space-y-2 text-gray-700 dark:text-gray-300">
-        {/* Show Match Percentage only if it's greater than 0 */}
-        {matchPercentageValue > 0 && (
-          <div className="flex items-center">
-            {matchPercentageValue > 50 ? (
-              <SmilePlus className="w-5 h-5 mr-2 text-green-500" />
-            ) : (
-              <Smile className="w-5 h-5 mr-2 text-yellow-500" />
-            )}
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Job Matching Percentage: {matchPercentageValue}%
-            </h3>
-          </div>
-        )}
-
+        <p className="flex items-center">
+          <MapPin className="w-5 h-5 mr-2 text-blue-500" /> {sampleJob.location}
+        </p>
         <p className="flex items-center">
           <DollarSign className="w-5 h-5 mr-2 text-green-500" />{" "}
-          {job.salaryRange}
+          {sampleJob.salaryRange}
         </p>
         <p className="flex items-center">
           <Briefcase className="w-5 h-5 mr-2 text-purple-500" />{" "}
-          {job.employmentType}
+          {sampleJob.employmentType}
         </p>
         <p className="flex items-center">
-          <Clock className="w-5 h-5 mr-2 text-yellow-500" /> Posted:{" "}
-          {new Date(job.createdAt).toISOString().split("T")[0]}
+          <Clock className="w-5 h-5 mr-2 text-yellow-500" />{" "}
+          {sampleJob.postedDate}
         </p>
         <p className="flex items-center">
           <CalendarDays className="w-5 h-5 mr-2 text-red-500" /> Deadline:{" "}
-          {new Date(job.applicationDeadline).toISOString().split("T")[0]}
+          {sampleJob.applicationDeadline}
         </p>
       </div>
 
-      {/* Description */}
+      {/* Description Snippet */}
       <p className="mt-4 text-gray-600 dark:text-gray-400">
-        {job.jobDescription}
+        {sampleJob.descriptionSnippet}
       </p>
 
       {/* Required Skills */}
@@ -128,7 +90,7 @@ const JobDetails = () => {
           Required Skills
         </h4>
         <ul className="flex flex-wrap mt-2 gap-2">
-          {job.skills.slice().map((skill, index) => (
+          {sampleJob.skills.map((skill, index) => (
             <span
               key={index}
               className="bg-blue-100 text-blue-600 px-2 py-1 rounded text-sm dark:bg-blue-900 dark:text-blue-300"
@@ -144,7 +106,9 @@ const JobDetails = () => {
         <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
           Work Experience
         </h4>
-        <p className="text-gray-600 dark:text-gray-400">{job.workExperience}</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          {sampleJob.experience}
+        </p>
       </div>
 
       {/* Qualifications */}
@@ -153,7 +117,7 @@ const JobDetails = () => {
           Qualifications
         </h4>
         <ul className="list-disc list-inside text-gray-600 dark:text-gray-400">
-          {job.qualifications.map((qualification, index) => (
+          {sampleJob.qualifications.map((qualification, index) => (
             <li key={index}>{qualification}</li>
           ))}
         </ul>
@@ -165,13 +129,11 @@ const JobDetails = () => {
           Job Responsibilities
         </h4>
         <ul className="list-disc list-inside text-gray-600 dark:text-gray-400">
-          {job.jobResponsibilities.map((responsibility, index) => (
+          {sampleJob.responsibilities.map((responsibility, index) => (
             <li key={index}>{responsibility}</li>
           ))}
         </ul>
       </div>
     </Card>
   );
-};
-
-export default JobDetails;
+}

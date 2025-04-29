@@ -1,74 +1,84 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Search } from "lucide-react";
-import { useSelector } from "react-redux";
 import { Select, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import JobCard from "../../components/job/JobCard";
-import jobService from "../../services/jobService";
-import Loading from "../../components/public/Loading";
 
-const SeekerJobList = () => {
+export default function SeekerJobList() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [jobFilter, setJobFilter] = useState("recommended");
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const { token } = useSelector((state) => state.auth);
+  const [jobFilter, setJobFilter] = useState("all");
+  const jobs = [
+    {
+      id: 1,
+      jobTitle: "Software Engineer",
+      companyName: "Microsoft",
+      companyLogo:
+        "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+      location: "Redmond, WA",
+      postedDate: "1 week ago",
+    },
+    {
+      id: 2,
+      jobTitle: "Data Scientist",
+      companyName: "Google",
+      companyLogo:
+        "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+      location: "Mountain View, CA / Remote",
+      postedDate: "3 days ago",
+    },
+    {
+      id: 3,
+      jobTitle: "Software Engineer",
+      companyName: "Microsoft",
+      companyLogo:
+        "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+      location: "Redmond, WA",
+      postedDate: "1 week ago",
+    },
+    {
+      id: 4,
+      jobTitle: "Data Scientist",
+      companyName: "Google",
+      companyLogo:
+        "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+      location: "Mountain View, CA / Remote",
+      postedDate: "3 days ago",
+    },
+    {
+      id: 5,
+      jobTitle: "Software Engineer",
+      companyName: "Microsoft",
+      companyLogo:
+        "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+      location: "Redmond, WA",
+      postedDate: "1 week ago",
+    },
+    {
+      id: 6,
+      jobTitle: "Data Scientist",
+      companyName: "Google",
+      companyLogo:
+        "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+      location: "Mountain View, CA / Remote",
+      postedDate: "3 days ago",
+    },
+  ];
 
-  // Fetch jobs based on filter selection
-  useEffect(() => {
-    const fetchJobs = async () => {
-      setLoading(true);
-      try {
-        let response;
-        if (jobFilter === "recommended") {
-          response = await jobService.getMatchingJobs(token);
-          // For matching jobs, our endpoint returns { success: true, jobs: [...] }
-          if (response.success && response.jobs && Array.isArray(response.jobs)) {
-            setJobs(response.jobs);
-          } else {
-            setJobs([]);
-          }
-        } else {
-          response = await jobService.getAllJobs();
-          // For all jobs, our endpoint returns { success: true, jobs: [...] }
-          if (response.success && response.jobs && Array.isArray(response.jobs)) {
-            setJobs(response.jobs);
-          } else {
-            setJobs([]);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching jobs.", error);
-        setJobs([]);
-      }
-      setLoading(false);
-    };
+  // Handle search
+  const filteredJobs = jobs.filter((job) =>
+    job.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-    fetchJobs();
-  }, [jobFilter, token]);
-
-  // Filter jobs based on search term.
-  // Use top-level jobTitle if available; otherwise, fallback to the nested job.jobTitle.
-  const filteredJobs = jobs.filter((job) => {
-    const title = job.jobTitle || (job.job && job.job.jobTitle) || "";
-    return title.toLowerCase().includes(searchTerm.toLowerCase());
-  });
-
-  // Handle navigation when a job card is clicked.
-  // Use the nested job._id if available.
-  const handleJobClick = (job) => {
-    const jobId = job.job ? job.job._id : job._id;
-    const matchPercentage = job.overall_match_percentage
-      ? job.overall_match_percentage.toFixed(2)
-      : "0.00";
-    navigate(`/job/${jobId}/${matchPercentage}`);
+  // Handle card click to navigate to the job details page
+  const handleJobClick = (jobId) => {
+    navigate(`/job/${jobId}`);
   };
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8 flex flex-col items-center">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-        Explore Job Opportunities
+        Explore with job collections
       </h1>
       <div className="flex gap-4 mb-6 w-full max-w-3xl">
         <TextInput
@@ -88,29 +98,20 @@ const SeekerJobList = () => {
         </Select>
       </div>
       <div className="flex justify-center">
-        {loading ? (
-          <div>
-            <Loading />
-            <p className="text-gray-600 text-center mt-10 font-semibold text-xl">
-              Loading jobs...
-            </p>
-          </div>
-        ) : filteredJobs.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2 min-w-full">
-            {filteredJobs.map((job, index) => (
-              <div key={index} onClick={() => handleJobClick(job)}>
+        {filteredJobs.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 min-w-full">
+            {filteredJobs.map((job) => (
+              <div key={job.id} onClick={() => handleJobClick(job.id)}>
                 <JobCard job={job} />
               </div>
             ))}
           </div>
         ) : (
           <p className="text-red-600 text-center mt-10 font-semibold text-xl">
-            - Sorry, Currently No Jobs Found -
+            - Sorry Currently No Jobs Found -
           </p>
         )}
       </div>
     </div>
   );
-};
-
-export default SeekerJobList;
+}
