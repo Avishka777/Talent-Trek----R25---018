@@ -160,11 +160,11 @@ const ResumeAnalyse = () => {
                         </div>
                         <div>
                           <strong>Profession:</strong>{" "}
-                          {candidate.profession_score}% * 0.15 Weight
+                          {candidate.profession_score}% * 0.25 Weight
                         </div>
                         <div>
                           <strong>Summary:</strong> {candidate.summary_score}% *
-                          0.35 Weight
+                          0.25 Weight
                         </div>
                       </div>
                     }
