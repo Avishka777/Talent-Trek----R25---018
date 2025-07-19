@@ -100,6 +100,11 @@ export default function HeaderComponent() {
             Jobs
           </Navbar.Link>
         )}
+        {user?.profileType === "Job Seeker" && (
+          <Navbar.Link onClick={() => navigate(`/agent/joblist`)}>
+            Agent Listing
+          </Navbar.Link>
+        )}
 
         {user?.profileType === "Recruiter" && (
           <Navbar.Link onClick={() => navigate(`/dashboard/jobs`)}>
