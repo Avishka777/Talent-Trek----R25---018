@@ -21,13 +21,13 @@ const InterviewService = {
     }
   },
 
-  uploadInterviewVideo : async (formData) => {
+  uploadInterviewVideo : async (token, formData) => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}interview/upload-interview`, formData,
-        // {
-        //   headers: { Authorization: `Bearer ${token}` },
-        // }
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
       return response.data;
     } catch (error) {

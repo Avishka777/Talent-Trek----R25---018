@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const InterViewMarksSchema = new mongoose.Schema(
   {
     userId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     jobId: {
@@ -11,12 +12,12 @@ const InterViewMarksSchema = new mongoose.Schema(
       ref: "Job",
       required: true,
     },
-    quactionList: [
+    answerList: [
         {
             quactionNo:{type: Number},
             video: {type: String},
-            confidene: {type: String},
-            answer: {type: String},
+            confidene: {type: Number},
+            answerMatch: {type: Number}
         }
     ],
     

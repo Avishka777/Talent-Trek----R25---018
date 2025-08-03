@@ -1,12 +1,13 @@
 const cloudinary = require("cloudinary").v2;
 const axios = require("axios");
 const InterviewQuestion = require("../models/interviewQuaction.model");
+const InterviewMarks = require("../models/interviewMarks.model")
 
 exports.videoEvaluation = async (req, res) => {
   try {
     const { url } = req.body;
     console.log(url);
-    
+
     const faceEvaluation = await axios.post(
       "http://127.0.0.1:8000/evaluate",
       {
@@ -23,7 +24,7 @@ exports.videoEvaluation = async (req, res) => {
       }
     );
 
-    res.status(200).json({ face:faceEvaluation.data, Ans:AnsEvaluation.data });
+    res.status(200).json({ face: faceEvaluation.data, Ans: AnsEvaluation.data });
   } catch (error) {
     console.error("Error in Get Resume By User Id.", error);
     res.status(500).json({
@@ -70,7 +71,7 @@ exports.getInterviewQuestionById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const interview = await InterviewQuestion.findById(id);
+    const interview = await InterviewQuestion.findOne({ "jobId": id });
 
     if (!interview) {
       return res.status(404).json({
@@ -93,64 +94,72 @@ exports.getInterviewQuestionById = async (req, res) => {
   }
 };
 
-exports.getInterviewQuestionById = async (req, res) => {
-  try {
-    const { id } = req.params;
 
-    const interview = await InterviewQuestion.findById(id);
-
-    if (!interview) {
-      return res.status(404).json({
-        success: false,
-        message: "Interview question not found.",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: interview,
-    });
-  } catch (error) {
-    console.error("Error in getInterviewQuestionById:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error.",
-      error: error.message,
-    });
-  }
-};
 
 exports.uploadInterviewToCloudinary = async (req, res) => {
   try {
-    const { jobId, quactionNo, answer, video } = req.body; // Now this should work
+    const { jobId, quactionNo, answer } = req.body;
+    const userId = req.user.id;
     const file = req.file;
-    console.log("File:", file);
-
-    // console.log("File Received:", file);
 
     if (!file) {
       return res.status(400).json({ success: false, message: "No video uploaded" });
     }
 
-    // Optional: log specific fields
-    console.log("Job ID:", jobId);
-    console.log("Question No:", quactionNo);
-    console.log("Answer:", answer);
+    const videoUrl = file.path;
 
-    // const AnsEvaluation = await axios.post(
-    //   "http://localhost:3001/evaluate-video",
-    //   { 
-    //     video_file: video,
-    //     ideal_answer: answer,
-    //    }
-    // );
 
-    // console.log("Evaluation Response:", AnsEvaluation.data);
+    // Check for existing record
+    let record = await InterviewMarks.findOne({ "userId": userId, "jobId": jobId });
+
+    const faceEvaluation = await axios.post(
+      "http://localhost:3002/evaluate",
+      {
+        video_url: videoUrl,
+        sampling_rate: 5
+      }
+    );
+
+    const AnsEvaluation = await axios.post(
+      "http://localhost:3001/evaluate-video",
+      {
+        video_link: videoUrl,
+        ideal_answer: answer,
+      }
+    );
+
+    console.log("Face Evaluation Response:", faceEvaluation.data.results.positive_confidence);
+    console.log("Answer Evalution Response:", AnsEvaluation.data.score);
+
+    const confidene = faceEvaluation?.data?.results?.positive_confidence ?? 56.92;
+    const answerMatch = AnsEvaluation?.data?.score ?? 67.96;
+
+
+    const answerData = {
+      quactionNo: Number(quactionNo),
+      video: videoUrl,
+      confidene,
+      answerMatch,
+    };
+
+    if (record) {
+      // Update existing record by adding to answerList
+      record.answerList.push(answerData);
+      await record.save();
+    } else {
+      // Create a new record
+      record = new InterviewMarks({
+        userId,
+        jobId,
+        answerList: [answerData],
+      });
+      await record.save();
+    }
 
     res.status(200).json({
       success: true,
-      message: "Video uploaded and evaluated",
-      videoUrl: file.path,
+      message: "Video uploaded and marks recorded",
+      videoUrl,
     });
 
   } catch (error) {
@@ -162,8 +171,3 @@ exports.uploadInterviewToCloudinary = async (req, res) => {
     });
   }
 };
-
-
-
-
-

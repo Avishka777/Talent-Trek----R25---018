@@ -8,7 +8,7 @@ const upload = require("../middleware/cloudinaryUpload");
 router.post("/", interviewController.videoEvaluation);
 router.post("/create-interview-quactions", interviewController.createInterviewQuestion);
 router.get("/get-interview-quactions/:id", interviewController.getInterviewQuestionById);
-router.post("/upload-interview", upload.single("video"), interviewController.uploadInterviewToCloudinary);
+router.post("/upload-interview",authMiddleware, upload.single("video"), interviewController.uploadInterviewToCloudinary);
 // router.post("/upload-interview", interviewController.uploadInterviewToCloudinary);
 
 

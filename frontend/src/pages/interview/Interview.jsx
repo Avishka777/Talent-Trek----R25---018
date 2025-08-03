@@ -4,9 +4,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Play, Square, AlertTriangle } from "lucide-react";
 import NextAnswerLoader from "../../components/interview/NextAnswerLoader";
+import { useSelector } from "react-redux";
 
 const Interview = () => {
     const { id } = useParams(); // jobId
+    const { token } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const [questionsArray, setQuestionsArray] = useState([]);
     const [isRecording, setIsRecording] = useState(false);
@@ -16,6 +18,7 @@ const Interview = () => {
     const [isLoadingNext, setIsLoadingNext] = useState(false);
     const videoRef = useRef();
     const recordedChunksRef = useRef([]);
+
 
     useEffect(() => {
         fetchQuestions();
@@ -96,7 +99,7 @@ const Interview = () => {
         setIsLoadingNext(true);
 
         try {
-            const response = await InterviewService.uploadInterviewVideo(formData);
+            const response = await InterviewService.uploadInterviewVideo(token,formData);
             if (response.success) {
                 Swal.fire({
                     title: "Uploaded!",
