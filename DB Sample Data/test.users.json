@@ -1,0 +1,159 @@
+[{
+  "_id": {
+    "$oid": "67ab25386184823bbebc6036"
+  },
+  "fullName": "Avishka Rathnakumara",
+  "email": "avishka@gmail.com",
+  "password": "$2a$10$MxpSI4mXfAtLFhqRcwSbmesTqlNNudYd1CijaqiIOSvIf7/gTMPDi",
+  "profileType": "Job Seeker",
+  "profilePicture": "https://rp-projects-public.s3.amazonaws.com/profiles/67ab25386184823bbebc6036/1739288161114-2.jpg",
+  "createdAt": {
+    "$date": "2025-02-11T10:23:52.696Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-11T15:36:30.011Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ab77a07512826276380eea"
+  },
+  "fullName": "Sudarika Vithanage",
+  "email": "sudarika@gmail.com",
+  "password": "$2a$10$lmsUvG5cpsU8sIYD1kPQc.U4sGbq1zFa7Lid209MKkILR8xEeOStC",
+  "profileType": "Job Seeker",
+  "profilePicture": "https://img.freepik.com/premium-vector/portrait-avatar-male-laughter-joy-smile-calmness-diversity-personage_147933-10329.jpg?w=740",
+  "createdAt": {
+    "$date": "2025-02-11T16:15:28.553Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-11T16:45:50.009Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ab7ee87512826276381040"
+  },
+  "fullName": "Amanda Pathirana",
+  "email": "amanda@gmail.com",
+  "password": "$2a$10$Q46anH4dRXbV0PkUZlErbOfeE2NHjJACDIY9KJ3h5ZYdPnRcA7cFq",
+  "profileType": "Job Seeker",
+  "profilePicture": "https://img.freepik.com/premium-vector/portrait-avatar-male-laughter-joy-smile-calmness-diversity-personage_147933-10329.jpg?w=740",
+  "createdAt": {
+    "$date": "2025-02-11T16:46:32.992Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-11T16:46:32.992Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ac9188fcea3c66a6260c06"
+  },
+  "fullName": "Sahan Avishka",
+  "email": "sahan@gmail.com",
+  "password": "$2a$10$8Q2k2ZpndDz4KZsTNKFCR.mCD46b2/UMrCuyL6tJY8yMH4pQQaCwa",
+  "profileType": "Recruiter",
+  "profilePicture": "https://img.freepik.com/premium-vector/portrait-avatar-male-laughter-joy-smile-calmness-diversity-personage_147933-10329.jpg?w=740",
+  "companyName": "SAPRO PVT LTD",
+  "companyLogo": "https://img.freepik.com/free-vector/logo-wavy-triangular-shape_1017-1714.jpg?t=st=1739362387~exp=1739365987~hmac=31671efa4bb09b7ef1f4fd4213ebad6cafde0a1621f0cdccdac710d16599da9e&w=740",
+  "createdAt": {
+    "$date": "2025-02-12T12:18:16.438Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-12T12:18:16.438Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67aef6942226d298689e39b3"
+  },
+  "fullName": "Chamath Fernando",
+  "email": "chamath@gmail.com",
+  "password": "$2a$10$VGAl0/Lw1kJzoKMFN/5sMe0cinH8WVT7vjVnNQZUjrHqLCPKBdOC.",
+  "profileType": "Job Seeker",
+  "profilePicture": "https://img.freepik.com/premium-vector/portrait-avatar-male-laughter-joy-smile-calmness-diversity-personage_147933-10329.jpg?w=740",
+  "companyName": "XXXXX XXXXX XXXXX PVT LTD",
+  "companyLogo": "https://img.freepik.com/free-vector/logo-wavy-triangular-shape_1017-1714.jpg?t=st=1739362387~exp=1739365987~hmac=31671efa4bb09b7ef1f4fd4213ebad6cafde0a1621f0cdccdac710d16599da9e&w=740",
+  "createdAt": {
+    "$date": "2025-02-14T07:53:56.951Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-14T07:53:56.951Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67aef90d2226d298689e3a74"
+  },
+  "fullName": "Supun Asintha",
+  "email": "supun@gmail.com",
+  "password": "$2a$10$BeDt8X.BDOSy8D6RjYrr4e/lf38ThLG8SZFs6Kzf8/1y9VNQB8wP.",
+  "profileType": "Recruiter",
+  "profilePicture": "https://img.freepik.com/premium-vector/portrait-avatar-male-laughter-joy-smile-calmness-diversity-personage_147933-10329.jpg?w=740",
+  "companyName": "Google Alphabet Inc",
+  "companyLogo": "https://w7.pngwing.com/pngs/506/509/png-transparent-google-company-text-logo.png",
+  "createdAt": {
+    "$date": "2025-02-14T08:04:29.484Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-14T08:04:29.484Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f29ef9061588c16fd6e6a2"
+  },
+  "fullName": "Avishka Recruiter",
+  "email": "recruiter@gmail.com",
+  "password": "$2a$10$4eiLJ.a4nDjeEfjd/vjRquefIA3sbMN9uplOa8kqgVAVnKcHM5VVq",
+  "profileType": "Recruiter",
+  "profilePicture": "https://img.freepik.com/premium-vector/portrait-avatar-male-laughter-joy-smile-calmness-diversity-personage_147933-10329.jpg?w=740",
+  "createdAt": {
+    "$date": "2025-04-06T15:34:17.999Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-06T15:34:17.999Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f3a669541e3a11504893fd"
+  },
+  "fullName": "Himasha Gunasiinghe",
+  "email": "himasha@gmail.com",
+  "password": "$2a$10$7dnQQ25bo9/zS9JaqBoAG.LcWTpnU9v4j1fgwdjqmzgx5D/ilMUm2",
+  "profileType": "Job Seeker",
+  "profilePicture": "https://img.freepik.com/premium-vector/portrait-avatar-male-laughter-joy-smile-calmness-diversity-personage_147933-10329.jpg?w=740",
+  "createdAt": {
+    "$date": "2025-04-07T10:18:17.373Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-07T10:18:17.373Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "687b3256da05da8dd7dfd471"
+  },
+  "fullName": "Dhananjaya Lakshan",
+  "email": "dhana123@gmail.com",
+  "password": "$2a$10$J.QvrSRBDdf31JF9LQFv3.V2Mr8jprYMeqIHKZkykUuo.RQhMUZNi",
+  "profileType": "Job Seeker",
+  "profilePicture": "https://img.freepik.com/premium-vector/portrait-avatar-male-laughter-joy-smile-calmness-diversity-personage_147933-10329.jpg?w=740",
+  "createdAt": {
+    "$date": "2025-07-19T05:51:18.759Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-19T05:51:18.759Z"
+  },
+  "__v": 0
+}]

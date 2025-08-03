@@ -54,15 +54,22 @@ const resumeService = {
   // Get Matching Jobs for User
   getMatchingResumes: async (jobId, token, weights) => {
     try {
+      // Get weights from localStorage if not provided
+      const savedWeights = localStorage.getItem("resumeMatchingWeights");
+      const defaultWeights = savedWeights
+        ? JSON.parse(savedWeights)
+        : {
+            experience_score: 0.45,
+            skills_score: 0.05,
+            profession_score: 0.15,
+            summary_score: 0.35,
+          };
+
       const payload = {
         job_id: jobId,
-        weights: weights || {
-          experience_score: 0.25,
-          skills_score: 0.25,
-          profession_score: 0.25,
-          summary_score: 0.25,
-        },
+        weights: weights || defaultWeights,
       };
+
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}resume/match/candidates/${jobId}`,
         payload,

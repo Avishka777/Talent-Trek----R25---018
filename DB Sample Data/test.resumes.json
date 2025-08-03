@@ -1,0 +1,889 @@
+[{
+  "_id": {
+    "$oid": "67ab7fbfb10786b2e77819fe"
+  },
+  "userId": {
+    "$oid": "67ab7ee87512826276381040"
+  },
+  "fileUrl": "https://rp-projects-public.s3.amazonaws.com/profiles/67ab77a07512826276380eea/1739292347732-Amanda%20Pathirana%20%281%29.pdf",
+  "firstName": "Amanda",
+  "lastName": "Pathirana",
+  "gender": "",
+  "emails": [
+    "sanduamanda12@gmail.com"
+  ],
+  "urls": [
+    "https://www.linkedin.com/in/amanda-pathirana/",
+    "protofolio-amanda-pathirana.netlify.app",
+    "https://github.com/Sanduamanda99"
+  ],
+  "phoneNumbers": [
+    "0703825083"
+  ],
+  "dateOfBirth": {
+    "year": null,
+    "month": null,
+    "day": null
+  },
+  "address": "",
+  "totalExperienceYears": 0,
+  "profession": "Computer Science undergraduate",
+  "summary": "\"Computer Science undergraduate at Eastern University's Trincomalee Campus, passionate about building efficient software solutions and managing data effectively. Skilled in programming and problem solving and ready to contribute to projects in database management and software development within the IT industry\"",
+  "skills": [
+    "React.js",
+    "Next.js",
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "TailwindCSS",
+    "Material-UI",
+    "Bootstrap",
+    "Node.js",
+    "MongoDB",
+    "MySQL",
+    "Firebase",
+    "PHP",
+    "C++",
+    "Python",
+    "Java",
+    "Spring Boot",
+    "Flask",
+    "Git",
+    "GitHub",
+    "VS Code",
+    "Dev C++",
+    "Jupyter Notebook",
+    "Figma",
+    "Adobe XD",
+    "Adobe Flash",
+    "Render",
+    "Netlify",
+    "Trello",
+    "Agile Development",
+    "Postman",
+    "Insomnia",
+    "Selenium",
+    "Jest",
+    "JUnit",
+    "SEO",
+    "Search Engine Optimization",
+    "OOP",
+    "Object Oriented Programming",
+    "Design Patterns",
+    "Agile Practices",
+    "Data Structures & Algorithms"
+  ],
+  "hasDrivingLicense": false,
+  "educations": [
+    {
+      "description": "Bachelor of Computer Science (Undergraduate)",
+      "_id": {
+        "$oid": "67ab7fbfb10786b2e77819ff"
+      }
+    },
+    {
+      "description": "G.C.E. Advanced Level Examination (1C pass & 2S passes for Physics, Chemistry & C.Maths)",
+      "_id": {
+        "$oid": "67ab7fbfb10786b2e7781a00"
+      }
+    },
+    {
+      "description": "G.C.E. Ordinary Level Examination (8A passes & 1C pass)",
+      "_id": {
+        "$oid": "67ab7fbfb10786b2e7781a01"
+      }
+    }
+  ],
+  "trainingsAndCertifications": [
+    {
+      "year": 2024,
+      "description": "Certificate of certified SQA Tester",
+      "_id": {
+        "$oid": "67ab7fbfb10786b2e7781a02"
+      }
+    },
+    {
+      "year": 2024,
+      "description": "Introduction to Python",
+      "_id": {
+        "$oid": "67ab7fbfb10786b2e7781a03"
+      }
+    },
+    {
+      "year": 2023,
+      "description": "Introduction to Cyber Security",
+      "_id": {
+        "$oid": "67ab7fbfb10786b2e7781a04"
+      }
+    },
+    {
+      "year": 2023,
+      "description": "PHP",
+      "_id": {
+        "$oid": "67ab7fbfb10786b2e7781a05"
+      }
+    },
+    {
+      "year": 2023,
+      "description": "Athena Hack-Hackathon for women",
+      "_id": {
+        "$oid": "67ab7fbfb10786b2e7781a06"
+      }
+    },
+    {
+      "year": 2022,
+      "description": "Introduction to HTML",
+      "_id": {
+        "$oid": "67ab7fbfb10786b2e7781a07"
+      }
+    }
+  ],
+  "professionalExperiences": [],
+  "awards": [],
+  "references": [
+    {
+      "full_name": "Mrs. K. Khethika",
+      "phone_number": "",
+      "email": "khedikas@esn.ac.lk",
+      "company": "Department of Computer Science, Faculty of Applied Science Trincomalee Campus Eastern University of Sri Lanka",
+      "position": "Lecturer",
+      "description": "",
+      "_id": {
+        "$oid": "67ab7fbfb10786b2e7781a08"
+      }
+    },
+    {
+      "full_name": "Mrs. J. Janani",
+      "phone_number": "",
+      "email": "jananij@esn.ac.lk",
+      "company": "Department of Computer Science, Faculty of Applied Science Trincomalee Campus Eastern University of Sri Lanka",
+      "position": "Lecturer",
+      "description": "",
+      "_id": {
+        "$oid": "67ab7fbfb10786b2e7781a09"
+      }
+    }
+  ],
+  "cvText": "Amanda Pathirana \n“Computer Science undergraduate at Eastern University's Trincomalee Campus, passionate about building efficient software solutions and \nmanaging data effectively. Skilled in programming and problem solving and ready to contribute to projects in database management and software \ndevelopment within the IT industry” \n sanduamanda12@gmail.com   0703825083   protofolio-amanda-pathirana.netlify.app \n https://www.linkedin.com/in/amanda-pathirana/    https://github.com/Sanduamanda99 \nEDUCATION \nEastern University of Sri Lanka | Trincomalee Campus \n• Bachelor of Computer Science (Undergraduate)                      Dec 2021 - Present \nRoyal Central College | Polonnaruwa \n• G.C.E. Advanced Level Examination (1C pass & 2S passes for Physics, Chemistry & C.Maths)          2019 \n• G.C.E. Ordinary Level Examination (8A passes & 1C pass)              2014 \nCertificate Courses \n• Certificate of certified SQA Tester | Issued by FSD Academy                     Sep 2024 \n• Introduction to Python | Issued by Sololearn                       Mar 2024 \n• Introduction to Cyber Security | Issued by Cisco                     Dec 2023 \n• PHP | Issued by Sololearn                        Apr 2023 \n• Athena Hack-Hackathon for women | Powered by Ideamart                   Mar 2023 \n• Introduction to HTML | Issued by Sololearn                     May 2022 \n \nTECHNICAL SKILLS \n \nLanguages & Frameworks \n• Frontend - React.js, Next.js, JavaScript, HTML, CSS, TailwindCSS, Material-UI, Bootstrap \n• Backend - Node.js, MongoDB, MySQL, Firebase, PHP \n• Other Languages – C++, Python, Java \n• Frameworks – Spring Boot, Flask \nDeveloper Tools \n• Version Control - Git, GitHub \n• IDEs & Editors - VS Code, Dev C++, Jupyter Notebook \n• Design & Prototyping – Figma, Adobe XD, Adobe Flash \n• Containerization & Deployment - Render, Netlify \n• Project Management - Trello, Agile Development \n• API Testing - Postman, Insomnia \n• Testing & Automation - Selenium, Jest, JUnit \n  \nOther Skills \n• SEO (Search Engine Optimization) \n• OOP (Object Oriented Programming) \n• Data Structures & Algorithms \n• Design Patterns \n• Agile Practices \n \nACADEMIC PROJECTS & EXPERIENCES \n \nAI-Powered Solutions for Streamlined IT Recruitment and Skill Matching | Ongoing Project \n• Developed an AI-powered recruitment system to enhance hiring efficiency by algorithmically matching candidates with job \nopportunities. \n• Designed and implemented Skill-Based Assessments, and Video Analysis tools using NLP and AI to optimize recruitment. \n• Built with a scalable REST API utilizing Node.js, Express.js, MongoDB, and React.js, with CI/CD integration via Docker \nand Kubernetes. \nPredicting the undergraduate students’ failure rate in Trincomalee Campus | Academic Projects \n• Developed a predictive machine learning model and web application to forecast the failure rate of undergraduate students.  \n• By using this website students can predict their failure rate semester-wise. \n\nPersonal Portfolio Website | Personal Projects \n• Developed a modern portfolio website using HTML, CSS, JavaScript, and EmailJS, designed to showcase my skills and \nprojects with a polished and user-friendly interface. \nFlappy Bird game | Academic Projects \n• The game features simple yet engaging gameplay where the player controls a bird that must navigate through a series of \npipes without crashing. Java: The entire game is coded in Java, utilizing OOP principles.  \n• Swing/AWT: The graphical user interface is implemented using Java's Swing/AWT libraries. Event Handling: The game \nuses Java's event-handling mechanisms to manage user input and control the game's flow. \nCurrency Converter | Academic Projects \n• Designed to provide real-time currency conversion with a user-friendly interface.  \n• Tech Stack: React.js for dynamic UI and state management. Tailwind CSS for sleek, responsive styling. Vite for fast \ndevelopment and build processes. \nCash Money | Academic Projects \n• A Modern GUI for ATM Machines Cash Money, a user-friendly, cross-platform graphical application developed using \nPython 3.7 + and Tkinter.  \n• This modern interface is designed to enhance the usability and functionality of ATM machines, offering an intuitive and \nseamless user experience. \nUniversity Timetable Management System | Academic Projects \n• Developed course management, timetable creation, room/resource booking, and student enrollment features with conflict \nresolution to optimize scheduling efficiency. \n• Built a scalable REST API using the MERN stack (MongoDB, Express.js, React.js, Node.js) with Vite and Flowbite, \nensuring seamless integration and robust security through encryption and access controls. \n• Implemented unit testing with Jest to validate backend functionality and enhance system reliability. \nVirtual Dressing Room | Academic Projects | Group \n• Designed and developed a customizable garment e-commerce platform with a 3D visualization module, leveraging \nExpress.js, MongoDB, and REST API for backend operations. \n• Built interactive garment customization features, enabling users to modify colors, upload images, and adjust design \nplacement and scale, utilizing React.js, MUI, and Three.js for a dynamic frontend experience. \nArcana Candles | Personal Projects  \n• Designed and developed a secure e-commerce platform leveraging Firebase for authentication (Google Auth) and image \nstorage, with MongoDB for scalable data management. \n• Engineered product and comment management features using Node.js, Vite, and Redux to optimize content updates and \nenhance user engagement. \n• Implemented dynamic promotional displays and customer review sections using React.js and Tailwind CSS to improve user \nexperience and facilitate informed purchasing decisions. \n \nSOFT SKILLS \n \nREFERENCES \n \nMrs. K. Khethika, Lecturer,  \nDepartment of Computer Science,                                                                                                       \nFaculty of Applied Science                                                                                                                    \nTrincomalee Campus                                                                                                                                         \nEastern University of Sri Lanka \nkhedikas@esn.ac.lk \n \nMrs. J. Janani, Lecturer,  \nDepartment of Computer Science,                                                                                                                   \nFaculty of Applied Science                                                                                                                     \nTrincomalee Campus                                                                                                                                                    \nEastern University of Sri Lanka \njananij@esn.ac.lk \n \n• Positive attitude  \n• Fast learning ability  \n• Leadership skills  \n• Decision making  \n• Excellent teamwork  \n• Problem solving",
+  "cvLanguage": "en",
+  "createdAt": {
+    "$date": "2025-02-11T16:50:07.723Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-11T16:50:07.723Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ac88c5e2e5272a8e5db657"
+  },
+  "userId": {
+    "$oid": "67ab77a07512826276380eea"
+  },
+  "fileUrl": "https://rp-projects-public.s3.amazonaws.com/profiles/67ab77a07512826276380eea/1739360441135-Sudarika%20Chethani.pdf",
+  "firstName": "SUDARIKA",
+  "lastName": "CHETHANI",
+  "gender": "",
+  "emails": [
+    "avsudari@gmail.com"
+  ],
+  "urls": [
+    "https://www.linkedin.com/in/sudarika-vithanage/",
+    "https://github.com/Sudarika"
+  ],
+  "phoneNumbers": [
+    "+94 74 143 3687"
+  ],
+  "dateOfBirth": {
+    "year": 2001,
+    "month": 10,
+    "day": 8
+  },
+  "address": "No.9/10c, Wewelwala Road, Bataganvila, Galle",
+  "totalExperienceYears": 0,
+  "profession": "",
+  "summary": "Passionate about frontend development and database administration, seeking opportunities to\ncreate compelling interfaces, bring ideas to life, and contribute to innovative software solutions\nin a dynamic team environment.",
+  "skills": [
+    "Communication",
+    "Problem Solving",
+    "Organizational Skills",
+    "Resilience",
+    "Teamwork",
+    "Critical Thinking",
+    "Leadership",
+    "Creative",
+    "Time Management",
+    "Proactive",
+    "Front End Development",
+    "React",
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "Backend Development",
+    "Java",
+    "PHP",
+    "Nodejs",
+    "Database Management",
+    "Mongo DB SQL",
+    "My SQL",
+    "Mobile Application Development",
+    "Basic",
+    "Kotlin",
+    "Data Structures and Algorithms",
+    "Python",
+    "Data Analysis",
+    "R Programming",
+    "Microsoft Office 365",
+    "Word",
+    "Excel",
+    "PowerPoint",
+    "Front-end Development",
+    "Database Management System",
+    "Mobile application Development",
+    "Sinhala",
+    "English",
+    "Tamil",
+    "Japanese",
+    "Chinese"
+  ],
+  "hasDrivingLicense": false,
+  "educations": [
+    {
+      "description": "Bsc. (Hons) in Information Technology",
+      "_id": {
+        "$oid": "67ac88c5e2e5272a8e5db658"
+      }
+    },
+    {
+      "description": "",
+      "_id": {
+        "$oid": "67ac88c5e2e5272a8e5db659"
+      }
+    },
+    {
+      "description": "G.C.E. Advanced Level Examination (Languages with ICT)",
+      "_id": {
+        "$oid": "67ac88c5e2e5272a8e5db65a"
+      }
+    },
+    {
+      "description": "G.C.E. Ordinary Level Examination",
+      "_id": {
+        "$oid": "67ac88c5e2e5272a8e5db65b"
+      }
+    },
+    {
+      "description": "Certificate course in java programming",
+      "_id": {
+        "$oid": "67ac88c5e2e5272a8e5db65c"
+      }
+    },
+    {
+      "description": "Certificate Course in English Language",
+      "_id": {
+        "$oid": "67ac88c5e2e5272a8e5db65d"
+      }
+    },
+    {
+      "description": "Certificate Course in Chinese Language",
+      "_id": {
+        "$oid": "67ac88c5e2e5272a8e5db65e"
+      }
+    },
+    {
+      "description": "Programming in Python",
+      "_id": {
+        "$oid": "67ac88c5e2e5272a8e5db65f"
+      }
+    },
+    {
+      "description": "UI / UX for Beginners",
+      "_id": {
+        "$oid": "67ac88c5e2e5272a8e5db660"
+      }
+    },
+    {
+      "description": "Mongo DB for SQL Experts",
+      "_id": {
+        "$oid": "67ac88c5e2e5272a8e5db661"
+      }
+    },
+    {
+      "description": "Mongo DB CRUD Operation in PHP",
+      "_id": {
+        "$oid": "67ac88c5e2e5272a8e5db662"
+      }
+    }
+  ],
+  "trainingsAndCertifications": [],
+  "professionalExperiences": [],
+  "awards": [],
+  "references": [],
+  "cvText": "TECHNICAL SKILLS \nSri Lanka Institute of Information Technology (SLIIT) | Malabe                         2022 - Present \n• Bsc.(Hons) in Information Technology  \nSanghamitta Balika Vidyalaya | Galle                                                                         2007 - 2020 \n• G.C.E. Advanced Level Examination (Languages with ICT) | 2020 \n• G.C.E. Ordinary Level Examination | 2017 \nCertificate course in java programming (SLIIT) | Kandy                                           10-11-2021 \n• Certificate Course in English Language  \nKelaniya higher education institute | Kelaniya                                                                                  2021 \n•  Certificate Course in Chinese Language  \nCertificate Courses  \n• Open Learning Platform | University of Moratuwa \n▪ Programming in Python                                                                                 Nov - 2023 \n• Great Learning Academy \n▪ UI / UX for Beginners                  Dec - 2023 \n• MongoDB University \n▪ Mongo DB for SQL Experts                 Dec - 2023 \n▪ Mongo DB CRUD Operation in PHP                 Dec - 2023 \n \n \n                             \n \n   \nSUDARIKA CHETHANI \nINTERN FOR SIX MONTHS \n \nOct 08, 2001 \n+94 74 143 3687 \navsudari@gmail.com \nhttps://www.linkedin.com/in/ \nsudarika-vithanage/ \nhttps://github.com/Sudarika \nNo.9/10c, Wewelwala Road, \nBataganvila, Galle \nCommunication \nProblem Solving \nOrganizational Skills \nResilience \nTeamwork \nCritical Thinking \nLeadership \nCreative \nTime Management \nProactive \nPassionate about frontend development and database administration, seeking opportunities to \ncreate compelling interfaces, bring ideas to life, and contribute to innovative software solutions \nin a dynamic team environment. \nEDUCATION \nP E R S O N A L   I N F O \n \n \n \n \n \nI N T E R E S T S \nFront-end Development \nDatabase Management System \nMobile application Development \nLANGUAGE \nSinhala  \nEnglish \nTamil \nJapanese \nChinese \nSOFT SKILLS \nFront End Development  \n• React, JavaScript, HTML, CSS  \nBackend Development  \n• Java, PHP, Nodejs \nDatabase Management \n• Mongo DB SQL, My SQL \nMobile Application Development (Basic) \n• Kotlin \nData Structures and Algorithms \n• Python, Java \nData Analysis (Basic) \n• R Programming \nMicrosoft Office 365  \n• Word, Excel, PowerPoint \n \n \n\n \n \n \n \n \nACADEMIC PROJECTS & EXPERIENCES \n• IT2080 - Information Technology Project |2nd year 2\nnd\n Semester (Group work) \n• Developed a full-stack web application using MERN. (Mongo DB, Express.js, React, Node.js)with all \ndocumentational part. \n• Individually Implemented the Employee Management function with CRUD and generate report. \n• Created a high-level use case diagram. \n• Used GitHub for Integration. \n• IT2010 – Mobile Application Development |2nd year 2\nnd\n Semester \n• Implement simple Patient Management application using Kotlin. (Android Studio) \n• Design UI for the mobile application  \n• IT2020 - Software Process Modeling|2nd year 1\nst\n Semester \n• Draw a high-level use case diagram. \n• Design sequence and communication diagram for use case scenario \n• IT2030 - Object Oriented Programming |2nd year 1\nst\n Semester (Group work) \n• Develop a Java web-based application with a database connection (Eclipse IDE). \n• Implement CRUD function.  \n• Learn about JSP and Servlets. \n• IT1060 - Software Process Modeling|1st year 2\nnd\n Semester \n• Analyze the case study and draw a use case diagram. \n• Design activity diagram  \n• IT1100 - Internet and web technology|1st year 2\nnd\n Semester \n• Write user Journey for the personas. \n• Design wireframes for the website (Mock Flow) \n• IT1050 - Object-oriented concept|1st year 2\nnd\n Semester \n• Design CRC cards using classes for system description. \n• Design class diagram using UML notation. \n• Coding for the classes in the class diagram using C++ (Dev C++) \n• Trained to use GitHub. \n• IT1090 - Information System and Data Modeling|1st year 2\nnd\n Semester \n• Design ER for a real-time system. (Draw.io) \n• Design relational schema \n• Create database using SQL (Microsoft SQL) \n \nI assert unequivocally that the information presented in my resume is accurate and verifiable to the best of my \nknowledge and belief. \n \n................................................. \nSignature",
+  "cvLanguage": "en",
+  "createdAt": {
+    "$date": "2025-02-12T11:40:53.808Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-12T11:40:53.808Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67aef4862226d298689e3990"
+  },
+  "userId": {
+    "$oid": "67ab25386184823bbebc6036"
+  },
+  "fileUrl": "https://rp-projects-public.s3.amazonaws.com/profiles/67ab25386184823bbebc6036/1739519098166-Avishka%20Rathnakumara.pdf",
+  "firstName": "Avishka",
+  "lastName": "Rathnakumara",
+  "gender": "",
+  "emails": [
+    "avishkarathnakumara@gmail.com"
+  ],
+  "urls": [
+    "linkedin.com/in/avishka-rathna",
+    "avishka-rathnakumara.netlify.app",
+    "github.com/Avishka777"
+  ],
+  "phoneNumbers": [
+    "077999437"
+  ],
+  "dateOfBirth": {
+    "year": null,
+    "month": null,
+    "day": null
+  },
+  "address": "",
+  "totalExperienceYears": 1,
+  "profession": "Software Engineer",
+  "summary": "Passionate about full-stack development and delivering effective solutions. Experienced in Agile methodology with foundational knowledge of microservices architecture.",
+  "skills": [
+    "React.js",
+    "Next.js",
+    "React Native",
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "TailwindCSS",
+    "Material-UI",
+    "Bootstrap",
+    "Node.js",
+    "MongoDB",
+    "MySQL",
+    "Firebase",
+    "Microservices",
+    "Java",
+    "Kotlin",
+    "Git",
+    "GitHub",
+    "VS Code",
+    "Eclipse",
+    "Figma",
+    "Postman",
+    "Insomnia",
+    "Selenium",
+    "Jest",
+    "Docker",
+    "Render",
+    "Netlify",
+    "Trello",
+    "YouTrack",
+    "Agile Development",
+    "SEO",
+    "OOP",
+    "Data Structures & Algorithms",
+    "Design Patterns",
+    "Agile Practices"
+  ],
+  "hasDrivingLicense": false,
+  "educations": [
+    {
+      "description": "BSc. (Hons) in Information Technology Specializing in Software Engineering",
+      "_id": {
+        "$oid": "67aef4862226d298689e3991"
+      }
+    },
+    {
+      "description": "G.C.E. Advanced Level Examination\n1A pass & 2B passes for ICT, Economics & Accounting",
+      "_id": {
+        "$oid": "67aef4862226d298689e3992"
+      }
+    },
+    {
+      "description": "G.C.E. Ordinary Level Examination\n7A passes, 1B pass & 1C pass",
+      "_id": {
+        "$oid": "67aef4862226d298689e3993"
+      }
+    }
+  ],
+  "trainingsAndCertifications": [
+    {
+      "year": 2023,
+      "description": "Python for Beginners",
+      "_id": {
+        "$oid": "67aef4862226d298689e3994"
+      }
+    },
+    {
+      "year": 2023,
+      "description": "Web Design for Beginners",
+      "_id": {
+        "$oid": "67aef4862226d298689e3995"
+      }
+    },
+    {
+      "year": 2023,
+      "description": "Foundations of Project Management",
+      "_id": {
+        "$oid": "67aef4862226d298689e3996"
+      }
+    },
+    {
+      "year": 2023,
+      "description": "Foundations of User Experience (UX) Design",
+      "_id": {
+        "$oid": "67aef4862226d298689e3997"
+      }
+    },
+    {
+      "year": 2023,
+      "description": "UI/UX for Beginners",
+      "_id": {
+        "$oid": "67aef4862226d298689e3998"
+      }
+    },
+    {
+      "year": 2023,
+      "description": "Build your own Chatbot Using Python",
+      "_id": {
+        "$oid": "67aef4862226d298689e3999"
+      }
+    },
+    {
+      "year": 2024,
+      "description": "SEO for Beginners",
+      "_id": {
+        "$oid": "67aef4862226d298689e399a"
+      }
+    }
+  ],
+  "professionalExperiences": [
+    {
+      "company": "Green Stream Systems & Solutions (Private) Limited",
+      "location": "",
+      "title": "Internship",
+      "description": "Worked on a company registration platform to streamline the online business incorporation process.\nUtilized Google Drive API for file uploads and backups and developed a fully responsive design using the MERN stack and MUI.\nManaged user states with Redux and implemented secure login with OTP email validation. Integrated PayHere payment gateway with coupon functionality and added a PDF viewer for document management.\nTechnology stack: MERN Stack, Google Drive API, PayHere, MUI",
+      "_id": {
+        "$oid": "67aef4862226d298689e399b"
+      }
+    },
+    {
+      "company": "Incorporation.lk",
+      "location": "",
+      "title": "",
+      "description": "Contributed to the development of a vehicle rental platform, providing users with access to reliable vehicles.\nCreated a fully responsive design and securely managed both user and owner-side pages.\nDeveloped the website to showcase application details and built a rental management dashboard using MUI with React.js, ensuring optimization for SEO.\nTechnology stack: MERN Stack, MUI, REST APIs, SEO",
+      "_id": {
+        "$oid": "67aef4862226d298689e399c"
+      }
+    },
+    {
+      "company": "Catch.lk",
+      "location": "",
+      "title": "",
+      "description": "Developed the company website, ensuring seamless functionality and user experience.\nIntegrated 3D model handling using Three.js and managed emails with Nodemailer.\nBuilt a fully responsive design with Tailwind CSS, optimized for SEO, and developed the site using Next.js.\nTechnology stack: Next.js, Three.js, Tailwind CSS, SEO",
+      "_id": {
+        "$oid": "67aef4862226d298689e399d"
+      }
+    },
+    {
+      "company": "Global Systems Solutions International (Private) Limited",
+      "location": "Nugegoda",
+      "title": "Trainee Contract Quality Assurance Technician",
+      "description": "",
+      "_id": {
+        "$oid": "67aef4862226d298689e399e"
+      }
+    }
+  ],
+  "awards": [],
+  "references": [],
+  "cvText": "Avishka Rathnakumara \n“Passionate about full-stack development and delivering effective solutions. Experienced in Agile methodology with foundational knowledge of \nmicroservices architecture.” \n avishkarathnakumara@gmail.com  077999437  avishka-rathnakumara.netlify.app\n linkedin.com/in/avishka-rathna  github.com/Avishka777 \n \n EXPERIENCE  \nInternship at Green Stream Systems & Solutions (Private) Limited April 2024 – Oct 2024 \nIncorporation.lk \n• Worked on a company registration platform to streamline the online business incorporation process. \n• Utilized Google Drive API for file uploads and backups and developed a fully responsive design using the MERN stack and MUI. \n• Managed user states with Redux and implemented secure login with OTP email validation. Integrated PayHere payment gateway \nwith coupon functionality and added a PDF viewer for document management. \no Technology stack: MERN Stack, Google Drive API, PayHere, MUI \nCatch.lk \n• Contributed to the development of a vehicle rental platform, providing users with access to reliable vehicles. \n• Created a fully responsive design and securely managed both user and owner-side pages. \n• Developed the website to showcase application details and built a rental management dashboard using MUI with React.js, ensuring \noptimization for SEO. \no Technology stack: MERN Stack, MUI, REST APIs, SEO \nGreenstreams.lk \n• Developed the company website, ensuring seamless functionality and user experience. \n• Integrated 3D model handling using Three.js and managed emails with Nodemailer. \n• Built a fully responsive design with Tailwind CSS, optimized for SEO, and developed the site using Next.js. \no Technology stack: Next.js, Three.js, Tailwind CSS, SEO \n \nGlobal Systems Solutions International (Private) Limited | Nugegoda Jan 2021 – June 2021 \n• Trainee Contract Quality Assurance Technician \n EDUCATION  \nSri Lanka Institute of Information Technology (SLIIT) | Malabe Sep 2021 - Present \n• BSc. (Hons) in Information Technology Specializing in Software Engineering \nRoyal Central College | Polonnaruwa \n• G.C.E. Advanced Level Examination 2020 (1A pass & 2B passes for ICT, Economics & Accounting) \n• G.C.E. Ordinary Level Examination 2017 (7A passes,1B pass & 1C pass) \nCertificate Courses \n• Python for Beginners | University of Moratuwa Nov 2023 \n• Web Design for Beginners | University of Moratuwa Nov 2023 \n• Foundations of Project Management | University of Moratuwa Dec 2023 \n• Foundations of User Experience (UX) Design | Coursera Dec 2023 \n• UI / UX for Beginners | Great Learning Academy Dec 2023 \n• Build your own Chatbot Using Python Dec 2023 \n• SEO for Beginners Sep 2024 \n \nTechnical Skills  \nLanguages & Frameworks \n• Frontend - React.js, Next.js, React Native, JavaScript, HTML, CSS, TailwindCSS, Material-UI, Bootstrap \n• Backend - Node.js, MongoDB, MySQL, Firebase, Microservices \n• Other Languages - Java, Kotlin (Basic) \nDeveloper Tools \n• Version Control - Git, GitHub \n• IDEs & Editors - VS Code, Eclipse \n• Design & Prototyping - Figma \n• API Testing - Postman, Insomnia \n• Testing & Automation - Selenium, Jest \n• Containerization & Deployment - Docker, Render, Netlify \n• Project Management - Trello, YouTrack, Agile Development \nOther Skills \n• SEO (Search Engine Optimization) \n• OOP (Object-Oriented Programming) \n• Data Structures & Algorithms \n• Design Patterns \n• Agile Practices \n\nOTHER PROJECTS \n \nFarming Management System | Personal Project | Ongoing Project \n• Developed a system to manage farm operations, including tracking animal food purchases, stock levels, and daily production, using \nNode.js for the backend, REST APIs, and MongoDB. \n• Implemented bill management across multiple shops, tracking damaged quantities and ensuring accurate inventory records, utilizing \nFirebase for Google Auth. \n• Designed features for employe salary management to streamline payroll and financial tracking, employing React.js and Tailwind CSS \nfor the frontend. \n \nSmart Waste Management System | Academic Project | Group | Ongoing Project \n• Developing a system to manage waste tracking, payments, and recycling incentives for households and businesses. \n• Backend built using Node.js, with a responsive frontend developed in Next.js and Tailwind CSS. \n• Building a mobile application using React Native to provide users with flexible access to waste management services. \n \nArcana Candles | Personal Projects \n• Developed a secure e-commerce platform utilizing Firebase for Google Auth and Firebase DB for image storage, along with \nMongoDB for data management. \n• Implemented product and comment management features to streamline product updates and enhance user engagement, using \nNode.js, Vite, and Redux. \n• Integrated promotional displays and customer reviews on the homepage to improve user experience and aid decision-making, \nemploying Tailwind CSS and React.js for the front end. \n \nPersonal Portfolio Website | Personal Projects \n• Built a personal portfolio website using React.js and Material-UI to showcase information about myself, including education history \nand certifications. \n• Implemented a \"Contact Me\" feature with the Web3Forms API to enhance user engagement. \nVirtual Dressing Room | Academic Projects | Group \n• Developed a platform that allows users to explore and purchase customizable garments featuring a 3D visualization module, using \nExpress.js, MongoDB, and REST API for backend functionality. \n• Implemented garment customization features, enabling users to change colors, upload images, and adjust the position and scale of \ndesigns, utilizing React.js, MUI, and Three.js for the frontend. \n \nEducational Platform for Online Learning | Academic Projects | Group \n• Developed a microservices-based platform using Docker for seamless integration and orchestration. \n• Built a responsive web client with the MERN stack, enabling course enrollment, progress tracking, and course management, utilizing \nReact.js, Tailwind CSS, and Vite. \n• Integrated payment gateways, including Stripe, for a streamlined course enrollment process, enhancing the user experience with \nNode.js, Express.js, MongoDB, and Firebase. \n \nNASA API Portal | Academic Projects \n• Developed a web portal to provide easy access to NASA data, including imagery from Mars rovers and astronomy, utilizing the NASA \nAPI and Firebase Authentication. \n• Designed the portal with a fully responsive layout, enhancing accessibility using Tailwind CSS and React.js. \nUniversity Timetable Management System | Academic Project \n• Designed features for course management, timetable creation, room/resource booking, and student enrollment with conflict \nresolution. \n• Built with a REST API for scalability and integration, utilizing Node.js, MongoDB, React.js, Express.js (MERN stack), Vite, and Flowbite \nfor modern web technologies, with security ensured through encryption and access controls. \n• Conducted unit testing using Jest to validate backend functionality. \n \nIn addition to this project, you can explore more of my simpler projects, available on my portfolio page and GitHub account. \n \nNon-Technical Skills \n• Communication \n• Problem Solving \n• Organizational Skills \n• Leadership \nReferences \n• Resilience \n• Teamwork \n• Critical Thinking \n• Time Management \n• References available upon request.",
+  "cvLanguage": "en",
+  "createdAt": {
+    "$date": "2025-02-14T07:45:10.812Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-14T07:45:10.812Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67aef7ba2226d298689e39c4"
+  },
+  "userId": {
+    "$oid": "67aef6942226d298689e39b3"
+  },
+  "fileUrl": "https://rp-projects-public.s3.amazonaws.com/profiles/67aef6942226d298689e39b3/1739519920422-Chamath%20Fernando.pdf",
+  "firstName": "CHAMATH",
+  "lastName": "FERNANDO",
+  "gender": "",
+  "emails": [
+    "chamadula555@gmail.com"
+  ],
+  "urls": [
+    "https://bit.ly/3ABVymq",
+    "https://bit.ly/3CkJvdL"
+  ],
+  "phoneNumbers": [
+    "+94 78 9122433",
+    "+94 71 1142864"
+  ],
+  "dateOfBirth": {
+    "year": null,
+    "month": null,
+    "day": null
+  },
+  "address": "52/38, Wigoda, Bemmulla, Sri Lanka",
+  "totalExperienceYears": 0,
+  "profession": "IT professional",
+  "summary": "Detail-oriented IT professional with comprehensive expertise in Web and Mobile Development, alongside a solid foundation in Electronic and Telecommunication Engineering from the Open University. Strong interest in Data Science, Machine Learning, and IoT projects. Skilled in leveraging technical knowledge to deliver innovative, real-world solutions. Motivated to drive success in technology-focused projects, with hands-on experience across full-stack development.",
+  "skills": [
+    "Java",
+    "Springboot",
+    "Angular",
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "React.js",
+    "Node.js",
+    "Dart",
+    "Flutter",
+    "Python",
+    "Postman",
+    "VS Code",
+    "MS Power BI",
+    "GitHub",
+    "MS Excel"
+  ],
+  "hasDrivingLicense": false,
+  "educations": [
+    {
+      "description": "Bachelor's in Electronic and Telecommunication Engineering",
+      "_id": {
+        "$oid": "67aef7ba2226d298689e39c5"
+      }
+    },
+    {
+      "description": "National Diploma in Technology (NDT) - Information Technology",
+      "_id": {
+        "$oid": "67aef7ba2226d298689e39c6"
+      }
+    },
+    {
+      "description": "Human Resources Management Diploma",
+      "_id": {
+        "$oid": "67aef7ba2226d298689e39c7"
+      }
+    },
+    {
+      "description": "Advanced Level (GCE A/L) - Physical Science (3 C's)",
+      "_id": {
+        "$oid": "67aef7ba2226d298689e39c8"
+      }
+    },
+    {
+      "description": "Ordinary Level (GCE O/L) – 8 A's, 1 C",
+      "_id": {
+        "$oid": "67aef7ba2226d298689e39c9"
+      }
+    },
+    {
+      "description": "English Language Proficiency",
+      "_id": {
+        "$oid": "67aef7ba2226d298689e39ca"
+      }
+    }
+  ],
+  "trainingsAndCertifications": [
+    {
+      "year": null,
+      "description": "Full Stack Web Development",
+      "_id": {
+        "$oid": "67aef7ba2226d298689e39cb"
+      }
+    },
+    {
+      "year": null,
+      "description": "Introduction to Web Development with HTML, CSS, JavaScript",
+      "_id": {
+        "$oid": "67aef7ba2226d298689e39cc"
+      }
+    },
+    {
+      "year": null,
+      "description": "Introduction to Cloud Computing",
+      "_id": {
+        "$oid": "67aef7ba2226d298689e39cd"
+      }
+    },
+    {
+      "year": null,
+      "description": "AI/ML Engineer - Stage 1",
+      "_id": {
+        "$oid": "67aef7ba2226d298689e39ce"
+      }
+    }
+  ],
+  "professionalExperiences": [],
+  "awards": [],
+  "references": [
+    {
+      "full_name": "Ms. Tharukshi Adasuriya",
+      "phone_number": "+94 77 190 2981",
+      "email": "tharukshin@itum.mrt.ac.lk",
+      "company": "Institute of Technology, University of Moratuwa",
+      "position": "Lecturer",
+      "description": "",
+      "_id": {
+        "$oid": "67aef7ba2226d298689e39cf"
+      }
+    },
+    {
+      "full_name": "Ms. Sithara Madhubashini",
+      "phone_number": "+94 71 705 5905",
+      "email": "sitharam@itum.mrt.ac.lk",
+      "company": "Institute of Technology, University of Moratuwa",
+      "position": "Lecturer",
+      "description": "",
+      "_id": {
+        "$oid": "67aef7ba2226d298689e39d0"
+      }
+    }
+  ],
+  "cvText": "CHAMATH FERNANDO \nLinkedin : https://bit.ly/3ABVymq \nGitHub : https://bit.ly/3CkJvdL \n \n+94 78 9122433 | +94 71 1142864 \nchamadula555@gmail.com \n52/38, Wigoda, Bemmulla, Sri Lanka \n \n \n \nPROFESSIO N AL SUMMARY \n \nDetail-oriented IT professional with comprehensive expertise in Web  and  Mobile  Development, alongside a \nsolid foundation in Electronic and Telecommunication Engineering from the Open University. Strong \ninterest in Data  Science,  Machine  Learning, and IoT  projects. Skilled in leveraging technical knowledge to \ndeliver innovative, real-world solutions. Motivated to drive success in technology-focused projects, with \nhands-on experience across full-stack development. \n \nEDUCATION \n \n \nBachelor’s in Electronic and \nTelecommunication Engineering \nOpen University of Sri Lanka | Currently Enrolled \n \nNational Diploma in Technology (NDT) \n- Information Technology \nInstitute of Technology, University of Moratuwa \n(ITUM) | 2022 \nHuman Resources Management \nDiploma \nLPEC University | 2022 \n \nAdvanced Level (GCE A/L) – Physical \nScience (3 C’s) \nBandaranayake Central College, Veyangoda | 2020 \n \nOrdinary Level (GCE O/L) – 8 A’s, 1 C \nBandaranayake Central College, Veyangoda | 2017 \n \nEnglish Language Proficiency \nEsoft Metro Campus | 2022 \n \nLAN GU AGES \n \n \nEnglish – Fluent \nSinhala – Native \n \nREFEREES \n \n \nMs. Tharukshi Adasuriya \nLecturer, Institute of Technology, \nUniversity of Moratuwa \nPhone: +94 77 190 2981 \nEmail: tharukshin@itum.mrt.ac.lk \n \nMs. Sithara Madhubashini \nLecturer, Institute of Technology, \nUniversity of Moratuwa \nPhone: +94 71 705 5905 \nEmail: sitharam@itum.mrt.ac.lk \nP R O F E S S I O N A L P R O J E C T S \n \n \nMemo App (2024) : Technologies: Flutter, Dart, MongoDB, \nNode.js \nStridesmart Footwear Supply Chain Management Web \nApp (2024) : Technologies: React.js, MySQL, Node.js, CSS \nLaptop Price Prediction System (2024) : Technologies: \nPython \nMedical Appointment Scheduling System (2024) : \nTechnologies: Node.js, MongoDB, JavaScript, React.js \nChatApp (2024) : Technologies: Flutter, Dart, Node.js \nStridesmart Footwear Supply Chain Management Mobile \nApp (2024) : Technologies: Node.js, Flutter, Dart, MySQL \nE X T R A-C U R R I C U L A R A C T I V I T I E S \n \n \nMember of Computer Society – ITUM \nStudent Member, Institution of Incorporated Engineers, SL \nVice President, Sports Club – ITUM \n \nCORE COMP E T EN CIES \n \n \nWeb Development, Mobile Application Development, \nSoftware Testing, Data Analysis \nCommunication, Project Management, Analytical Thinking, \nProblem-Solving \nTeam Leadership, Conflict Resolution, Time Management, \nReporting & Documentation \n \nCE RT IFICAT ION S \n \n \nFull Stack Web Development \nIntroduction to Web Development with HTML, CSS, \nJavaScript \nIntroduction to Cloud Computing \nAI/ML Engineer - Stage 1 \n \nTECHNICAL SKILLS \n \n \nProgramming Languages & Frameworks: \nJava,Springboot,Angular,JavaScript, HTML, CSS, React.js, \nNode.js, Dart, Flutter,Python \nSoftware & Tools: Postman, VS Code, MS Power BI, GitHub, \nMS Excel",
+  "cvLanguage": "en",
+  "createdAt": {
+    "$date": "2025-02-14T07:58:50.482Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-14T07:58:50.482Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f3a7b15183ae46d4fe0a47"
+  },
+  "userId": {
+    "$oid": "67f3a669541e3a11504893fd"
+  },
+  "fileUrl": "https://rp-projects-public.s3.amazonaws.com/profiles/67f3a669541e3a11504893fd/1744021408930-Himasha%20Gunasinghe.pdf",
+  "firstName": "Himasha",
+  "lastName": "Gunasinghe",
+  "gender": "male",
+  "emails": [
+    "himasha1998gunasinghe@gmail.com",
+    "ragu.s@iit.ac.lk",
+    "nayana@trc.gov.lk"
+  ],
+  "urls": [
+    "www.linkedin.com/in/himasha-gunasinghe"
+  ],
+  "phoneNumbers": [
+    "+94 70 299 22 80",
+    "(+94)761358367",
+    "+94 11 2676986"
+  ],
+  "dateOfBirth": {
+    "year": 1998,
+    "month": null,
+    "day": null
+  },
+  "address": "Sampath Transport Services, Jayanthipura, Polonnaruwa,",
+  "totalExperienceYears": 1,
+  "profession": "Software Engineering Undergraduate",
+  "summary": "\"Passionate about problem solving with innovative software solutions, diving into the optimal technologies. Looking for a software engineering or associate software engineering position to work on the full-stack developments or machine learning research & developments.\"",
+  "skills": [
+    "Front End Development",
+    "React",
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "Machine Learning & DL",
+    "Python",
+    "TensorFlow",
+    "Keras",
+    "Backend Development",
+    "Java",
+    "PHP",
+    "Nodejs",
+    "Data Structures & Algorithm",
+    "Database",
+    "NoSQL - Mongo DB",
+    "SQL - My SQL",
+    "Mobile App Development",
+    "React Native"
+  ],
+  "hasDrivingLicense": false,
+  "educations": [
+    {
+      "description": "BSc. (Hons) Computer Science - Final year Undergraduate",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a48"
+      }
+    },
+    {
+      "description": "G.C.E. Advanced Level Examination",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a49"
+      }
+    }
+  ],
+  "trainingsAndCertifications": [
+    {
+      "year": 2021,
+      "description": "Neural Networks & Deep Learning",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a4a"
+      }
+    },
+    {
+      "year": 2021,
+      "description": "Full stack mobile app development with React Native",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a4b"
+      }
+    },
+    {
+      "year": null,
+      "description": "Server-side Development with NodeJS, Express and MongoDB",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a4c"
+      }
+    }
+  ],
+  "professionalExperiences": [
+    {
+      "company": "Black Vault Technologies (Pvt) Ltd",
+      "location": "VueJS, lonic, MySql",
+      "title": "Internship",
+      "description": "Project Conferli (Conferli.com)\nWorked on developing a buying and selling website",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a4d"
+      }
+    },
+    {
+      "company": "MAS KREEDA (Pvt) Ltd",
+      "location": "TensorFlow, Keras, OpenCV",
+      "title": "Internship",
+      "description": "Project Waist Band Orientation\nThis project is to identify the orientation of the waist band\nProject Seam Detection System\nThis project is to detect the seam line of the garments",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a4e"
+      }
+    }
+  ],
+  "awards": [
+    {
+      "year": null,
+      "title": "Final Year Project & Research",
+      "description": "Ocular Disease Recognition",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a4f"
+      }
+    },
+    {
+      "year": null,
+      "title": "Final Year Project & Research",
+      "description": "Deep Learning techniques (classification & transfer learning) to identify the disease type",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a50"
+      }
+    },
+    {
+      "year": null,
+      "title": "Final Year Project & Research",
+      "description": "Mobile app development",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a51"
+      }
+    },
+    {
+      "year": 2021,
+      "title": "Software Development Group Project",
+      "description": "My vocal buddy mobile app- stuttering & stammering level identification app (We got selected to top 10 in HaxMas & 2nd round in SlashCom)",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a52"
+      }
+    },
+    {
+      "year": 2021,
+      "title": "Software Development Group Project",
+      "description": "Machine learning to classify the stutter type.",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a53"
+      }
+    },
+    {
+      "year": 2021,
+      "title": "Software Development Group Project",
+      "description": "Mobile app development",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a54"
+      }
+    },
+    {
+      "year": null,
+      "title": "Football Premier League Management System",
+      "description": "Football premier league management system",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a55"
+      }
+    },
+    {
+      "year": null,
+      "title": "Football Premier League Management System",
+      "description": "UI design & developments",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a56"
+      }
+    }
+  ],
+  "references": [
+    {
+      "full_name": "Eng. (Mrs.) S.A.R.Kamalanayana,",
+      "phone_number": "+94 11 2676986",
+      "email": "nayana@trc.gov.lk",
+      "company": "Telecommunications Regulatory Commission of Sri Lanka",
+      "position": "Deputy Director",
+      "description": "Deputy Director",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a57"
+      }
+    },
+    {
+      "full_name": "R. Sivaraman (MSc)",
+      "phone_number": "(+94)761358367",
+      "email": "ragu.s@iit.ac.lk",
+      "company": "Informatics Institute of Technology,",
+      "position": "Lecturer",
+      "description": "Lecturer",
+      "_id": {
+        "$oid": "67f3a7b15183ae46d4fe0a58"
+      }
+    }
+  ],
+  "cvText": "s \n–– \n \nP R O J E C TS \nFinal Year Project & Research| Final Year | Individual Ongoing \n•  Ocular Disease Recognition-  \n•  Deep Learning techniques (classification & transfer learning) to identify the disease type                        \n                                                                                                                         Python, ResNet50 \n•  Mobile app development                                                                                        React Native \nSoftware Development Group Project | Second Year | Group April 2021 \n•  My vocal buddy mobile app- stuttering & stammering level identification app \n(We got selected to top 10 in HaxMas & 2\nnd\n round in SlashCom) \n•  Machine learning to classify the stutter type.                                               Python, Sci-kit learn \n•  Mobile app development                                                                                        React Native \nFootball Premier League Management System | Individual                                              Jan 2021           \n•  Football premier league management system Java \n•  UI design & developments React  \n \nT E C H N I C A L  S K I L L S \n                Front End Development \nReact, \nJavaScript,  \nHTML, CSS \n \nMachine Learning & DL \nPython, \nTensorFlow, Keras  \n \nBackend Development \n Java, PHP, Nodejs \n             Data Structures & Algorithm \n \n                         Database \nNoSQL - Mongo DB \nSQL - My SQL  \nMobile App Development \nReact Native \n \n                           \n \n \n \n \n \nChampion | Swimming Rathnavali Balika Vidyalaya, Gampaha 2011 \nBest Chess Player under 13, 15,17 | Rathnavali Balika Vidyalaya, Gampaha 2010-2015 \nTeam Player | School Swimming team under 13, 15, 17 & 19  2009 - 2017 \nTeam Player | School chess team under 13, 15, 17 & 19 2009 - 2017 \nFinalist | Provincial art competition 2012 \nMember | Rotaract Club of IIT                                                                                 2020 -present \nS P O R T S & E X T R A   C U R R I C U L A R  A C T I V I T I E S \nI N T E R E S T S \n   Front-end Development  \n                  Back-end Development \n          Database Management System \nAPI Development \nMachine Learning \nDeep Learning \n \nP E R S O N A L   I N F O \nSampath Transport Services,  \nJayanthipura, Polonnaruwa,   \n+94 70 299 22 80 \nhimasha1998gunasinghe@gmail.com \nwww.linkedin.com/in/himasha-\ngunasinghe  \n \n \nN O N-T E C H N I C A L S K I L L S \nInnovation | Creativity \nProblem Solving  \nAnalytical thinking \nCritical thinking  \nGoal oriented | Active Learning \n Leadership | Communication  \nPresentation \n \nN O N-R E L A T E D  R E FEREES \nEng. (Mrs.) S.A.R.Kamalanayana, \nDeputy Director, \nTelecommunications Regulatory \nCommission of Sri Lanka, \nPhone: +94 11 2676986 \nEmail: nayana@trc.gov.lk \n \n \n \nR. Sivaraman (MSc) \nLecturer \nInformatics Institute of Technology, \nColombo-6 \nMobile: (+94)761358367 \nEmail: ragu.s@iit.ac.lk  \n \n \n \nInformatics Institute of Technology, Sri Lanka Jan 2019 - Present \n•  BSc. (Hons) Computer Science – Final year Undergraduate \n•  Rathnavali Balika Vidyalaya, Gampaha, Sri Lanka 2009 - 2018 \nG.C.E. Advanced Level Examination | 2018  \n•  1B pass & 2C passes for Biology, Physics & Chemistry | Z-score – 0.84  \nG.C.E. Ordinary Level Examination | 2014 \n•  8A passes & 1B pass \nCertificate Courses, Coursera  \n•  Neural Networks & Deep Learning                                                                       March - 2021 \n•  Full stack mobile app development with React Native                                            May - 2021 \n•  Server-side Development with NodeJS, Express and MongoDB                                 Ongoing  \n \n \nE D U C A T I O N \n Internship (4 months) at Black Vault Technologies (Pvt) Ltd Oct 2021 - Mar 2022 \n•  Project Conferli (Conferli.com)                                                                                               \n  Worked on developing a buying and selling website                                   VueJS, Ionic, MySql     \n Internship (6 months) at MAS KREEDA (Pvt) Ltd  April 2022 - Oct 2022 \n•  Project Waist Band Orientation                                                                                                    \n    This project is to identify the orientation of the waist band           TensorFlow, Keras, OpenCV    \n•  Project Seam Detection System                                                                                                    \n    This project is to detect the seam line of the garments                  TensorFlow, Keras, OpenCV    \n \n \n \n                                \n \n \n \nW O R K   E X P E R I E N C E S \nHI M AS HA GU N AS I N GH E \n“Passionate about problem solving with innovative software solutions, diving into the optimal \ntechnologies. Looking for a software engineering or associate software engineering position to \nwork on the full-stack developments or machine learning research & developments.” \n \n \nSoftware Engineering Undergraduate",
+  "cvLanguage": "en",
+  "createdAt": {
+    "$date": "2025-04-07T10:23:45.435Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-07T10:23:45.435Z"
+  },
+  "__v": 0
+}]

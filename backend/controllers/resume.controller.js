@@ -145,39 +145,59 @@ exports.getResumeByUserId = async (req, res) => {
   }
 };
 
-// Get Mathing Candidates Details ----------------------------------------------------
+// Get Matching Candidates Details ---------------------------------------------------
 exports.matchCandidates = async (req, res) => {
   try {
     // Extract the jobId from request parameters
     const { jobId } = req.params;
-    
+
     // Define default weights
     const defaultWeights = {
       experience_score: 0.45,
       skills_score: 0.05,
       profession_score: 0.15,
-      summary_score: 0.35
+      summary_score: 0.35,
     };
 
-    // Use provided weights from req.body if available, otherwise defaultWeights
-    const weights = req.body && req.body.weights ? req.body.weights : defaultWeights;
+    // Initialize weights with default values
+    const weights = {
+      experience_score: defaultWeights.experience_score,
+      skills_score: defaultWeights.skills_score,
+      profession_score: defaultWeights.profession_score,
+      summary_score: defaultWeights.summary_score,
+    };
+
+    // Override with provided weights from req.body if available
+    if (req.body && req.body.weights) {
+      if (req.body.weights.experience_score !== undefined) {
+        weights.experience_score = req.body.weights.experience_score;
+      }
+      if (req.body.weights.skills_score !== undefined) {
+        weights.skills_score = req.body.weights.skills_score;
+      }
+      if (req.body.weights.profession_score !== undefined) {
+        weights.profession_score = req.body.weights.profession_score;
+      }
+      if (req.body.weights.summary_score !== undefined) {
+        weights.summary_score = req.body.weights.summary_score;
+      }
+    }
 
     // Build the payload with job_id and weights
     const payload = {
       job_id: jobId,
-      weights: weights
+      weights: weights,
     };
 
-    // Build the FastAPI URL for matching resumes (POST endpoint)
-    const fastApiUrl = `${process.env.FAST_API_BACKEND}match-resumes`;
+    // Build the FastAPI URL for matchi${process.env.FAST_API_BACKEND}ng resumes (POST endpoint)
+    const fastApiUrl = `match-resumes`;
 
     // Call the FastAPI service using a POST request with the payload
     const fastApiResponse = await axios.post(fastApiUrl, payload);
-    
+
     return res.json(fastApiResponse.data);
   } catch (error) {
     console.error("Error Fetching Matching Candidates.", error.message);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
-

@@ -1,0 +1,365 @@
+[{
+  "_id": {
+    "$oid": "67f2a10e76854922b0d704ea"
+  },
+  "user": {
+    "$oid": "67f29ef9061588c16fd6e6a2"
+  },
+  "company": {
+    "$oid": "67f2a0a3e47f2a2c0e054f86"
+  },
+  "jobTitle": "Frontend Developer",
+  "workExperience": "1+ years",
+  "skills": [
+    "JavaScript",
+    "React",
+    "Node.js",
+    "TypeScript",
+    "REST APIs",
+    "Git",
+    "SQL",
+    "Agile",
+    "AWS"
+  ],
+  "salaryRange": "50000-70000 USD",
+  "employmentType": "Full Time",
+  "applicationDeadline": {
+    "$date": "2025-04-11T00:00:00.000Z"
+  },
+  "jobDescription": "We are looking for a skilled Software Engineer to join our team...",
+  "qualifications": [
+    "Bachelor’s degree in Computer Science",
+    "1+ years experience"
+  ],
+  "jobResponsibilities": [
+    "Develop and maintain web applications",
+    "Collaborate with cross-functional teams"
+  ],
+  "createdAt": {
+    "$date": "2025-04-06T15:43:10.517Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-06T15:59:48.033Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f2b2e7e961f92a673d78e4"
+  },
+  "user": {
+    "$oid": "67ac9188fcea3c66a6260c06"
+  },
+  "company": {
+    "$oid": "67f2b2e3e961f92a673d78df"
+  },
+  "jobTitle": "Backend Developer",
+  "workExperience": "1+ years",
+  "skills": [
+    "Node.js",
+    "MongoDB",
+    "Firebase",
+    "MySQL",
+    "Postman",
+    "Jest"
+  ],
+  "salaryRange": "70000-90000 USD",
+  "employmentType": "Full Time",
+  "applicationDeadline": {
+    "$date": "2025-04-22T00:00:00.000Z"
+  },
+  "jobDescription": "We are looking for an experienced Backend Developer to build and maintain server-side applications and APIs...",
+  "qualifications": [
+    "Bachelor’s degree in Computer Science or related field",
+    "3+ years of experience in backend development"
+  ],
+  "jobResponsibilities": [
+    "Design and develop RESTful APIs",
+    "Optimize database performance",
+    "Implement security and data protection solutions"
+  ],
+  "createdAt": {
+    "$date": "2025-04-06T16:59:19.082Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-07T11:49:32.544Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f2c7d7dde869bb0fc218d2"
+  },
+  "user": {
+    "$oid": "67ac9188fcea3c66a6260c06"
+  },
+  "company": {
+    "$oid": "67f2b2e3e961f92a673d78df"
+  },
+  "jobTitle": "DevOps Engineer",
+  "workExperience": "2+ years",
+  "skills": [
+    "Docker",
+    "Kubernetes",
+    "CI/CD",
+    "AWS",
+    "Terraform"
+  ],
+  "salaryRange": "80000-100000 USD",
+  "employmentType": "Full Time",
+  "applicationDeadline": {
+    "$date": "2025-05-09T00:00:00.000Z"
+  },
+  "jobDescription": "Seeking a DevOps Engineer to enhance and maintain our cloud infrastructure and deployment pipelines...",
+  "qualifications": [
+    "Bachelor’s degree in Computer Science, IT, or a related field",
+    "2+ years of experience in DevOps or Cloud Engineering"
+  ],
+  "jobResponsibilities": [
+    "Manage CI/CD pipelines and automate deployment processes",
+    "Monitor and optimize system performance",
+    "Ensure security compliance in cloud environments"
+  ],
+  "createdAt": {
+    "$date": "2025-04-06T18:28:39.922Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-06T18:28:39.922Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f2c83fdde869bb0fc218d6"
+  },
+  "user": {
+    "$oid": "67ac9188fcea3c66a6260c06"
+  },
+  "company": {
+    "$oid": "67f2b2e3e961f92a673d78df"
+  },
+  "jobTitle": "Full Stack Developer",
+  "workExperience": "4+ years",
+  "skills": [
+    "JavaScript",
+    "React.js",
+    "Node.js",
+    "PostgreSQL"
+  ],
+  "salaryRange": "90000-120000 USD",
+  "employmentType": "Contract",
+  "applicationDeadline": {
+    "$date": "2025-05-29T00:00:00.000Z"
+  },
+  "jobDescription": "We are hiring a Full Stack Developer to design and develop end-to-end web applications...",
+  "qualifications": [
+    "Bachelor’s or Master’s degree in Computer Science or related field",
+    "4+ years of experience in full-stack development"
+  ],
+  "jobResponsibilities": [
+    "Develop both frontend and backend components",
+    "Work with UX/UI designers to implement user-friendly interfaces",
+    "Ensure application scalability and maintainability"
+  ],
+  "createdAt": {
+    "$date": "2025-04-06T18:30:23.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-06T18:30:23.542Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f2cc52fa1d33203bfc3e57"
+  },
+  "user": {
+    "$oid": "67aef90d2226d298689e3a74"
+  },
+  "company": {
+    "$oid": "67f2cb8bfa1d33203bfc3e39"
+  },
+  "jobTitle": "Data Scientist",
+  "workExperience": "2+ years",
+  "skills": [
+    "Python",
+    "R",
+    "SQL",
+    "Pandas",
+    "Scikit-learn",
+    "Machine Learning",
+    "Data Visualization"
+  ],
+  "salaryRange": "$90,000 - $120,000 USD",
+  "employmentType": "Full Time",
+  "applicationDeadline": {
+    "$date": "2025-05-09T00:00:00.000Z"
+  },
+  "jobDescription": "Join our data science team to derive insights and build predictive models from complex datasets. We value curiosity, creativity, and a solid understanding of analytics and machine learning techniques.",
+  "qualifications": [
+    "Bachelor's or Master's in Data Science or equivalent",
+    "Proficiency in Python and data libraries",
+    "Experience building and validating ML models",
+    "Strong problem-solving and critical thinking",
+    "Good communication and data storytelling skills"
+  ],
+  "jobResponsibilities": [
+    "Clean, analyze, and interpret large datasets",
+    "Develop statistical and machine learning models",
+    "Create dashboards and visualizations",
+    "Collaborate with product and engineering teams",
+    "Translate data insights into business recommendations"
+  ],
+  "createdAt": {
+    "$date": "2025-04-06T18:47:46.782Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-06T18:47:46.782Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f2cc87fa1d33203bfc3e5b"
+  },
+  "user": {
+    "$oid": "67aef90d2226d298689e3a74"
+  },
+  "company": {
+    "$oid": "67f2cb8bfa1d33203bfc3e39"
+  },
+  "jobTitle": "Mobile App Developer",
+  "workExperience": "3+ years",
+  "skills": [
+    "React Native",
+    "Flutter",
+    "Swift",
+    "Kotlin",
+    "REST APIs",
+    "Firebase"
+  ],
+  "salaryRange": "$85,000 - $110,000 USD",
+  "employmentType": "Part Time",
+  "applicationDeadline": {
+    "$date": "2025-05-19T00:00:00.000Z"
+  },
+  "jobDescription": "We’re hiring a Mobile App Developer to build engaging cross-platform mobile experiences. You’ll create responsive, high-performance apps that serve millions of users globally.",
+  "qualifications": [
+    "Bachelor’s in Computer Science or related area",
+    "3+ years mobile development experience",
+    "Proficient in React Native or Flutter",
+    "Strong understanding of mobile UI/UX",
+    "Experience integrating third-party APIs"
+  ],
+  "jobResponsibilities": [
+    "Develop and release mobile applications",
+    "Ensure app performance and responsiveness",
+    "Collaborate with product and design teams",
+    "Maintain code quality and documentation",
+    "Troubleshoot and resolve mobile app issues"
+  ],
+  "createdAt": {
+    "$date": "2025-04-06T18:48:39.012Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-06T18:48:39.012Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f2ccd8fa1d33203bfc3e5f"
+  },
+  "user": {
+    "$oid": "67aef90d2226d298689e3a74"
+  },
+  "company": {
+    "$oid": "67f2cb8bfa1d33203bfc3e39"
+  },
+  "jobTitle": "Senior Frontend Developer",
+  "workExperience": "5+ years",
+  "skills": [
+    "React.js",
+    "TypeScript",
+    "Redux",
+    "HTML5",
+    "CSS3",
+    "Webpack",
+    "REST APIs"
+  ],
+  "salaryRange": "$100,000 - $130,000 USD",
+  "employmentType": "Remote",
+  "applicationDeadline": {
+    "$date": "2025-06-06T00:00:00.000Z"
+  },
+  "jobDescription": "We are seeking a highly experienced and passionate Senior Frontend Developer to lead the development of user-centric web applications. You’ll work with a team of designers and backend developers to create responsive, scalable, and high-performing frontends. Your code will directly impact thousands of users daily. This role requires someone who has a deep understanding of frontend technologies and can architect and deliver complex user interfaces. You’ll take ownership of features from concept to production and will help mentor junior developers to grow their skills. Our ideal candidate thrives in a fast-paced environment and is always looking for new ways to improve the user experience.",
+  "qualifications": [
+    "Bachelor’s or Master’s degree in Computer Science or related field",
+    "5+ years of experience in frontend development",
+    "Strong portfolio showcasing UI/UX-focused work",
+    "Experience with performance optimization techniques",
+    "Deep understanding of cross-browser compatibility issues"
+  ],
+  "jobResponsibilities": [
+    "Design and implement complex UIs using React and TypeScript",
+    "Collaborate with backend engineers and product designers",
+    "Write reusable and testable frontend components",
+    "Optimize frontend performance and ensure mobile responsiveness",
+    "Conduct code reviews and maintain high code quality",
+    "Stay updated with the latest frontend trends and tools"
+  ],
+  "createdAt": {
+    "$date": "2025-04-06T18:50:00.993Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-06T18:50:00.993Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f2cd50fa1d33203bfc3e6b"
+  },
+  "user": {
+    "$oid": "67ac9188fcea3c66a6260c06"
+  },
+  "company": {
+    "$oid": "67f2b2e3e961f92a673d78df"
+  },
+  "jobTitle": "Cloud DevOps Engineer",
+  "workExperience": "3+ years",
+  "skills": [
+    "AWS",
+    "Docker",
+    "Kubernetes",
+    "Jenkins",
+    "Terraform",
+    "CI/CD"
+  ],
+  "salaryRange": "$95,000 - $115,000 USD",
+  "employmentType": "Part Time",
+  "applicationDeadline": {
+    "$date": "2025-04-23T00:00:00.000Z"
+  },
+  "jobDescription": "We're looking for a driven Cloud DevOps Engineer to streamline and scale our cloud infrastructure. You’ll be responsible for managing deployments, ensuring system reliability, and improving operational efficiency. In this role, you'll work closely with engineering and product teams to automate infrastructure using tools like Terraform, optimize CI/CD pipelines, and enforce best practices for security and compliance. You'll also monitor system performance and introduce solutions to improve scalability and fault tolerance. A successful candidate will be someone who enjoys problem-solving and has a passion for building robust infrastructure in a cloud-native environment.",
+  "qualifications": [
+    "Bachelor’s degree in Information Technology or equivalent",
+    "3+ years of experience in DevOps or Cloud Engineering",
+    "Proficiency in infrastructure-as-code practices",
+    "Strong understanding of security practices and monitoring tools"
+  ],
+  "jobResponsibilities": [
+    "Manage AWS-based infrastructure and services",
+    "Build and maintain automated CI/CD pipelines",
+    "Implement infrastructure as code using Terraform",
+    "Ensure application security and system compliance",
+    "Troubleshoot system issues and maintain high availability"
+  ],
+  "createdAt": {
+    "$date": "2025-04-06T18:52:00.886Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-06T18:52:00.886Z"
+  },
+  "__v": 0
+}]
