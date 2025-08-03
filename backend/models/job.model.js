@@ -53,6 +53,11 @@ const JobSchema = new mongoose.Schema(
         required: true,
       },
     ],
+    job_level: {
+      type: String,
+      enum: ["Senior", "Junior", "Associate", "Intern"],
+      required: true,
+    },
     hrQuestions: [
       {
         question: {

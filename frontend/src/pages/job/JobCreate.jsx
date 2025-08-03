@@ -13,6 +13,7 @@ const JobCreate = () => {
     jobTitle: "",
     workExperience: "",
     skills: "",
+    job_level: "Junior",
     salaryRange: "",
     employmentType: "Full Time",
     applicationDeadline: "",
@@ -119,6 +120,7 @@ const JobCreate = () => {
     if (
       !jobData.jobTitle ||
       !jobData.workExperience ||
+      !jobData.job_level ||
       !jobData.skills ||
       !jobData.salaryRange ||
       !jobData.employmentType ||
@@ -296,6 +298,27 @@ const JobCreate = () => {
             <option value="Contract">Contract</option>
             <option value="Remote">Remote</option>
           </Select>
+        </div>
+        <div>
+          <Label className="mb-1">Job Level</Label>
+          <div className="flex gap-4 mt-2">
+            {["Junior", "Associate", "Senior", "Intern"].map((level) => (
+              <div key={level} className="flex items-center">
+                <input
+                  type="radio"
+                  id={`job_level_${level}`}
+                  name="job_level"
+                  value={level}
+                  checked={jobData.job_level === level}
+                  onChange={handleChange}
+                  className="w-4 h-4 text-cyan-600 bg-gray-100 border-gray-300 focus:ring-cyan-500"
+                />
+                <Label htmlFor={`job_level_${level}`} className="ml-2">
+                  {level}
+                </Label>
+              </div>
+            ))}
+          </div>
         </div>
         <div>
           <Label className="mb-1">Application Deadline</Label>
