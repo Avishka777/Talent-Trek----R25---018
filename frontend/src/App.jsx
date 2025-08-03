@@ -15,6 +15,8 @@ import JobUpdate from "./pages/job/JobUpdate";
 import ProtectedRoute from "./components/public/ProtectedRoute";
 import CompanyDetails from "./pages/company/CompanyDetails";
 import AgentListing from "./pages/skill-prediction/AgentListing";
+import AssessmentIntro from "./pages/skill-based-assesment/AssesmentIntro";
+import PuzzleGame from "./pages/skill-based-assesment/PuzzleGame";
 
 function Layout() {
   const location = useLocation();
@@ -30,12 +32,15 @@ function Layout() {
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/my-profile" element={<MyProfile />} />
 
-        {/* Protected Recruiter Routes */}
+        {/* Protected JobSeeker Routes */}
         <Route element={<ProtectedRoute allowedRoles={["Job Seeker"]} />}>
           <Route path="/resume-upload" element={<ResumeUpload />} />
           <Route path="/seeker/jobs" element={<SeekerJobList />} />
           <Route path="/job/:jobId/:matchPercentage?" element={<JobDetails />} />
           <Route path="/agent/joblist" element={<AgentListing />} />
+          <Route path="/skill-bases-assessment/assessment-intro" element={<AssessmentIntro />} />
+          <Route path="/skill-bases-assessment/puzzle-game" element={<PuzzleGame />} />
+
         </Route>
 
         {/* Protected Recruiter Routes */}

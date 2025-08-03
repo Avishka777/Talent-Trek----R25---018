@@ -13,6 +13,7 @@ const JobCreate = () => {
     jobTitle: "",
     workExperience: "",
     skills: "",
+    optionalSkills: "",
     job_level: "Junior",
     salaryRange: "",
     employmentType: "Full Time",
@@ -186,6 +187,9 @@ const JobCreate = () => {
       const payload = {
         ...jobData,
         skills: jobData.skills.split(",").map((skill) => skill.trim()),
+        optionalSkills: jobData.optionalSkills
+        ? jobData.optionalSkills.split(",").map((skill) => skill.trim())
+        : [],
         qualifications: jobData.qualifications.split("\n"),
         jobResponsibilities: jobData.jobResponsibilities.split("\n"),
         hrQuestions: hrQuestions.map((q) => ({
@@ -207,6 +211,7 @@ const JobCreate = () => {
           jobTitle: "",
           workExperience: "",
           skills: "",
+          optionalSkills: "",
           salaryRange: "",
           employmentType: "Full Time",
           applicationDeadline: "",
@@ -266,7 +271,7 @@ const JobCreate = () => {
           />
         </div>
         <div>
-          <Label className="mb-1">Skills</Label>
+          <Label className="mb-1">Required Skills</Label>
           <TextInput
             name="skills"
             placeholder="Skills (comma-separated)"
@@ -274,6 +279,18 @@ const JobCreate = () => {
             onChange={handleChange}
             required
           />
+        </div>
+        <div>
+          <Label className="mb-1">Optional Skills</Label>
+          <TextInput
+            name="optionalSkills"
+            placeholder="Optional Skills (comma-separated)"
+            value={jobData.optionalSkills}
+            onChange={handleChange}
+          />
+          <p className="text-sm text-gray-500 mt-1">
+            These are nice-to-have skills (not required)
+          </p>
         </div>
         <div>
           <Label className="mb-1">Salary Range</Label>
