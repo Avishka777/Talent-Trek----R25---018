@@ -7,7 +7,7 @@ const JobSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    company: { 
+    company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
       required: true,
@@ -30,7 +30,7 @@ const JobSchema = new mongoose.Schema(
     },
     employmentType: {
       type: String,
-      enum: ["Full Time", "Part Time", "Remote","Contract"],
+      enum: ["Full Time", "Part Time", "Remote", "Contract"],
       required: true,
     },
     applicationDeadline: {
@@ -51,6 +51,25 @@ const JobSchema = new mongoose.Schema(
       {
         type: String,
         required: true,
+      },
+    ],
+    hrQuestions: [
+      {
+        question: {
+          type: String,
+          required: true,
+        },
+        questionType: {
+          type: String,
+          enum: ["text", "multiple-choice", "boolean"],
+          required: true,
+        },
+        options: {
+          type: [String],
+          required: function () {
+            return this.questionType === "multiple-choice";
+          },
+        },
       },
     ],
   },
