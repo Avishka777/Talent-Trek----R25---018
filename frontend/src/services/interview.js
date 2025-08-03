@@ -19,7 +19,28 @@ const InterviewService = {
         }
       );
     }
+  },
+
+  uploadInterviewVideo : async (formData) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}interview/upload-interview`, formData,
+        // {
+        //   headers: { Authorization: `Bearer ${token}` },
+        // }
+      );
+      return response.data;
+    } catch (error) {
+      throw (
+        error.response?.data || {
+          success: false,
+          message: "Failed to fetch interview details.",
+        }
+      );
+    }
   }
 }
+
+
 
 export default InterviewService;

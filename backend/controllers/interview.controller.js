@@ -93,5 +93,58 @@ exports.getInterviewQuestionById = async (req, res) => {
   }
 };
 
+exports.getInterviewQuestionById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const interview = await InterviewQuestion.findById(id);
+
+    if (!interview) {
+      return res.status(404).json({
+        success: false,
+        message: "Interview question not found.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: interview,
+    });
+  } catch (error) {
+    console.error("Error in getInterviewQuestionById:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error.",
+      error: error.message,
+    });
+  }
+};
+
+exports.uploadInterviewToCloudinary = async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({ success: false, message: "No video uploaded" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Video uploaded to Cloudinary",
+      videoUrl: file.path, // Cloudinary hosted URL
+      jobId,
+    });
+  } catch (error) {
+    console.error("Upload error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to upload video",
+      error: error.message,
+    });
+  }
+};
+
+
 
 
