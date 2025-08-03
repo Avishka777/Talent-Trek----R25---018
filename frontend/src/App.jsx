@@ -15,6 +15,7 @@ import JobUpdate from "./pages/job/JobUpdate";
 import ProtectedRoute from "./components/public/ProtectedRoute";
 import CompanyDetails from "./pages/company/CompanyDetails";
 import AgentListing from "./pages/skill-prediction/AgentListing";
+import Interview from "./pages/interview/interview";
 
 function Layout() {
   const location = useLocation();
@@ -36,6 +37,10 @@ function Layout() {
           <Route path="/seeker/jobs" element={<SeekerJobList />} />
           <Route path="/job/:jobId/:matchPercentage?" element={<JobDetails />} />
           <Route path="/agent/joblist" element={<AgentListing />} />
+
+          {/* Interview */}
+          <Route path="/interview" element={<Interview />} />
+
         </Route>
 
         {/* Protected Recruiter Routes */}
