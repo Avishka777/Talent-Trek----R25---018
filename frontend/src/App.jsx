@@ -39,7 +39,7 @@ function Layout() {
           <Route path="/agent/joblist" element={<AgentListing />} />
 
           {/* Interview */}
-          <Route path="/interview" element={<Interview />} />
+          <Route path="/interview/:id" element={<Interview />} />
 
         </Route>
 

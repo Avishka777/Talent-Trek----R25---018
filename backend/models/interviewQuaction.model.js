@@ -19,4 +19,4 @@ const InterviewQuactionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("hrquactions", InterviewQuactionSchema);
+module.exports = mongoose.model("interviewquestions", InterviewQuactionSchema);

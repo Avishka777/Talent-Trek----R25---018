@@ -1,18 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import InterviewService from '../../services/interview';
+import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Interview = () => {
+    const { id } = useParams();
+    const [QuactionsArray, setQuactionsArray] = useState([]);
+
+    useEffect(() => {
+        fetchJobs();
+    }, [id]);
+
+    const fetchJobs = async () => {
+        try {
+            const response = await InterviewService.getInterviewQuactions(id);
+            if (response.success) {
+                setQuactionsArray(response.data.quactionList);
+            } else {
+                setQuactionsArray([]);
+            }
+            console.log("Interview Questions:", response);
+            
+        } catch (error) {
+            Swal.fire({
+                title: "Fetching Failed",
+                text: error.message || "Error Fetching Jobs.",
+                confirmButtonColor: "red",
+            });
+            setQuactionsArray([]);
+        }
+        setLoading(false);
+    };
     return (
         <div>
             <div className='flex flex-row gap-2'>
                 <div className='w-1/3 flex flex-col justify-center items-center'>
-                    <h2 className='font-semibold'>Your Quactions</h2>
+                    <h2 className='font-semibold text-xl'>Your Quactions</h2>
                     <div>
                         <ul className='list-disc'>
-                            <li>What is your name?</li>
-                            <li>What is your age?</li>
-                            <li>What is your qualification?</li>
-                            <li>What is your experience?</li>
-                            <li>What is your skill?</li>
+                            {QuactionsArray.map((question) => (
+                                <li key={question.quactionNo} className='text-lg font-medium'>
+                                    {question.quaction}
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>
