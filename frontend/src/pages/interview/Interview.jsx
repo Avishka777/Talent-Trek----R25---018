@@ -160,9 +160,9 @@ const Interview = () => {
                                     <h3 className="text-lg font-medium text-gray-900">
                                         {currentQuestion?.quaction || "No question available"}
                                     </h3>
-                                    <p className="text-sm text-gray-600 mt-2">
+                                    {/* <p className="text-sm text-gray-600 mt-2">
                                         <strong>Answer:</strong> {currentQuestion?.answer || "No answer provided"}
-                                    </p>
+                                    </p> */}
                                 </div>
 
                                 <div className="mt-6">
