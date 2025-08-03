@@ -122,19 +122,37 @@ exports.getInterviewQuestionById = async (req, res) => {
 
 exports.uploadInterviewToCloudinary = async (req, res) => {
   try {
-    const { jobId } = req.body;
+    const { jobId, quactionNo, answer, video } = req.body; // Now this should work
     const file = req.file;
+    console.log("File:", file);
+
+    // console.log("File Received:", file);
 
     if (!file) {
       return res.status(400).json({ success: false, message: "No video uploaded" });
     }
 
+    // Optional: log specific fields
+    console.log("Job ID:", jobId);
+    console.log("Question No:", quactionNo);
+    console.log("Answer:", answer);
+
+    // const AnsEvaluation = await axios.post(
+    //   "http://localhost:3001/evaluate-video",
+    //   { 
+    //     video_file: video,
+    //     ideal_answer: answer,
+    //    }
+    // );
+
+    // console.log("Evaluation Response:", AnsEvaluation.data);
+
     res.status(200).json({
       success: true,
-      message: "Video uploaded to Cloudinary",
-      videoUrl: file.path, // Cloudinary hosted URL
-      jobId,
+      message: "Video uploaded and evaluated",
+      videoUrl: file.path,
     });
+
   } catch (error) {
     console.error("Upload error:", error);
     res.status(500).json({
@@ -144,6 +162,7 @@ exports.uploadInterviewToCloudinary = async (req, res) => {
     });
   }
 };
+
 
 
 

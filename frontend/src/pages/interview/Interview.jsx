@@ -5,13 +5,13 @@ import Swal from "sweetalert2";
 import { Play, Square, ChevronLeft, ChevronRight, AlertTriangle } from "lucide-react";
 
 const Interview = () => {
-    const { id } = useParams();
+    const { id } = useParams(); // jobId
     const [questionsArray, setQuestionsArray] = useState([]);
     const [isRecording, setIsRecording] = useState(false);
     const [mediaRecorder, setMediaRecorder] = useState(null);
-    const [recordedChunks, setRecordedChunks] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const videoRef = useRef();
+    const recordedChunksRef = useRef([]);
 
     useEffect(() => {
         fetchQuestions();
@@ -37,25 +37,39 @@ const Interview = () => {
     };
 
     const startRecording = async () => {
-        setRecordedChunks([]);
+        recordedChunksRef.current = [];
+
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { width: 1280, height: 720 }, 
-                audio: true 
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { width: 1280, height: 720 },
+                audio: true,
             });
+
             videoRef.current.srcObject = stream;
 
             const recorder = new MediaRecorder(stream);
+
             recorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
-                    setRecordedChunks((prev) => [...prev, event.data]);
+                    recordedChunksRef.current.push(event.data);
                 }
             };
 
             recorder.onstop = async () => {
-                const blob = new Blob(recordedChunks, { type: "video/webm" });
+                const blob = new Blob(recordedChunksRef.current, { type: "video/webm" });
                 await uploadVideo(blob);
-                stream.getTracks().forEach(track => track.stop());
+                stream.getTracks().forEach((track) => track.stop());
+
+                // Move to next question
+                if (currentQuestionIndex < questionsArray.length - 1) {
+                    setCurrentQuestionIndex((prev) => prev + 1);
+                } else {
+                    Swal.fire({
+                        title: "Interview Complete!",
+                        text: "You've finished answering all questions.",
+                        icon: "success",
+                    });
+                }
             };
 
             recorder.start(1000);
@@ -64,7 +78,7 @@ const Interview = () => {
         } catch (error) {
             Swal.fire({
                 title: "Permission Denied",
-                text: "Please allow camera and microphone access to continue with the interview.",
+                text: "Please allow camera and microphone access.",
                 icon: "error",
             });
         }
@@ -78,38 +92,36 @@ const Interview = () => {
     };
 
     const uploadVideo = async (blob) => {
+        const currentQ = questionsArray[currentQuestionIndex];
         const formData = new FormData();
         formData.append("video", blob, "interview.webm");
         formData.append("jobId", id);
+        formData.append("quactionNo", currentQ?.quactionNo);
+        formData.append("answer", currentQ?.answer);
 
         try {
             const response = await InterviewService.uploadInterviewVideo(formData);
             if (response.success) {
                 Swal.fire({
-                    title: "Success!", 
-                    text: "Your interview video has been submitted successfully.",
+                    title: "Uploaded!",
+                    text: `Answer for Question ${currentQ.quactionNo} submitted.`,
                     icon: "success",
-                    confirmButtonText: "Great!"
                 });
             } else {
                 Swal.fire("Upload Failed", response.message || "Error uploading video", "error");
             }
         } catch (error) {
-            Swal.fire("Error", error.message || "Upload error", "error");
-        }
-    };
-
-    const nextQuestion = () => {
-        if (currentQuestionIndex < questionsArray.length - 1) {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            Swal.fire("Upload Error", error.message || "An error occurred during upload", "error");
         }
     };
 
     const prevQuestion = () => {
         if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex(currentQuestionIndex - 1);
+            setCurrentQuestionIndex((prev) => prev - 1);
         }
     };
+
+    const currentQuestion = questionsArray[currentQuestionIndex];
 
     return (
         <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -131,29 +143,35 @@ const Interview = () => {
                                     {currentQuestionIndex + 1} / {questionsArray.length}
                                 </span>
                             </div>
-                            
+
                             <div className="bg-white rounded-lg p-4 shadow-sm mb-4">
                                 <h3 className="text-lg font-medium text-gray-900">
-                                    {questionsArray[currentQuestionIndex]?.quaction || "No question available"}
+                                    {currentQuestion?.quaction || "No question available"}
                                 </h3>
+                                <p className="text-sm text-gray-600 mt-2">
+                                    <strong>Answer:</strong> {currentQuestion?.answer || "No answer provided"}
+                                </p>
                             </div>
 
                             <div className="flex justify-between mt-4">
                                 <button
                                     onClick={prevQuestion}
                                     disabled={currentQuestionIndex === 0}
-                                    className={`px-4 py-2 rounded-lg flex items-center ${currentQuestionIndex === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'}`}
+                                    className={`px-4 py-2 rounded-lg flex items-center ${
+                                        currentQuestionIndex === 0
+                                            ? "bg-gray-300 cursor-not-allowed"
+                                            : "bg-indigo-100 text-indigo-700 hover:bg-indigo-200"
+                                    }`}
                                 >
                                     <ChevronLeft className="h-5 w-5 mr-1" />
                                     Previous
                                 </button>
                                 <button
-                                    onClick={nextQuestion}
-                                    disabled={currentQuestionIndex === questionsArray.length - 1}
-                                    className={`px-4 py-2 rounded-lg flex items-center ${currentQuestionIndex === questionsArray.length - 1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'}`}
+                                    disabled
+                                    className="px-4 py-2 rounded-lg bg-gray-300 cursor-not-allowed"
                                 >
-                                    Next
                                     <ChevronRight className="h-5 w-5 ml-1" />
+                                    Next
                                 </button>
                             </div>
 
@@ -161,9 +179,13 @@ const Interview = () => {
                                 <h4 className="font-medium text-gray-700 mb-2">All Questions:</h4>
                                 <ul className="space-y-2">
                                     {questionsArray.map((q, index) => (
-                                        <li 
-                                            key={q.quactionNo} 
-                                            className={`p-2 rounded cursor-pointer ${currentQuestionIndex === index ? 'bg-indigo-100 text-indigo-700 font-medium' : 'hover:bg-gray-100'}`}
+                                        <li
+                                            key={q.quactionNo}
+                                            className={`p-2 rounded cursor-pointer ${
+                                                currentQuestionIndex === index
+                                                    ? "bg-indigo-100 text-indigo-700 font-medium"
+                                                    : "hover:bg-gray-100"
+                                            }`}
                                             onClick={() => setCurrentQuestionIndex(index)}
                                         >
                                             {index + 1}. {q.quaction}
@@ -177,10 +199,10 @@ const Interview = () => {
                         <div className="md:w-2/3 p-6">
                             <div className="flex flex-col items-center">
                                 <div className="relative w-full max-w-2xl mb-4">
-                                    <video 
-                                        ref={videoRef} 
-                                        autoPlay 
-                                        muted 
+                                    <video
+                                        ref={videoRef}
+                                        autoPlay
+                                        muted
                                         className="w-full bg-gray-800 rounded-lg aspect-video"
                                     />
                                     {isRecording && (
