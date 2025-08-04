@@ -25,6 +25,19 @@ const JobSchema = new mongoose.Schema(
       type: [String],
       required: true,
     },
+     // Add optionalSkills field here
+    optionalSkills: {
+      type: [String],
+      default: [], // Default empty array
+      validate: {
+        validator: function(arr) {
+          // Optional: Ensure no duplicates between skills and optionalSkills
+          const combined = [...this.skills, ...arr];
+          return new Set(combined).size === combined.length;
+        },
+        message: "Skills and optionalSkills cannot contain duplicates"
+      }
+    },
     salaryRange: {
       type: String,
     },

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Card } from "flowbite-react";
 import { Briefcase, DollarSign, Clock } from "lucide-react";
 import { CalendarDays, SmilePlus, Smile } from "lucide-react";
@@ -7,6 +7,7 @@ import Loading from "../../components/public/Loading";
 import jobService from "../../services/jobService";
 
 const JobDetails = () => {
+  const navigate = useNavigate();
   const { jobId, matchPercentage } = useParams();
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -30,6 +31,11 @@ const JobDetails = () => {
 
     fetchJobDetails();
   }, [jobId]);
+
+   // navigate to the assessment notice Section
+  const handleNavigation = () => {
+      navigate("/skill-bases-assessment/assessment-intro");
+  };
 
   // Handle Loading
   if (loading) {
@@ -77,7 +83,7 @@ const JobDetails = () => {
           </div>
         </div>
         <div className="flex items-center">
-          <Button gradientMonochrome="info" size="lg">
+          <Button gradientMonochrome="info" size="lg"  onClick={handleNavigation}>
             Apply Now
           </Button>
         </div>
