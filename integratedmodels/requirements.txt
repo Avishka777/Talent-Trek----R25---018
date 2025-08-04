@@ -1,0 +1,9 @@
+fastapi==0.95.2
+uvicorn==0.22.0
+pymongo==4.3.3
+numpy==1.24.3
+scikit-learn==1.2.2
+torch==2.0.1
+transformers==4.29.2
+matplotlib==3.7.1
+python-multipart==0.0.6
