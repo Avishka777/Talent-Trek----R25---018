@@ -7,3 +7,5 @@ torch==2.0.1
 transformers==4.29.2
 matplotlib==3.7.1
 python-multipart==0.0.6
+pandas==2.0.3
+prophet==1.1.4
