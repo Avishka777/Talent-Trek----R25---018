@@ -190,7 +190,7 @@ exports.matchCandidates = async (req, res) => {
     };
 
     // Build the FastAPI URL for matchi${process.env.FAST_API_BACKEND}ng resumes (POST endpoint)
-    const fastApiUrl = `${process.env.FAST_API_BACKEND}match-resumes`;
+    const fastApiUrl = `${process.env.FAST_API_BACKEND}api/matching/match-resumes`;
 
     // Call the FastAPI service using a POST request with the payload
     const fastApiResponse = await axios.post(fastApiUrl, payload);
