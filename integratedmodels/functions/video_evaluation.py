@@ -33,6 +33,7 @@ def post_process_text(text: str) -> str:
         "post track": "full stack",
         "assault gains": "a software engineer",
         "probe as lonely": "problem solving",
+        "not this": "Node.js",
     }
     
     for wrong, right in corrections.items():
