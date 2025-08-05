@@ -9,7 +9,7 @@ exports.videoEvaluation = async (req, res) => {
     console.log(url);
 
     const faceEvaluation = await axios.post(
-      "http://127.0.0.1:8000/evaluate",
+      `${process.env.FAST_API_BACKEND}api/confidence/evaluate`,
       {
         video_url: url,
         sampling_rate: 4
@@ -18,7 +18,7 @@ exports.videoEvaluation = async (req, res) => {
     log("Face Evaluation Response:", faceEvaluation.data);
 
     const AnsEvaluation = await axios.post(
-      "http://127.0.0.1:8001/evaluate-video",
+      `${process.env.FAST_API_BACKEND}api/video/evaluate-video`,
       {
         video_link: url
       }
