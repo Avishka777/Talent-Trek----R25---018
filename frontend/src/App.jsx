@@ -17,6 +17,7 @@ import CompanyDetails from "./pages/company/CompanyDetails";
 import AgentListing from "./pages/skill-prediction/AgentListing";
 import AssessmentIntro from "./pages/skill-based-assesment/AssesmentIntro";
 import PuzzleGame from "./pages/skill-based-assesment/PuzzleGame";
+import Leaderboard from "./pages/dashboard/Leaderboard";
 
 function Layout() {
   const location = useLocation();
@@ -49,6 +50,7 @@ function Layout() {
           <Route path="/dashboard/job/create" element={<JobCreate />} />
           <Route path="/dashboard/job/update/:jobId" element={<JobUpdate />} />
           <Route path="/dashboard/resume/analyse" element={<ResumeAnalyse />} />
+          <Route path="/dashboard/leaderboard" element={<Leaderboard />} />
           <Route path="/dashboard/jobs" element={<RecruiterJobList />} />
         </Route>
       </Routes>
