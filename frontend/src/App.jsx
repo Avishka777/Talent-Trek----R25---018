@@ -18,6 +18,7 @@ import AgentListing from "./pages/skill-prediction/AgentListing";
 import AssessmentIntro from "./pages/skill-based-assesment/AssesmentIntro";
 import PuzzleGame from "./pages/skill-based-assesment/PuzzleGame";
 import Leaderboard from "./pages/dashboard/Leaderboard";
+import Interview from "./pages/interview/interview";
 
 function Layout() {
   const location = useLocation();
@@ -41,7 +42,7 @@ function Layout() {
           <Route path="/agent/joblist" element={<AgentListing />} />
           <Route path="/skill-bases-assessment/assessment-intro" element={<AssessmentIntro />} />
           <Route path="/skill-bases-assessment/puzzle-game" element={<PuzzleGame />} />
-
+          <Route path="/interview/:id" element={<Interview />} />
         </Route>
 
         {/* Protected Recruiter Routes */}
