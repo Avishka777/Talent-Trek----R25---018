@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 from pydantic import BaseModel
 from typing import Optional
+import numpy as np
 
 from functions.resume_job_matcher import (
     match_resume_to_job,
@@ -30,6 +31,20 @@ class MatchResumesRequest(BaseModel):
     job_id: str
     weights: Optional[CustomWeights] = None
 
+# --- helper: convert NumPy/tensors to plain Python for JSON ---
+def to_py(obj):
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()
+    if isinstance(obj, (np.floating,)):
+        return float(obj)
+    if isinstance(obj, (np.integer,)):
+        return int(obj)
+    if isinstance(obj, dict):
+        return {k: to_py(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [to_py(v) for v in obj]
+    return obj
+
 @router.post("/match-jobs")
 async def match_jobs_endpoint(request: MatchJobsRequest):
     resume = resume_collection.find_one({"_id": ObjectId(request.resume_id)})
@@ -40,8 +55,12 @@ async def match_jobs_endpoint(request: MatchJobsRequest):
     if not jobs:
         raise HTTPException(status_code=404, detail="No jobs found")
     
-    results = [match_resume_to_job(resume, job, request.weights.dict() if request.weights else None) for job in jobs]
-    return {"matches": sorted(results, key=lambda x: x["overall_match_percentage"], reverse=True)}
+    results = [
+        match_resume_to_job(resume, job, request.weights.dict() if request.weights else None)
+        for job in jobs
+    ]
+    results = sorted(results, key=lambda x: float(x["overall_match_percentage"]), reverse=True)
+    return {"matches": to_py(results)}
 
 @router.post("/match-resumes")
 async def match_resumes_endpoint(request: MatchResumesRequest):
@@ -71,7 +90,8 @@ async def match_resumes_endpoint(request: MatchResumesRequest):
             **{k: v for k, v in match_data.items() if k not in ["job_id", "jobTitle", "companyName"]}
         })
     
-    return {"matches": sorted(matches, key=lambda x: x["overall_match_percentage"], reverse=True)}
+    matches = sorted(matches, key=lambda x: float(x["overall_match_percentage"]), reverse=True)
+    return {"matches": to_py(matches)}
 
 @router.get("/plot-matching-comparison-graph/{resume_id}")
 async def plot_matching_comparison_graph(resume_id: str):
@@ -90,8 +110,8 @@ async def plot_matching_comparison_graph(resume_id: str):
     for job in jobs:
         bert_result = match_resume_to_job(resume, job)
         normal_result = match_resume_to_job_normal(resume, job)
-        bert_scores.append(bert_result["overall_match_percentage"])
-        normal_scores.append(normal_result["overall_match_percentage"])
+        bert_scores.append(float(bert_result["overall_match_percentage"]))
+        normal_scores.append(float(normal_result["overall_match_percentage"]))
         job_ids.append(str(job.get("_id"))[:15])
     
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -129,8 +149,8 @@ async def plot_matching_comparison_table(resume_id: str):
     for job in jobs:
         bert_result = match_resume_to_job(resume, job)
         normal_result = match_resume_to_job_normal(resume, job)
-        bert_scores.append(bert_result["overall_match_percentage"])
-        normal_scores.append(normal_result["overall_match_percentage"])
+        bert_scores.append(float(bert_result["overall_match_percentage"]))
+        normal_scores.append(float(normal_result["overall_match_percentage"]))
         job_ids.append(str(job.get("_id"))[:15])
         job_titles.append(job.get("jobTitle", ""))
     
@@ -144,10 +164,12 @@ async def plot_matching_comparison_table(resume_id: str):
     ax.axis('tight')
     ax.axis('off')
     
-    table = ax.table(cellText=table_data,
-                   colLabels=["Job ID", "Job Title", "BERT Score", "Normal Score", "Difference"],
-                   loc='center',
-                   cellLoc='center')
+    table = ax.table(
+        cellText=table_data,
+        colLabels=["Job ID", "Job Title", "BERT Score", "Normal Score", "Difference"],
+        loc='center',
+        cellLoc='center'
+    )
     table.auto_set_font_size(False)
     table.set_fontsize(10)
     
