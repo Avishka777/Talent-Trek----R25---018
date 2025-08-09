@@ -19,6 +19,7 @@ import AssessmentIntro from "./pages/skill-based-assesment/AssesmentIntro";
 import PuzzleGame from "./pages/skill-based-assesment/PuzzleGame";
 import Interview from "./pages/interview/interview";
 import InterviewResult from "./pages/interview/interviewresult";
+import AppliedJobs from "./pages/job/AppliedJobs";
 
 function Layout() {
   const location = useLocation();
@@ -38,6 +39,7 @@ function Layout() {
         <Route element={<ProtectedRoute allowedRoles={["Job Seeker"]} />}>
           <Route path="/resume-upload" element={<ResumeUpload />} />
           <Route path="/seeker/jobs" element={<SeekerJobList />} />
+          <Route path="/jobs/applied" element={<AppliedJobs />} />
           <Route path="/job/:jobId/:matchPercentage?" element={<JobDetails />} />
           <Route path="/agent/joblist" element={<AgentListing />} />
           <Route path="/skill-bases-assessment/assessment-intro" element={<AssessmentIntro />} />

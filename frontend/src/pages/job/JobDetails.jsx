@@ -5,21 +5,37 @@ import { Briefcase, DollarSign, Clock } from "lucide-react";
 import { CalendarDays, SmilePlus, Smile } from "lucide-react";
 import Loading from "../../components/public/Loading";
 import jobService from "../../services/jobService";
+import Swal from "sweetalert2";
+import appliedJobService from "../../services/appliedJobService";
+import { useSelector } from "react-redux";
 
 const JobDetails = () => {
   const navigate = useNavigate();
   const { jobId, matchPercentage } = useParams();
+  const { token } = useSelector((state) => state.auth);
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [applicationStatus, setApplicationStatus] = useState("Not Applied");
+  const [isApplying, setIsApplying] = useState(false);
   const matchPercentageValue = parseFloat(matchPercentage) || 0;
 
-  // Fetch Job Details
+  // Fetch Job Details and Application Status
   useEffect(() => {
-    const fetchJobDetails = async () => {
+    const fetchData = async () => {
       try {
-        const response = await jobService.getJobById(jobId);
-        if (response.success) {
-          setJob(response.job);
+        // Fetch job details
+        const jobResponse = await jobService.getJobById(jobId);
+        if (jobResponse.success) {
+          setJob(jobResponse.job);
+
+          // Fetch application status if user is authenticated
+          if (token) {
+            const statusResponse = await appliedJobService.getApplicationStatus(
+              jobId,
+              token
+            );
+            setApplicationStatus(statusResponse.status);
+          }
         } else {
           setJob(null);
         }
@@ -29,12 +45,52 @@ const JobDetails = () => {
       setLoading(false);
     };
 
-    fetchJobDetails();
-  }, [jobId]);
+    fetchData();
+  }, [jobId, token]);
 
-   // navigate to the assessment notice Section
-  const handleNavigation = () => {
-      navigate("/skill-bases-assessment/assessment-intro");
+  const handleApply = async () => {
+    if (!token) {
+      navigate("/login", { state: { from: `/jobs/${jobId}` } });
+      return;
+    }
+
+    try {
+      setIsApplying(true);
+      const response = await appliedJobService.applyForJob(jobId, token);
+
+      if (response.success) {
+        setApplicationStatus("Applied");
+        Swal.fire({
+          title: "Application Submitted!",
+          text: "Your job application has been successfully submitted.",
+          confirmButtonColor: "#3085d6",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          html: `
+          <p>${response.message}</p>
+          ${
+            response.deadline
+              ? `<p><strong>Deadline:</strong> ${new Date(
+                  response.deadline
+                ).toLocaleDateString()}</p>`
+              : ""
+          }
+        `,
+          confirmButtonColor: "#d33",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Sorry, Application Paased",
+        text: error.message || "Something went wrong while applying.",
+        confirmButtonColor: "#d33",
+      });
+    } finally {
+      setIsApplying(false);
+    }
   };
 
   // Handle Loading
@@ -60,11 +116,52 @@ const JobDetails = () => {
     );
   }
 
+  // Determine button text and properties based on status
+  const getButtonProps = () => {
+    switch (applicationStatus) {
+      case "Applied":
+        return {
+          text: "Applied",
+          color: "success",
+          disabled: true,
+        };
+      case "Interview":
+        return {
+          text: "Interview Scheduled",
+          color: "purple",
+          disabled: true,
+        };
+      case "Rejected":
+        return {
+          text: "Application Rejected",
+          color: "failure",
+          disabled: true,
+        };
+      case "Hired":
+        return {
+          text: "Hired!",
+          color: "success",
+          disabled: true,
+        };
+      case "Recommended":
+      case "Not Applied":
+      default:
+        return {
+          text: isApplying ? "Applying..." : "Apply Now",
+          color: "info",
+          disabled: isApplying,
+          onClick: handleApply,
+        };
+    }
+  };
+
+  const buttonProps = getButtonProps();
+
   return (
     <Card className="w-full max-w-3xl shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 rounded-lg my-10 mx-auto">
       {/* Header */}
       <div className="flex justify-between space-x-4 mb-4">
-        <div className="flex items-center gap-5 ">
+        <div className="flex items-center gap-5">
           <img
             src={job.company.logo}
             alt={job.companyName}
@@ -83,11 +180,25 @@ const JobDetails = () => {
           </div>
         </div>
         <div className="flex items-center">
-          <Button gradientMonochrome="info" size="lg"  onClick={handleNavigation}>
-            Apply Now
+          <Button
+            gradientMonochrome={buttonProps.color}
+            size="lg"
+            disabled={buttonProps.disabled}
+            onClick={buttonProps.onClick}
+          >
+            {buttonProps.text}
           </Button>
         </div>
       </div>
+
+      {/* Show application status */}
+      {applicationStatus !== "Not Applied" && (
+        <div className="mb-4 p-3 rounded-lg bg-blue-50 dark:bg-blue-900 text-blue-800 dark:text-blue-100">
+          <p className="font-semibold">
+            Your application status: {applicationStatus}
+          </p>
+        </div>
+      )}
 
       {/* Job Details */}
       <div className="space-y-2 text-gray-700 dark:text-gray-300">
