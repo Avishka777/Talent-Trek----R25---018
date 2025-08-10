@@ -1,6 +1,7 @@
 const AppliedJob = require("../models/appliedjob.model");
 const Job = require("../models/job.model");
 const User = require("../models/user.model");
+const Notification = require("../models/notification.model");
 const mongoose = require("mongoose");
 
 // Apply for a Job -------------------------------------------------------------------
@@ -61,7 +62,6 @@ exports.applyForJob = async (req, res) => {
 
     if (existingApplication) {
       return res.status(409).json({
-        // 409 Conflict is more appropriate
         success: false,
         message: "You have already applied for this job",
         existingApplicationId: existingApplication._id,
@@ -78,6 +78,23 @@ exports.applyForJob = async (req, res) => {
 
     await appliedJob.save();
 
+    // Create notification for the recruiter
+    const notification = new Notification({
+      user_id: userId,
+      notification_type: "job_application",
+      title: "New Job Application",
+      message: `${user.fullName} has applied for your job posting: ${job.jobTitle}`,
+      ref_id: jobId,
+    });
+
+    await notification.save();
+
+    // This requires you to have socket.io set up
+    const io = req.app.get("socketio");
+    if (io) {
+      io.to(`user_${job.postedBy}`).emit("new_notification", notification);
+    }
+
     // Populate some fields in the response
     const result = await AppliedJob.findById(appliedJob._id)
       .populate("job", "jobTitle company")
@@ -87,6 +104,10 @@ exports.applyForJob = async (req, res) => {
       success: true,
       message: "Application submitted successfully",
       application: result,
+      notification: {
+        sent: true,
+        recipient: job.postedBy,
+      },
     });
   } catch (error) {
     console.error("Application error:", error);
@@ -94,21 +115,22 @@ exports.applyForJob = async (req, res) => {
       success: false,
       message: "Internal server error",
       error: error.message,
-      stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
     });
   }
 };
-
 // Recommend for Job -----------------------------------------------------------------
 exports.recommendForJob = async (req, res) => {
   try {
     const { jobId, userId } = req.params;
 
     // Validate inputs
-    if (!mongoose.Types.ObjectId.isValid(jobId) || !mongoose.Types.ObjectId.isValid(userId)) {
+    if (
+      !mongoose.Types.ObjectId.isValid(jobId) ||
+      !mongoose.Types.ObjectId.isValid(userId)
+    ) {
       return res.status(400).json({
         success: false,
-        message: "Invalid ID format"
+        message: "Invalid ID format",
       });
     }
 
@@ -117,7 +139,7 @@ exports.recommendForJob = async (req, res) => {
     if (!jobExists) {
       return res.status(404).json({
         success: false,
-        message: "Job not found"
+        message: "Job not found",
       });
     }
 
@@ -126,20 +148,20 @@ exports.recommendForJob = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found"
+        message: "User not found",
       });
     }
     if (user.profileType !== "Job Seeker") {
       return res.status(400).json({
         success: false,
-        message: "Only job seekers can be recommended for jobs"
+        message: "Only job seekers can be recommended for jobs",
       });
     }
 
     // Check for existing application
     const existingApplication = await AppliedJob.findOne({
       job: jobId,
-      user: userId
+      user: userId,
     });
 
     // If already exists with "Recommended" status
@@ -147,7 +169,7 @@ exports.recommendForJob = async (req, res) => {
       return res.json({
         success: true,
         message: "User is already recommended for this job",
-        application: existingApplication
+        application: existingApplication,
       });
     }
 
@@ -159,33 +181,34 @@ exports.recommendForJob = async (req, res) => {
         existingApplication._id,
         { status: "Recommended" },
         { new: true, runValidators: true }
-      ).populate('user', 'fullName email').populate('job', 'jobTitle');
-    } 
+      )
+        .populate("user", "fullName email")
+        .populate("job", "jobTitle");
+    }
     // If doesn't exist, create new recommendation
     else {
       application = new AppliedJob({
         user: userId,
         job: jobId,
-        status: "Recommended"
+        status: "Recommended",
       });
       await application.save();
       application = await AppliedJob.findById(application._id)
-        .populate('user', 'fullName email')
-        .populate('job', 'jobTitle');
+        .populate("user", "fullName email")
+        .populate("job", "jobTitle");
     }
 
     return res.json({
       success: true,
       message: "User successfully recommended for job",
-      application: application
+      application: application,
     });
-
   } catch (error) {
     console.error("Error recommending for job:", error);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
-      error: error.message
+      error: error.message,
     });
   }
 };
