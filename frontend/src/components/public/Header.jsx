@@ -218,6 +218,14 @@ export default function HeaderComponent() {
             )}
             {user?.profileType === "Job Seeker" && (
               <Dropdown.Item
+                onClick={() => navigate(`/resume-create`)}
+                className="dark:hover:bg-gray-700"
+              >
+                Design Resume
+              </Dropdown.Item>
+            )}
+            {user?.profileType === "Job Seeker" && (
+              <Dropdown.Item
                 onClick={() => navigate(`/jobs/applied`)}
                 className="dark:hover:bg-gray-700"
               >

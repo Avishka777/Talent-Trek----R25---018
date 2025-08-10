@@ -20,6 +20,10 @@ import PuzzleGame from "./pages/skill-based-assesment/PuzzleGame";
 import Interview from "./pages/interview/interview";
 import InterviewResult from "./pages/interview/interviewresult";
 import AppliedJobs from "./pages/job/AppliedJobs";
+import CreateResume from "./pages/resume/CreateResume";
+import ResumeTemplate1 from "./pages/resume/ResumeTemplate1";
+import ResumeTemplate2 from "./pages/resume/ResumeTemplate2";
+import ResumeTemplate3 from "./pages/resume/ResumeTemplate3";
 
 function Layout() {
   const location = useLocation();
@@ -45,6 +49,10 @@ function Layout() {
           <Route path="/skill-bases-assessment/assessment-intro" element={<AssessmentIntro />} />
           <Route path="/skill-bases-assessment/puzzle-game" element={<PuzzleGame />} />
           <Route path="/interview/:id" element={<Interview />} />
+          <Route path="/resume-create" element={<CreateResume />} />
+          <Route path="/resume-template-1" element={<ResumeTemplate1 />} />
+          <Route path="/resume-template-2" element={<ResumeTemplate2 />} />
+          <Route path="/resume-template-3" element={<ResumeTemplate3 />} />
         </Route>
 
         {/* Protected Recruiter Routes */}

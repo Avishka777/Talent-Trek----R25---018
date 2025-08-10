@@ -15,6 +15,7 @@
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.9",
     "flowbite-react": "^0.7.2",
+    "html2pdf.js": "^0.10.3",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.474.0",
     "react": "^18.2.0",
