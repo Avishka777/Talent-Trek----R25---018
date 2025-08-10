@@ -66,11 +66,16 @@ export default function HeaderComponent() {
             <Dropdown.Item onClick={() => navigate(`/my-profile`)}>
               My Profile
             </Dropdown.Item>
-            {user && (
+            {user?.profileType === "Recruiter" && (
               <Dropdown.Item
                 onClick={() => navigate(`/dashboard/resume/analyse`)}
               >
                 Dashboard
+              </Dropdown.Item>
+            )}
+            {user?.profileType === "Job Seeker" && (
+              <Dropdown.Item onClick={() => navigate(`/jobs/applied`)}>
+                Applied Jobs
               </Dropdown.Item>
             )}
             <Dropdown.Divider />

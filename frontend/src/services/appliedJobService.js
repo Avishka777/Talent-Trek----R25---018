@@ -26,6 +26,31 @@ const appliedJobService = {
     }
   },
 
+  // Recommended for a job
+  recommendedForJob: async (jobId, userId, token) => {
+    try {
+      const response = await axios.post(
+        `${
+          import.meta.env.VITE_API_BASE_URL
+        }applied-jobs/recommend/${jobId}/${userId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      const errorData = error.response?.data || {
+        success: false,
+        message: "Failed to recommend for job",
+      };
+      throw errorData;
+    }
+  },
+
   // Get application status for a specific job
   getApplicationStatus: async (jobId, token) => {
     try {
@@ -52,9 +77,9 @@ const appliedJobService = {
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}applied-jobs/user/applications`,
         {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
         }
       );

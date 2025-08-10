@@ -6,6 +6,9 @@ const authMiddleware = require("../middleware/authMiddleware");
 // Apply for a job
 router.post("/:jobId", authMiddleware, appliedjobController.applyForJob);
 
+// Apply for a job
+router.post("/recommend/:jobId/:userId", authMiddleware, appliedjobController.recommendForJob);
+
 // Get all user applications
 router.get("/user/applications", authMiddleware, appliedjobController.getUserApplications);
 

@@ -99,6 +99,97 @@ exports.applyForJob = async (req, res) => {
   }
 };
 
+// Recommend for Job -----------------------------------------------------------------
+exports.recommendForJob = async (req, res) => {
+  try {
+    const { jobId, userId } = req.params;
+
+    // Validate inputs
+    if (!mongoose.Types.ObjectId.isValid(jobId) || !mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid ID format"
+      });
+    }
+
+    // Check if job exists
+    const jobExists = await Job.exists({ _id: jobId });
+    if (!jobExists) {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found"
+      });
+    }
+
+    // Check if user exists and is job seeker
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+    if (user.profileType !== "Job Seeker") {
+      return res.status(400).json({
+        success: false,
+        message: "Only job seekers can be recommended for jobs"
+      });
+    }
+
+    // Check for existing application
+    const existingApplication = await AppliedJob.findOne({
+      job: jobId,
+      user: userId
+    });
+
+    // If already exists with "Recommended" status
+    if (existingApplication && existingApplication.status === "Recommended") {
+      return res.json({
+        success: true,
+        message: "User is already recommended for this job",
+        application: existingApplication
+      });
+    }
+
+    let application;
+
+    // If exists but different status, update to Recommended
+    if (existingApplication) {
+      application = await AppliedJob.findByIdAndUpdate(
+        existingApplication._id,
+        { status: "Recommended" },
+        { new: true, runValidators: true }
+      ).populate('user', 'fullName email').populate('job', 'jobTitle');
+    } 
+    // If doesn't exist, create new recommendation
+    else {
+      application = new AppliedJob({
+        user: userId,
+        job: jobId,
+        status: "Recommended"
+      });
+      await application.save();
+      application = await AppliedJob.findById(application._id)
+        .populate('user', 'fullName email')
+        .populate('job', 'jobTitle');
+    }
+
+    return res.json({
+      success: true,
+      message: "User successfully recommended for job",
+      application: application
+    });
+
+  } catch (error) {
+    console.error("Error recommending for job:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message
+    });
+  }
+};
+
 // Get User's Applied Jobs -----------------------------------------------------------
 exports.getUserApplications = async (req, res) => {
   try {
