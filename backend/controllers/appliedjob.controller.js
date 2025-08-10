@@ -118,10 +118,12 @@ exports.applyForJob = async (req, res) => {
     });
   }
 };
+
 // Recommend for Job -----------------------------------------------------------------
 exports.recommendForJob = async (req, res) => {
   try {
     const { jobId, userId } = req.params;
+    const { recommenderId } = req.body;
 
     // Validate inputs
     if (
@@ -135,8 +137,8 @@ exports.recommendForJob = async (req, res) => {
     }
 
     // Check if job exists
-    const jobExists = await Job.exists({ _id: jobId });
-    if (!jobExists) {
+    const job = await Job.findById(jobId);
+    if (!job) {
       return res.status(404).json({
         success: false,
         message: "Job not found",
@@ -155,6 +157,15 @@ exports.recommendForJob = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Only job seekers can be recommended for jobs",
+      });
+    }
+
+    // Get recommender's details
+    const recommender = await User.findById(recommenderId).select("fullName");
+    if (!recommender) {
+      return res.status(404).json({
+        success: false,
+        message: "Recommender not found",
       });
     }
 
@@ -198,10 +209,25 @@ exports.recommendForJob = async (req, res) => {
         .populate("job", "jobTitle");
     }
 
+    // Create notification for the job seeker
+    const notification = new Notification({
+      user_id: userId,
+      notification_type: "job_recommendation",
+      title: "New Job Recommendation",
+      message: `${recommender.fullName} recommended you for the "${job.jobTitle}" position`,
+      ref_id: jobId,
+    });
+    await notification.save();
+
     return res.json({
       success: true,
       message: "User successfully recommended for job",
       application: application,
+      notification: {
+        id: notification._id,
+        title: notification.title,
+        message: notification.message,
+      },
     });
   } catch (error) {
     console.error("Error recommending for job:", error);

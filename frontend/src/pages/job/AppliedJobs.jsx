@@ -21,6 +21,7 @@ const AppliedJobs = () => {
   // Tab configuration
   const tabs = [
     { id: "all", label: "All Applications", icon: Briefcase },
+    { id: "recommended", label: "Recommended", icon: CheckCircle },
     { id: "applied", label: "Applied", icon: Briefcase },
     { id: "interview", label: "Interview", icon: Clock },
     { id: "rejected", label: "Rejected", icon: XCircle },
@@ -166,7 +167,7 @@ const AppliedJobs = () => {
           <div
             key={application._id}
             className="relative"
-            onClick={() => navigate(`/jobs/${application.job?._id}`)}
+            onClick={() => navigate(`/job/${application.job?._id}`)}
           >
             <div className="absolute top-4 right-4 z-10">
               {getStatusBadge(application.status)}

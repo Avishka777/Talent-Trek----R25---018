@@ -38,7 +38,8 @@ const ResumeAnalyse = () => {
 
   const [weights, setWeights] = useState({ ...defaultWeights });
   const [totalWeight, setTotalWeight] = useState(1);
-  const { token } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
+  const recommenderId = user?._id;
 
   // Load weights from localStorage on component mount
   useEffect(() => {
@@ -164,7 +165,8 @@ const ResumeAnalyse = () => {
         const response = await appliedJobService.recommendedForJob(
           selectedJob,
           userId,
-          token
+          token,
+          recommenderId
         );
 
         Swal.fire({

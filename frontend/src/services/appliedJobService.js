@@ -27,13 +27,13 @@ const appliedJobService = {
   },
 
   // Recommended for a job
-  recommendedForJob: async (jobId, userId, token) => {
+  recommendedForJob: async (jobId, userId, token, recommenderId) => {
     try {
       const response = await axios.post(
         `${
           import.meta.env.VITE_API_BASE_URL
         }applied-jobs/recommend/${jobId}/${userId}`,
-        {},
+        { recommenderId },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -50,7 +50,6 @@ const appliedJobService = {
       throw errorData;
     }
   },
-
   // Get application status for a specific job
   getApplicationStatus: async (jobId, token) => {
     try {
