@@ -93,21 +93,21 @@ export default function HeaderComponent() {
 
       {/* Navbar Links */}
       <Navbar.Collapse>
-        <Navbar.Link onClick={() => navigate(`/`)}>Home</Navbar.Link>
+        <Navbar.Link className="cursor-pointer" onClick={() => navigate(`/`)}>Home</Navbar.Link>
 
         {user?.profileType === "Job Seeker" && (
-          <Navbar.Link onClick={() => navigate(`/seeker/jobs`)}>
+          <Navbar.Link className="cursor-pointer" onClick={() => navigate(`/seeker/jobs`)}>
             Jobs
           </Navbar.Link>
         )}
-        {user?.profileType === "Job Seeker" && (
+        {/* {user?.profileType === "Job Seeker" && (
           <Navbar.Link onClick={() => navigate(`/agent/joblist`)}>
             Agent Listing
           </Navbar.Link>
-        )}
+        )} */}
 
         {user?.profileType === "Recruiter" && (
-          <Navbar.Link onClick={() => navigate(`/dashboard/jobs`)}>
+          <Navbar.Link className="cursor-pointer" onClick={() => navigate(`/dashboard/jobs`)}>
             Dashboard
           </Navbar.Link>
         )}

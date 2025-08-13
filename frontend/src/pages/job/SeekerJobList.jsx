@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import JobCard from "../../components/job/JobCard";
 import jobService from "../../services/jobService";
 import Loading from "../../components/public/Loading";
+import { fetchSkillForecast } from '../../services/skillService'
 
 const SeekerJobList = () => {
   const navigate = useNavigate();
@@ -14,6 +15,9 @@ const SeekerJobList = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const { token } = useSelector((state) => state.auth);
+
+  const [topSkills, setTopSkills] = useState([]);
+  const [skillsLoading, setSkillsLoading] = useState(false);
 
   // Fetch jobs based on filter selection
   useEffect(() => {
@@ -47,6 +51,32 @@ const SeekerJobList = () => {
 
     fetchJobs();
   }, [jobFilter, token]);
+
+
+  // Fetch Top Skills with debounce on search term
+  useEffect(() => {
+    const term = searchTerm.trim().toLowerCase();
+    const delayDebounce = setTimeout(async () => {
+      if (term.length > 2) {
+        try {
+          setSkillsLoading(true);
+          const data = await fetchSkillForecast(term);
+          setTopSkills(Array.isArray(data?.top_skills) ? data.top_skills : []);
+        } catch (e) {
+          console.error("Error fetching top skills", e);
+          setTopSkills([]);
+        } finally {
+          setSkillsLoading(false);
+        }
+      } else {
+        setTopSkills([]);
+        setSkillsLoading(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchTerm]);
+
 
   // Filter jobs based on search term.
   // Use top-level jobTitle if available; otherwise, fallback to the nested job.jobTitle.
@@ -87,6 +117,45 @@ const SeekerJobList = () => {
           <option value="recommended">Recommended Jobs</option>
         </Select>
       </div>
+
+      {(skillsLoading || topSkills.length > 0 || searchTerm.trim().length > 2) && (
+        <div className="bg-white dark:bg-gray-800 shadow-md p-4 rounded-lg w-full max-w-3xl mb-6">
+
+          {(skillsLoading || topSkills.length > 0) && (
+            <h2 className="text-lg font-semibold mb-2 text-gray-800 dark:text-white">
+              {skillsLoading ? (
+                <span className="inline-block h-5 w-64 rounded animate-pulse bg-gray-200 dark:bg-gray-700" />
+              ) : (
+                <>Top 5 Future Skills Required for {searchTerm}</>
+              )}
+            </h2>
+          )}
+
+          <div className="flex flex-wrap gap-3">
+            {skillsLoading ? (
+              Array.from({ length: 5 }).map((_, i) => (
+                <span
+                  key={i}
+                  className="h-7 w-24 rounded-full animate-pulse bg-gray-200 dark:bg-gray-700"
+                />
+              ))
+            ) : topSkills.length > 0 ? (
+              topSkills.map((skill) => (
+                <span
+                  key={skill.skill}
+                  className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full dark:bg-blue-900 dark:text-blue-300"
+                >
+                  {skill.skill}
+                </span>
+              ))
+            ) : (
+              <p className="text-sm text-red-500 font-medium">Please try again with correct job role..</p>
+            )}
+          </div>
+        </div>
+      )}
+
+
       <div className="flex justify-center">
         {loading ? (
           <div>
