@@ -142,11 +142,10 @@ export default function HeaderComponent() {
                   notifications.map((notification) => (
                     <div
                       key={notification._id}
-                      className={`px-4 py-2 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer ${
-                        !notification.is_read
-                          ? "bg-blue-50 dark:bg-blue-900/30"
-                          : ""
-                      }`}
+                      className={`px-4 py-2 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer ${!notification.is_read
+                        ? "bg-blue-50 dark:bg-blue-900/30"
+                        : ""
+                        }`}
                       onClick={() => {
                         handleMarkAsRead(notification._id);
                         if (notification.ref_id) {
@@ -259,7 +258,7 @@ export default function HeaderComponent() {
       <Navbar.Collapse>
         <Navbar.Link
           onClick={() => navigate(`/`)}
-          className="dark:text-white dark:hover:text-blue-300"
+          className="dark:text-white dark:hover:text-blue-300 cursor-pointer"
         >
           Home
         </Navbar.Link>
@@ -267,19 +266,19 @@ export default function HeaderComponent() {
         {user?.profileType === "Job Seeker" && (
           <Navbar.Link
             onClick={() => navigate(`/seeker/jobs`)}
-            className="dark:text-white dark:hover:text-blue-300"
+            className="dark:text-white dark:hover:text-blue-300 cursor-pointer"
           >
             Jobs
           </Navbar.Link>
         )}
-        {user?.profileType === "Job Seeker" && (
+        {/* {user?.profileType === "Job Seeker" && (
           <Navbar.Link
             onClick={() => navigate(`/agent/joblist`)}
             className="dark:text-white dark:hover:text-blue-300"
           >
             Agent Listing
           </Navbar.Link>
-        )}
+        )} */}
 
         {user?.profileType === "Recruiter" && (
           <Navbar.Link
