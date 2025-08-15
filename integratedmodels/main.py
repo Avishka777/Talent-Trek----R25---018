@@ -24,8 +24,8 @@ app.add_middleware(
 app.include_router(matching_router, prefix="/api/matching", tags=["Resume Job Matching"])
 app.include_router(skill_assessment_router, prefix="/assessments", tags=["Skill Assessments"])
 app.include_router(forecasting_router, prefix="/api/forecasting", tags=["Skill Forecasting"])
-# app.include_router(video_router, prefix="/api/video", tags=["Video Evaluation"])
-# app.include_router(confidence_router, prefix="/api/confidence", tags=["Video Confidence Evaluation"])
+app.include_router(video_router, prefix="/api/video", tags=["Video Evaluation"])
+app.include_router(confidence_router, prefix="/api/confidence", tags=["Video Confidence Evaluation"])
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
