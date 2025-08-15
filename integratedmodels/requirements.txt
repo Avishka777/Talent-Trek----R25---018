@@ -1,0 +1,26 @@
+# --- Web/API ---
+fastapi==0.95.2
+uvicorn[standard]==0.22.0
+pydantic==1.10.9        # FastAPI 0.95.x expects Pydantic v1
+
+# --- Data / ML ---
+numpy==1.24.3
+pandas==2.0.3
+scikit-learn==1.2.2
+matplotlib==3.7.1
+transformers==4.29.2
+python-multipart==0.0.6
+
+# --- DB ---
+pymongo==4.3.3
+
+# --- Time series forecasting ---
+prophet==1.1.4          # installs cmdstanpy; requires a C++ toolchain
+
+# --- Computer vision / DL used in your code ---
+opencv-python==4.8.1.78
+tensorflow==2.12.0      # pick this if you’re on Python 3.10; adjust if needed
+
+# --- Torch (CPU by default) ---
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.0.1

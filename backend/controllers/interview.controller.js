@@ -9,7 +9,7 @@ exports.videoEvaluation = async (req, res) => {
     console.log(url);
 
     const faceEvaluation = await axios.post(
-      "http://127.0.0.1:8000/evaluate",
+      `${process.env.FAST_API_BACKEND}api/confidence/evaluate`,
       {
         video_url: url,
         sampling_rate: 4
@@ -18,7 +18,7 @@ exports.videoEvaluation = async (req, res) => {
     log("Face Evaluation Response:", faceEvaluation.data);
 
     const AnsEvaluation = await axios.post(
-      "http://127.0.0.1:8001/evaluate-video",
+      `${process.env.FAST_API_BACKEND}api/video/evaluate-video`,
       {
         video_link: url
       }
@@ -167,6 +167,138 @@ exports.uploadInterviewToCloudinary = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to upload video",
+      error: error.message,
+    });
+  }
+};
+
+
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
+
+exports.getEvaluteResult = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const results = await InterviewMarks.aggregate([
+      {
+        $match: {
+          jobId: new ObjectId(id),
+        },
+      },
+      {
+        $addFields: {
+          totalConfidence: {
+            $sum: "$answerList.confidene",
+          },
+          totalAnswerMatch: {
+            $sum: "$answerList.answerMatch",
+          },
+          totalQuestions: {
+            $cond: {
+              if: { $gt: [{ $size: "$answerList" }, 0] },
+              then: { $size: "$answerList" },
+              else: 1,
+            },
+          },
+        },
+      },
+      {
+        $addFields: {
+          avgConfidence: {
+            $divide: ["$totalConfidence", "$totalQuestions"],
+          },
+          avgAnswerMatch: {
+            $divide: ["$totalAnswerMatch", "$totalQuestions"],
+          },
+        },
+      },
+      {
+        $sort: {
+          avgAnswerMatch: -1, // first by answer match
+          avgConfidence: -1,  // then by confidence
+        },
+      },
+      // Optional: populate userId and jobId manually
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "userId",
+        },
+      },
+      {
+        $unwind: "$userId",
+      },
+      {
+        $lookup: {
+          from: "jobs",
+          localField: "jobId",
+          foreignField: "_id",
+          as: "jobId",
+        },
+      },
+      {
+        $unwind: "$jobId",
+      },
+    ]);
+
+    const quactionList = await InterviewQuestion.findOne({ jobId: id });
+
+    if (!results || results.length === 0) {
+      return res.status(404).json({
+        success: false,
+        answerData: [],
+        quactionList: [],
+        message: "Evaluation results not found.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      answerData: results,
+      quactionList: quactionList,
+    });
+  } catch (error) {
+    console.error("Error in getEvaluteResult (aggregation):", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error.",
+      error: error.message,
+    });
+  }
+};
+
+
+
+exports.getUserEvaluteResult = async (req, res) => {
+  try {
+    const { id, userId } = req.params;
+
+    const result = await InterviewMarks.find({ "jobId": id, "userId": userId }).populate("jobId");
+    const quactionList = await InterviewQuestion.findOne({ "jobId": id });
+
+
+    if (!result || result.length === 0) {
+      return res.status(404).json({
+        success: false,
+        answerData: [],
+        quactionList: [],
+        message: "Evaluation results not found.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      answerData: result,
+      quactionList: quactionList
+    });
+  } catch (error) {
+    console.error("Error in getEvaluteResult:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error.",
       error: error.message,
     });
   }

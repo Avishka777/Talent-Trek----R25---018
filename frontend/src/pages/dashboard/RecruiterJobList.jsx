@@ -1,17 +1,21 @@
+import Swal from "sweetalert2";
+import jobService from "../../services/jobService";
+import Loading from "../../components/public/Loading";
+import DashboardLayout from "../../components/dashboard/DashboardLayout";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
+import { Button, Modal } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { Table, TextInput } from "flowbite-react";
-import { Pencil, Search, Trash2 } from "lucide-react";
-import Swal from "sweetalert2";
-import Loading from "../../components/public/Loading";
-import jobService from "../../services/jobService";
-import DashboardLayout from "../../components/dashboard/DashboardLayout";
+import { Search, Trash2, UserCheck, Eye } from "lucide-react";
+import { ClipboardList, FileText, Pencil } from "lucide-react";
 
 const RecruiterJobList = () => {
   const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedJobId, setSelectedJobId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { token } = useSelector((state) => state.auth);
 
@@ -105,6 +109,47 @@ const RecruiterJobList = () => {
 
   return (
     <DashboardLayout>
+      <Modal show={openModal} onClose={() => setOpenModal(false)} size="md">
+        <Modal.Header className="border-b-0 pb-0">
+          <div className="flex items-center">
+            <ClipboardList className="h-5 w-5 mr-2 text-blue-500" />
+            <span className="text-lg font-semibold">
+              View Candidate Results
+            </span>
+          </div>
+        </Modal.Header>
+        <Modal.Body className="pt-4">
+          <div className="flex flex-col gap-3">
+            <Button
+              gradientMonochrome="info"
+              onClick={() => {
+                setOpenModal(false);
+                navigate(`/dashboard/job/${selectedJobId}/hr-marks`);
+              }}
+              className="w-full py-3"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <UserCheck className="h-5 w-5" />
+                <span>HR Interview Marks</span>
+              </div>
+            </Button>
+
+            <Button
+              gradientMonochrome="purple"
+              onClick={() => {
+                setOpenModal(false);
+                navigate(`/dashboard/job/${selectedJobId}/quiz-marks`);
+              }}
+              className="w-full py-3"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <FileText className="h-5 w-5" />
+                <span>Quiz Test Marks</span>
+              </div>
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
       <div className="flex mb-4 justify-between">
         <h2 className="text-2xl font-semibold mb-4 text-cyan-600">
           My Job List
@@ -156,6 +201,14 @@ const RecruiterJobList = () => {
                 {new Date(job.applicationDeadline).toISOString().split("T")[0]}
               </Table.Cell>
               <Table.Cell className="flex justify-center gap-4">
+                <Eye
+                  className="cursor-pointer text-blue-500 hover:text-blue-700"
+                  size={20}
+                  onClick={() => {
+                    setSelectedJobId(job._id);
+                    setOpenModal(true);
+                  }}
+                />
                 <Pencil
                   className="cursor-pointer text-green-500 hover:text-green-700"
                   size={20}

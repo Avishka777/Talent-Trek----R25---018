@@ -8,6 +8,8 @@ const jobRoutes = require("./routes/job.route");
 const companyRoutes = require("./routes/company.router");
 const interviewRoutes = require("./routes/interview.route");
 const assessmentRoutes = require("./routes/assessment.routes")
+const appliedjobRoutes = require("./routes/appliedjob.router")
+const notificationRoutes = require("./routes/notification.route")
 
 const app = express();
 
@@ -25,6 +27,8 @@ app.use("/api/job", jobRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/interview", interviewRoutes);
 app.use("/api/assessment", assessmentRoutes);
+app.use("/api/applied-jobs", appliedjobRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT} 📊 🚀`));

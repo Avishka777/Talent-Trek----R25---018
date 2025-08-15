@@ -207,7 +207,7 @@ exports.matchJobs = async (req, res) => {
     };
 
     // Use the POST endpoint (without embedding the resume_id in the URL)
-    const fastApiUrl = `${process.env.FAST_API_BACKEND}match-jobs`;
+    const fastApiUrl = `${process.env.FAST_API_BACKEND}api/matching/match-jobs`;
     const fastApiResponse = await axios.post(fastApiUrl, payload);
     const rawMatches = fastApiResponse.data.matches;
 
