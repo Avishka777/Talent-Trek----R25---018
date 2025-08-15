@@ -15,7 +15,7 @@ router.post("/submit-mcq", authMiddleware, assessmentController.submitMCQResult)
 // Get MCQ questions for a question set (for candidate to take MCQ)
 router.get("/mcq-questions/:questionSetId", authMiddleware, async (req, res) => {
   try {
-    const QuestionSet = require("../models/questionSet.model");
+    const QuestionSet = require("../models/mcq.model");
     const questionSet = await QuestionSet.findById(req.params.questionSetId).select("-correctAnswerIndex"); // omit correct answer for security
     if (!questionSet) return res.status(404).json({ success: false, message: "Question set not found" });
     res.json({ success: true, data: questionSet });

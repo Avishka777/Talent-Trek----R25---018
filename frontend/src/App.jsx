@@ -16,6 +16,7 @@ import ProtectedRoute from "./components/public/ProtectedRoute";
 import CompanyDetails from "./pages/company/CompanyDetails";
 import AgentListing from "./pages/skill-prediction/AgentListing";
 import AssessmentIntro from "./pages/skill-based-assesment/AssesmentIntro";
+import McqQuiz from "./pages/skill-based-assesment/McqQuiz";
 import PuzzleGame from "./pages/skill-based-assesment/PuzzleGame";
 import Leaderboard from "./pages/dashboard/Leaderboard";
 import Interview from "./pages/interview/interview";
@@ -48,7 +49,8 @@ function Layout() {
           <Route path="/job/:jobId/:matchPercentage?" element={<JobDetails />} />
           <Route path="/agent/joblist" element={<AgentListing />} />
           <Route path="/skill-bases-assessment/assessment-intro/:jobId" element={<AssessmentIntro />} />
-          <Route path="/skill-bases-assessment/puzzle-game" element={<PuzzleGame />} />
+          <Route path="/skill-bases-assessment/:assessmentId/puzzle-game" element={<PuzzleGame />} />
+          <Route path="/skill-bases-assessment/mcq-quiz" element={<McqQuiz />} />
           <Route path="/interview/:id" element={<Interview />} />
           <Route path="/resume-create" element={<CreateResume />} />
           <Route path="/resume-template-1" element={<ResumeTemplate1 />} />

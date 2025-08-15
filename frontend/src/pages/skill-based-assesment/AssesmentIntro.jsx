@@ -9,20 +9,14 @@ const AssessmentIntro = () => {
   const location = useLocation();
   const { jobId } = useParams();
   const job = location.state?.job;
-
-  console.log("Job ID:", jobId);
-  console.log("Job Object:", job);
-
-
-  const { user } = useSelector((state) => state.auth);
+  const { user, token } = useSelector((state) => state.auth);
 
 
   const startAssessmentHandler = async () => {
     try {
-      const token = localStorage.getItem("token");
       const res = await assessmentService.startAssessment(jobId, job, token);
 
-      navigate("/skill-bases-assessment/puzzle-game", {
+      navigate("/skill-bases-assessment/mcq-quiz", {
         state: { assessmentId: res.data.assessment._id, questionSetId: res.data.questionSet._id },
       });
     } catch (err) {

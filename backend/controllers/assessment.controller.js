@@ -1,3 +1,4 @@
+const axios = require("axios");
 const Assessment = require("../models/assessment.model");
 const PuzzleResult = require("../models/puzzleResult.model");
 const QuestionSet = require("../models/mcq.model");
@@ -10,31 +11,75 @@ exports.startAssessment = async (req, res) => {
     const candidateId = req.user.id;
     const { jobId, job } = req.body;
 
-    // Call FastAPI to generate quiz (axios call omitted for brevity)
-    const response = await axios.post(process.env.FAST_API_BACKEND + 'generate-quiz', {
-      job_title: job.job_title,
-      job_description: job.job_description,
-      job_responsibilities: job.job_responsibilities,
-      job_level: job.job_level,
-      required_skills: job.required_skills,
-      optional_skills: job.optional_skills || []
-    }, {
-      params: { num_questions: 15, include_explanations: true }
+    if (!jobId || !job) {
+      return res
+        .status(400)
+        .json({ success: false, message: "jobId and job are required." });
+    }
+
+    // ---- Call FastAPI to generate quiz ----
+    const fastApiBase = process.env.FAST_API_BACKEND;
+    if (!fastApiBase) {
+      return res
+        .status(500)
+        .json({ success: false, message: "FAST_API_BACKEND is not configured." });
+    }
+
+    const fastApiUrl = `${fastApiBase}assessments/generate-quiz`;
+
+    const mapJobLevel = (job_level) => {
+      const normalized = (job_level || "").toLowerCase();
+      if (normalized.includes("intern")) return "Intern";
+      if (normalized.includes("associate")) return "Associate";
+      if (normalized.includes("junior")) return "Junior";
+      if (normalized.includes("senior")) return "Senior";
+      // Default fallback
+      return "Associate";
+    };
+    const payload = {
+      job_title: job.jobTitle,
+      job_description: job.jobDescription,
+      job_responsibilities: Array.isArray(job.jobResponsibilities)
+        ? job.jobResponsibilities
+        : [job.jobResponsibilities],
+      job_level: mapJobLevel(job.job_level),
+      required_skills: Array.isArray(job.skills)
+        ? job.skills
+        : [job.skills],
+      optional_skills: Array.isArray(job.optionalSkills)
+        ? job.optionalSkills
+        : [job.optionalSkills],
+    };
+
+    const { data: fastApiData } = await axios.post(fastApiUrl, payload, {
+      params: { num_questions: 15, include_explanations: true },
     });
 
-    const quizQuestions = response.data;
+    // Some FastAPI implementations return an array directly, others wrap in {questions: [...]}
+    const quizQuestions =
+      Array.isArray(fastApiData)
+        ? fastApiData
+        : fastApiData?.questions || fastApiData?.data || [];
 
-    // Transform quizQuestions to your MCQ QuestionSet schema format
-    // Convert QuizQuestion[] to QuestionSet questions[]
+    if (!Array.isArray(quizQuestions) || quizQuestions.length === 0) {
+      return res.status(502).json({
+        success: false,
+        message: "Quiz generation failed or returned no questions.",
+      });
+    }
+
+    // ---- Transform to your QuestionSet schema ----
     const questionsForDB = quizQuestions.map((q) => {
-      // Find the correct answer index among options
-      const correctAnswerIndex = q.options.findIndex(opt => opt === q.correct_answer);
+      const options = q.options || [];
+      const correctAnswerIndex = options.findIndex(
+        (opt) => opt === q.correct_answer
+      );
 
       return {
         questionText: q.question,
-        options: q.options,
+        options,
         correctAnswerIndex: correctAnswerIndex !== -1 ? correctAnswerIndex : 0,
-        explanation: q.explanation || ''
+        explanation: q.explanation || "",
       };
     });
 
@@ -161,7 +206,17 @@ exports.submitMCQResult = async (req, res) => {
 exports.getMCQQuestions = async (req, res) => {
   try {
     const { questionSetId } = req.params;
-    const questionSet = await QuestionSet.findById(questionSetId).select("-questions.correctAnswerIndex"); // exclude correctAnswerIndex from nested questions
+
+    // Validate ObjectId
+    if (!questionSetId || !mongoose.Types.ObjectId.isValid(questionSetId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or missing questionSetId",
+      });
+    }
+
+    const questionSet = await QuestionSet.findById(questionSetId)
+      .select("-questions.correctAnswerIndex"); // exclude correctAnswerIndex from nested questions
 
     if (!questionSet) {
       return res.status(404).json({ success: false, message: "Question set not found" });
@@ -173,3 +228,4 @@ exports.getMCQQuestions = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error.", error: error.message });
   }
 };
+
