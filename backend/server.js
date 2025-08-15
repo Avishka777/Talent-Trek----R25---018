@@ -6,7 +6,8 @@ const authRoutes = require("./routes/user.route");
 const resumeRoutes = require("./routes/resume.route");
 const jobRoutes = require("./routes/job.route");
 const companyRoutes = require("./routes/company.router");
-const interviewRoutes = require("./routes/interview.route")
+const interviewRoutes = require("./routes/interview.route");
+const assessmentRoutes = require("./routes/assessment.routes")
 const appliedjobRoutes = require("./routes/appliedjob.router")
 const notificationRoutes = require("./routes/notification.route")
 
@@ -25,6 +26,7 @@ app.use("/api/resume", resumeRoutes);
 app.use("/api/job", jobRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/interview", interviewRoutes);
+app.use("/api/assessment", assessmentRoutes);
 app.use("/api/applied-jobs", appliedjobRoutes);
 app.use("/api/notifications", notificationRoutes);
 
