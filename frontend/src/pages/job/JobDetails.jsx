@@ -54,6 +54,8 @@ const JobDetails = () => {
       return;
     }
 
+    navigate(`/skill-bases-assessment/assessment-intro/${jobId}/`, { state: { job } });
+
     try {
       setIsApplying(true);
       const response = await appliedJobService.applyForJob(jobId, token);
@@ -71,13 +73,12 @@ const JobDetails = () => {
           title: "Oops...",
           html: `
           <p>${response.message}</p>
-          ${
-            response.deadline
+          ${response.deadline
               ? `<p><strong>Deadline:</strong> ${new Date(
-                  response.deadline
-                ).toLocaleDateString()}</p>`
+                response.deadline
+              ).toLocaleDateString()}</p>`
               : ""
-          }
+            }
         `,
           confirmButtonColor: "#d33",
         });
@@ -92,6 +93,7 @@ const JobDetails = () => {
       setIsApplying(false);
     }
   };
+
 
   // Handle Loading
   if (loading) {

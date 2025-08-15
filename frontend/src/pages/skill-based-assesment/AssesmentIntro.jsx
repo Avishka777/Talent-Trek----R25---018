@@ -1,14 +1,33 @@
-import {} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Card, Button } from "flowbite-react";
+import assessmentService from "../../services/assessmentService";
+
 
 const AssessmentIntro = () => {
-  const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { jobId } = useParams();
+  const job = location.state?.job;
 
-  const handleStartClick = () => {
-    navigate("/skill-bases-assessment/puzzle-game");
+  console.log("Job ID:", jobId);
+  console.log("Job Object:", job);
+
+
+  const { user } = useSelector((state) => state.auth);
+
+
+  const startAssessmentHandler = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await assessmentService.startAssessment(jobId, job, token);
+
+      navigate("/skill-bases-assessment/puzzle-game", {
+        state: { assessmentId: res.data.assessment._id, questionSetId: res.data.questionSet._id },
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   return (
@@ -44,7 +63,7 @@ const AssessmentIntro = () => {
       </p>
 
       <div className="flex justify-center pt-2">
-        <Button gradientMonochrome="info" size="lg" onClick={handleStartClick}>
+        <Button gradientMonochrome="info" size="lg" onClick={startAssessmentHandler}>
           Start Now
         </Button>
       </div>

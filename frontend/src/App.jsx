@@ -47,7 +47,7 @@ function Layout() {
           <Route path="/jobs/applied" element={<AppliedJobs />} />
           <Route path="/job/:jobId/:matchPercentage?" element={<JobDetails />} />
           <Route path="/agent/joblist" element={<AgentListing />} />
-          <Route path="/skill-bases-assessment/assessment-intro" element={<AssessmentIntro />} />
+          <Route path="/skill-bases-assessment/assessment-intro/:jobId" element={<AssessmentIntro />} />
           <Route path="/skill-bases-assessment/puzzle-game" element={<PuzzleGame />} />
           <Route path="/interview/:id" element={<Interview />} />
           <Route path="/resume-create" element={<CreateResume />} />
