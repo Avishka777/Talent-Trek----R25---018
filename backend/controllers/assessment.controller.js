@@ -8,25 +8,67 @@ const LeaderboardEntry = require("../models/leaderboard.model");
 exports.startAssessment = async (req, res) => {
   try {
     const candidateId = req.user.id;
-    const { jobId } = req.body;
+    const { jobId, jobDetails } = req.body;
 
-    let assessment = await Assessment.findOne({ job: jobId, candidate: candidateId });
-    if (assessment) {
-      if (assessment.status === "completed")
-        return res.status(400).json({ success: false, message: "Assessment already completed." });
-      return res.status(200).json({ success: true, data: assessment });
-    }
-
-    assessment = new Assessment({
-      job: jobId,
-      candidate: candidateId,
-      status: "started",
-      startTime: new Date(),
+    // Call FastAPI to generate quiz (axios call omitted for brevity)
+    const response = await axios.post(process.env.FAST_API_BACKEND + 'generate-quiz', {
+      job_title: jobDetails.job_title,
+      job_description: jobDetails.job_description,
+      job_responsibilities: jobDetails.job_responsibilities,
+      job_level: jobDetails.job_level,
+      required_skills: jobDetails.required_skills,
+      optional_skills: jobDetails.optional_skills || []
+    }, {
+      params: { num_questions: 15, include_explanations: true }
     });
 
-    await assessment.save();
+    const quizQuestions = response.data;
 
-    res.status(201).json({ success: true, data: assessment });
+    // Transform quizQuestions to your MCQ QuestionSet schema format
+    // Convert QuizQuestion[] to QuestionSet questions[]
+    const questionsForDB = quizQuestions.map((q) => {
+      // Find the correct answer index among options
+      const correctAnswerIndex = q.options.findIndex(opt => opt === q.correct_answer);
+
+      return {
+        questionText: q.question,
+        options: q.options,
+        correctAnswerIndex: correctAnswerIndex !== -1 ? correctAnswerIndex : 0,
+        explanation: q.explanation || ''
+      };
+    });
+
+    // Create new QuestionSet
+    const questionSet = new QuestionSet({
+      title: `Assessment Quiz for Job ${jobId}`,
+      description: `Auto-generated quiz for job level ${jobDetails.job_level}`,
+      questions: questionsForDB,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+
+    await questionSet.save();
+
+    // Now create or update Assessment and link to this QuestionSet
+    let assessment = await Assessment.findOne({ job: jobId, candidate: candidateId });
+    if (!assessment) {
+      assessment = new Assessment({
+        job: jobId,
+        candidate: candidateId,
+        status: "started",
+        startTime: new Date(),
+        questionSet: questionSet._id  // store reference to question set
+      });
+      await assessment.save();
+    } else {
+      // If assessment exists but not completed, update questionSet and status if needed
+      assessment.questionSet = questionSet._id;
+      assessment.status = "started";
+      assessment.startTime = new Date();
+      await assessment.save();
+    }
+
+    res.status(201).json({ success: true, data: { assessment, questionSet } });
   } catch (error) {
     console.error("startAssessment error:", error);
     res.status(500).json({ success: false, message: "Internal Server Error.", error: error.message });
