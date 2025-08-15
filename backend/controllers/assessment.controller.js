@@ -8,16 +8,16 @@ const LeaderboardEntry = require("../models/leaderboard.model");
 exports.startAssessment = async (req, res) => {
   try {
     const candidateId = req.user.id;
-    const { jobId, jobDetails } = req.body;
+    const { jobId, job } = req.body;
 
     // Call FastAPI to generate quiz (axios call omitted for brevity)
     const response = await axios.post(process.env.FAST_API_BACKEND + 'generate-quiz', {
-      job_title: jobDetails.job_title,
-      job_description: jobDetails.job_description,
-      job_responsibilities: jobDetails.job_responsibilities,
-      job_level: jobDetails.job_level,
-      required_skills: jobDetails.required_skills,
-      optional_skills: jobDetails.optional_skills || []
+      job_title: job.job_title,
+      job_description: job.job_description,
+      job_responsibilities: job.job_responsibilities,
+      job_level: job.job_level,
+      required_skills: job.required_skills,
+      optional_skills: job.optional_skills || []
     }, {
       params: { num_questions: 15, include_explanations: true }
     });
@@ -41,7 +41,7 @@ exports.startAssessment = async (req, res) => {
     // Create new QuestionSet
     const questionSet = new QuestionSet({
       title: `Assessment Quiz for Job ${jobId}`,
-      description: `Auto-generated quiz for job level ${jobDetails.job_level}`,
+      description: `Auto-generated quiz for job level ${job.job_level}`,
       questions: questionsForDB,
       createdAt: new Date(),
       updatedAt: new Date()

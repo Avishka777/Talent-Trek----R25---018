@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const assessmentService = {
-  startAssessment: async (jobId, jobDetails, token) => {
+  startAssessment: async (jobId, job, token) => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}assessment/start`,
-        { jobId, jobDetails },
+        { jobId, job },
         {
           headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         }
