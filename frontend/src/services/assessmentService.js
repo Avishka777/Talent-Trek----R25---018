@@ -29,11 +29,11 @@ const assessmentService = {
         }
     },
 
-    submitMCQResult: async (assessmentId, totalQuestions, correctAnswers, timeTakenSeconds, questionSetId, token) => {
+    submitMCQResult: async (assessmentId, questionSetId, answers, timeTakenSeconds, token) => {
         try {
             const response = await axios.post(
                 `${import.meta.env.VITE_API_BASE_URL}assessment/submit-mcq`,
-                { assessmentId, totalQuestions, correctAnswers, timeTakenSeconds, questionSetId },
+                { assessmentId, questionSetId, answers, timeTakenSeconds },
                 { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
             );
             return response.data;
@@ -42,6 +42,7 @@ const assessmentService = {
         }
     },
 
+
     getMCQQuestions: async (assessmentId, questionSetId, token) => {
         if (!questionSetId) {
             throw { success: false, message: "questionSetId is required" };
@@ -49,7 +50,7 @@ const assessmentService = {
 
         try {
             const response = await axios.get(
-                `${import.meta.env.VITE_API_BASE_URL}assessment/mcq-questions/${questionSetId}`,
+                `${import.meta.env.VITE_API_BASE_URL}assessment/mcq-questions/${assessmentId}/${questionSetId}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             return response.data;
@@ -70,6 +71,25 @@ const assessmentService = {
             throw error.response?.data || { success: false, message: "Failed to fetch assessment questions" };
         }
     },
+
+    // NEW: Get MCQ Review for completed assessment
+    getMCQReview: async (assessmentId, token) => {
+        if (!assessmentId) {
+            throw { success: false, message: "assessmentId is required" };
+        }
+
+        try {
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_BASE_URL}assessment/review-mcq/${assessmentId}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            return response.data; // { questions: [...], total, correct, wrong }
+        } catch (error) {
+            throw error.response?.data || { success: false, message: "Failed to fetch MCQ review" };
+        }
+    },
+
+
 };
 
 

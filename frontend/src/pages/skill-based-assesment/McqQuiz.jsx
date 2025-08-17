@@ -3,6 +3,7 @@ import { Card } from "flowbite-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import assessmentService from "../../services/assessmentService";
+import Swal from "sweetalert2";
 
 const McqQuiz = () => {
   const navigate = useNavigate();
@@ -15,7 +16,8 @@ const McqQuiz = () => {
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [timeTaken, setTimeTaken] = useState(0);
+  const [timeTakenSeconds, setTimeTaken] = useState(0);
+  // const [showReview, setShowReview] = useState(false);
 
   // Timer
   useEffect(() => {
@@ -44,16 +46,10 @@ const McqQuiz = () => {
         );
         console.log("MCQ API response:", response.data);
         const fetchedQuestions = response.data?.questions || [];
-
-        // if (!fetchedQuestions.length) {
-        //   navigate(`/assessment/${assessmentId}/puzzle`);
-        //   return;
-        // }
-
         setQuestions(fetchedQuestions);
       } catch (err) {
         console.error(err);
-        setError(err.message || "Failed to load questions.");
+        setError(err.response?.data?.message || err.message || "Failed to load questions.");
       } finally {
         setLoading(false);
       }
@@ -69,19 +65,55 @@ const McqQuiz = () => {
 
   // Handle Next / Submit button
   const handleNext = async () => {
+    const currentQuestion = questions[currentIndex];
+    // ✅ Prevent skipping without answering
+    if (!answers[currentQuestion._id]) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Answer Selected",
+        text: "Please select an answer before proceeding!",
+        confirmButtonColor: "#3085d6",
+      });
+      return;
+    }
+
     if (currentIndex + 1 < questions.length) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      // Submit answers to backend (backend calculates correct answers)
       try {
+        const totalQuestions = questions.length;
+        let correctAnswers = 0;
+
+        questions.forEach((q) => {
+          const selected = answers[q._id];
+          const correctOption = q.options[q.correctAnswerIndex];
+          if (selected === correctOption) correctAnswers++;
+        });
+        const formattedAnswers = Object.entries(answers).map(([questionId, userAnswer]) => ({
+          questionId,
+          userAnswer,
+        }));
         await assessmentService.submitMCQResult(
           assessmentId,
-          answers,        // send user answers
-          timeTaken,      // send time taken
-          questionSetId,  // send question set ID
+          questionSetId,
+          formattedAnswers,
+          timeTakenSeconds,
           token
         );
-        navigate(`/assessment/${assessmentId}/puzzle`);
+
+        navigate(`/skill-bases-assessment/${assessmentId}/mcq-review`, {
+          state: {
+            assessmentId,
+            total: totalQuestions,
+            correct: correctAnswers,
+            wrong: totalQuestions - correctAnswers,
+            wrongQuestions: questions.filter(
+              (q) => answers[q._id] !== q.options[q.correctAnswerIndex]
+            ),
+            questions,           // pass all questions
+            answers,
+          },
+        });
       } catch (err) {
         console.error(err);
         setError(err.message || "Failed to submit MCQ results.");
@@ -89,48 +121,47 @@ const McqQuiz = () => {
     }
   };
 
+
   if (loading) return <p>Loading questions...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!questions.length) return null;
 
+  // QUIZ MODE
   const currentQuestion = questions[currentIndex];
 
   return (
-     <Card className="w-full max-w-3xl shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 rounded-lg my-10 mx-auto space-y-4">
-
-    
-    <div className="max-w-xl mx-auto p-4">
-      <h2 className="text-xl font-bold mb-4">
-        Question {currentIndex + 1} of {questions.length}
-      </h2>
-      <p className="mb-4">{currentQuestion.questionText}</p>
-      <div className="space-y-2">
-        {currentQuestion.options.map((opt, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleAnswer(currentQuestion._id, opt)}
-            className={`w-full p-2 border rounded ${
-              answers[currentQuestion._id] === opt
+    <Card className="w-full max-w-3xl shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 rounded-lg my-10 mx-auto space-y-4">
+      <div className="max-w-xl mx-auto p-4">
+        <h2 className="text-xl font-bold mb-4">
+          Question {currentIndex + 1} of {questions.length}
+        </h2>
+        <p className="mb-4">{currentQuestion.questionText}</p>
+        <div className="space-y-2">
+          {currentQuestion.options.map((opt, idx) => (
+            <button
+              key={idx}
+              onClick={() => handleAnswer(currentQuestion._id, opt)}
+              className={`w-full p-2 border rounded ${answers[currentQuestion._id] === opt
                 ? "bg-blue-500 text-white"
                 : "bg-white"
-            }`}
-          >
-            {opt}
-          </button>
-        ))}
+                }`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+        <p className="mt-2 text-sm text-gray-500">
+          Time elapsed: {Math.floor(timeTakenSeconds / 60)}:
+          {(timeTakenSeconds % 60).toString().padStart(2, "0")}
+        </p>
+        <button
+          onClick={handleNext}
+          className="mt-4 px-4 py-2 bg-green-500 text-white rounded"
+        >
+          {currentIndex + 1 < questions.length ? "Next" : "Submit"}
+        </button>
       </div>
-      <p className="mt-2 text-sm text-gray-500">
-        Time elapsed: {Math.floor(timeTaken / 60)}:
-        {(timeTaken % 60).toString().padStart(2, "0")}
-      </p>
-      <button
-        onClick={handleNext}
-        className="mt-4 px-4 py-2 bg-green-500 text-white rounded"
-      >
-        {currentIndex + 1 < questions.length ? "Next" : "Submit"}
-      </button>
-    </div>
-     </Card>
+    </Card>
   );
 };
 

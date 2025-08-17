@@ -13,7 +13,7 @@ router.post("/submit-puzzle", authMiddleware, assessmentController.submitPuzzleR
 router.post("/submit-mcq", authMiddleware, assessmentController.submitMCQResult);
 
 // Get MCQ questions for a question set (for candidate to take MCQ)
-router.get("/mcq-questions/:questionSetId", authMiddleware, async (req, res) => {
+router.get("/mcq-questions/:assessmentId/:questionSetId", authMiddleware, async (req, res) => {
   try {
     const QuestionSet = require("../models/mcq.model");
     const questionSet = await QuestionSet.findById(req.params.questionSetId).select("-correctAnswerIndex"); // omit correct answer for security
@@ -24,5 +24,9 @@ router.get("/mcq-questions/:questionSetId", authMiddleware, async (req, res) => 
     res.status(500).json({ success: false, message: "Internal Server Error.", error: error.message });
   }
 });
+
+// Get MCQ review for a completed assessment (protected)
+router.get("/review-mcq/:assessmentId", authMiddleware, assessmentController.getMCQReview);
+
 
 module.exports = router;

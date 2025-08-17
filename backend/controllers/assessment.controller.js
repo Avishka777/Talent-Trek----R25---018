@@ -149,19 +149,49 @@ exports.submitPuzzleResult = async (req, res) => {
 // Submit MCQ Result, Complete Assessment, Update Leaderboard
 exports.submitMCQResult = async (req, res) => {
   try {
-    const { assessmentId, totalQuestions, correctAnswers, timeTakenSeconds, questionSetId } = req.body;
+    const { assessmentId, questionSetId, answers, timeTakenSeconds } = req.body;
+
+    // answers should be an array of objects like:
+    // [{ questionId, userAnswer }]
 
     const assessment = await Assessment.findById(assessmentId);
     if (!assessment || assessment.candidate.toString() !== req.user.id) {
       return res.status(404).json({ success: false, message: "Assessment not found or unauthorized." });
     }
 
+    const questionSet = await QuestionSet.findById(questionSetId);
+    if (!questionSet) {
+      return res.status(404).json({ success: false, message: "Question set not found." });
+    }
+
+    let correctAnswers = 0;
+    const answerDetails = [];
+
+    questionSet.questions.forEach((q) => {
+      const userAnsObj = answers.find((a) => a.questionId === q._id.toString());
+      const userAnswer = userAnsObj ? userAnsObj.userAnswer : null;
+      const correctAnswer = q.options[q.correctAnswerIndex];
+
+      const isCorrect = userAnswer === correctAnswer;
+      if (isCorrect) correctAnswers++;
+
+      answerDetails.push({
+        questionId: q._id,
+        userAnswer,
+        correctAnswer,
+        isCorrect,
+        explanation: q.explanation,
+        skillCategory: q.skillCategory || "General",
+      });
+    });
+
     const mcqResult = new MCQResult({
       assessment: assessmentId,
-      totalQuestions,
+      questionSetId,
+      totalQuestions: questionSet.questions.length,
       correctAnswers,
       timeTakenSeconds,
-      questionSetId,
+      answers: answerDetails,
       completedAt: new Date(),
     });
 
@@ -178,11 +208,14 @@ exports.submitMCQResult = async (req, res) => {
     if (puzzleResult) {
       puzzleScore = 1000 / (puzzleResult.movements * puzzleResult.timeTakenSeconds + 1);
     }
-    const mcqScore = (correctAnswers / totalQuestions) * 100;
+    const mcqScore = (correctAnswers / questionSet.questions.length) * 100;
     const finalScore = (puzzleScore * 0.5) + (mcqScore * 0.5);
 
     // Update or create leaderboard entry
-    let leaderboardEntry = await LeaderboardEntry.findOne({ job: assessment.job, candidate: assessment.candidate });
+    let leaderboardEntry = await LeaderboardEntry.findOne({
+      job: assessment.job,
+      candidate: assessment.candidate,
+    });
     if (!leaderboardEntry) {
       leaderboardEntry = new LeaderboardEntry({
         job: assessment.job,
@@ -195,10 +228,17 @@ exports.submitMCQResult = async (req, res) => {
     }
     await leaderboardEntry.save();
 
-    res.status(201).json({ success: true, data: { mcqResult, finalScore } });
+    res.status(201).json({
+      success: true,
+      data: { mcqResult, finalScore },
+    });
   } catch (error) {
     console.error("submitMCQResult error:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error.", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error.",
+      error: error.message,
+    });
   }
 };
 
@@ -229,3 +269,81 @@ exports.getMCQQuestions = async (req, res) => {
   }
 };
 
+// Get MCQ Review for a completed assessment
+exports.getMCQReview = async (req, res) => {
+  try {
+    const { assessmentId } = req.params;
+    const candidateId = req.user.id;
+
+    // Find assessment and verify ownership
+    const assessment = await Assessment.findById(assessmentId);
+    if (!assessment || assessment.candidate.toString() !== candidateId) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Assessment not found or unauthorized." 
+      });
+    }
+
+    // Find MCQ result
+    const mcqResult = await MCQResult.findOne({ assessment: assessmentId });
+    if (!mcqResult) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "MCQ result not found." 
+      });
+    }
+
+    // Find question set
+    const questionSet = await QuestionSet.findById(mcqResult.questionSetId);
+    if (!questionSet) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Question set not found." 
+      });
+    }
+
+    // Create a map of question IDs to user answers for faster lookup
+    const answerMap = new Map();
+    mcqResult.answers.forEach(answer => {
+      answerMap.set(answer.questionId.toString(), {
+        userAnswer: answer.userAnswer,
+        isCorrect: answer.isCorrect
+      });
+    });
+
+    // Build the response with questions and answers
+    const questionsWithAnswers = questionSet.questions.map(question => {
+      const answerData = answerMap.get(question._id.toString()) || {};
+      
+      return {
+        _id: question._id,
+        questionText: question.questionText,
+        options: question.options,
+        correctAnswerIndex: question.correctAnswerIndex,
+        explanation: question.explanation,
+        skillCategory: question.skillCategory,
+        userAnswer: answerData.userAnswer,
+        isCorrect: answerData.isCorrect,
+        correctAnswer: question.options[question.correctAnswerIndex]
+      };
+    });
+
+    res.json({
+      success: true,
+      data: {
+        questions: questionsWithAnswers,
+        total: mcqResult.totalQuestions,
+        correct: mcqResult.correctAnswers,
+        wrong: mcqResult.totalQuestions - mcqResult.correctAnswers
+      }
+    });
+
+  } catch (error) {
+    console.error("getMCQReview error:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Internal Server Error",
+      error: error.message 
+    });
+  }
+};
