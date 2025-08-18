@@ -110,7 +110,7 @@ const McqQuiz = () => {
             wrongQuestions: questions.filter(
               (q) => answers[q._id] !== q.options[q.correctAnswerIndex]
             ),
-            questions,           // pass all questions
+            questions,
             answers,
           },
         });

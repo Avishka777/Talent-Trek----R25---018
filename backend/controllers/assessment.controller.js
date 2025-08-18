@@ -168,7 +168,7 @@ exports.submitMCQResult = async (req, res) => {
     const answerDetails = [];
 
     questionSet.questions.forEach((q) => {
-      const userAnsObj = answers.find((a) => a.questionId === q._id.toString());
+      const userAnsObj = answers.find(a => a.questionId.toString() === q._id.toString());
       const userAnswer = userAnsObj ? userAnsObj.userAnswer : null;
       const correctAnswer = q.options[q.correctAnswerIndex];
 
@@ -285,14 +285,14 @@ exports.getMCQReview = async (req, res) => {
     }
 
     // Find MCQ result
-    const mcqResult = await MCQResult.findOne({ assessment: assessmentId });
+    const mcqResult = await MCQResult.findOne({ assessment: assessmentId }).sort({ createdAt: -1 });;
     if (!mcqResult) {
       return res.status(404).json({ 
         success: false, 
         message: "MCQ result not found." 
       });
     }
-
+   
     // Find question set
     const questionSet = await QuestionSet.findById(mcqResult.questionSetId);
     if (!questionSet) {
@@ -322,22 +322,26 @@ exports.getMCQReview = async (req, res) => {
         correctAnswerIndex: question.correctAnswerIndex,
         explanation: question.explanation,
         skillCategory: question.skillCategory,
-        userAnswer: answerData.userAnswer,
-        isCorrect: answerData.isCorrect,
+        userAnswer: answerData.userAnswer || null,
+        isCorrect: answerData.isCorrect || false,
         correctAnswer: question.options[question.correctAnswerIndex]
       };
     });
-
+  
     res.json({
       success: true,
       data: {
         questions: questionsWithAnswers,
         total: mcqResult.totalQuestions,
         correct: mcqResult.correctAnswers,
-        wrong: mcqResult.totalQuestions - mcqResult.correctAnswers
+        wrong: mcqResult.totalQuestions - mcqResult.correctAnswers,
+         userAnswers: mcqResult.answers.map(ans => ({
+          questionId: ans.questionId,
+          userAnswer: ans.userAnswer,
+          isCorrect: ans.isCorrect
+        }))
       }
     });
-
   } catch (error) {
     console.error("getMCQReview error:", error);
     res.status(500).json({ 

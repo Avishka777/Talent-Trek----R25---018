@@ -83,7 +83,7 @@ const assessmentService = {
                 `${import.meta.env.VITE_API_BASE_URL}assessment/review-mcq/${assessmentId}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            return response.data; // { questions: [...], total, correct, wrong }
+            return response.data;
         } catch (error) {
             throw error.response?.data || { success: false, message: "Failed to fetch MCQ review" };
         }
